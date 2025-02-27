@@ -3,86 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sima's Architecture</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/3d-flip-book/1.7.1/3d-flip-book.min.js"></script>
+    <title>Sima's Architecture Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        nav {
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .social-links a {
+            color: #333;
+            font-size: 24px;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-links a:hover {
+            color: #0077b5;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .flipbook-container {
+            margin: 0 auto;
+            width: 100%;
+            height: 80vh;
+            position: relative;
+        }
+        
+        #flipbook {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page {
+            background-color: white;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .controls {
             display: flex;
             justify-content: center;
             gap: 20px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
         }
-        nav a {
-            text-decoration: none;
-            font-size: 24px;
-            color: #333;
-            transition: color 0.3s ease-in-out;
+        
+        .controls button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
-        nav a:hover {
-            color: #0077b5;
+        
+        .controls button:hover {
+            background-color: #555;
         }
-        .flipbook-container {
-            width: 80%;
-            height: 600px;
-            margin: 40px auto;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+        
         footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
+            background-color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+        
+
+        @media (max-width: 768px) {
+            .flipbook-container {
+                height: 60vh;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <nav>
-        <a href="https://instagram.com/simasarchitecture" target="_blank">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://linkedin.com/in/simasarchitecture" target="_blank">
-            <i class="fab fa-linkedin"></i>
-        </a>
-    </nav>
-
-    <div class="flipbook-container" id="flipbook"></div>
-
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Sima's Architecture</a>
+            <div class="social-links">
+                <a href="https://instagram.com/simasarchitecture" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://linkedin.com/in/simasarchitecture" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-content">
+        <div class="controls">
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn">Next</button>
+        </div>
+        
+        <div class="flipbook-container">
+            <div id="flipbook"></div>
+        </div>
+    </div>
+    
     <footer>
-        © 2025 Sima Assaf | Architecture Portfolio
+        <p>&copy; 2025 Sima Assaf | Architecture Portfolio</p>
     </footer>
-
+    
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            new St.PageFlip(document.getElementById("flipbook"), {
-                width: 800,
-                height: 600,
-                size: "stretch",
-                minWidth: 315,
-                maxWidth: 1000,
-                minHeight: 420,
-                maxHeight: 1350,
-                autoSize: true,
-                maxShadowOpacity: 0.5,
-                showCover: true,
-                mobileScrollSupport: false,
-            });
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+        
+        const pdfPath = 'portfolio.pdf';
+        
+        async function renderPdf() {
+            try {
+                const loadingTask = pdfjsLib.getDocument(pdfPath);
+                const pdf = await loadingTask.promise;
+                
+                const numPages = pdf.numPages;
+                const flipbookElement = document.getElementById('flipbook');
+                
 
-            document.getElementById("flipbook").loadFromPDF("portfolio.pdf");
-        });
+                for (let i = 1; i <= numPages; i++) {
+                    const page = document.createElement('div');
+                    page.className = 'page';
+                    flipbookElement.appendChild(page);
+                    
+
+                    const pdfPage = await pdf.getPage(i);
+                    
+
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    
+
+                    const viewport = pdfPage.getViewport({ scale: 1.5 });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
+
+                    await pdfPage.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+                    
+
+                    page.appendChild(canvas);
+                }
+
+                $(flipbookElement).turn({
+                    width: flipbookElement.offsetWidth,
+                    height: flipbookElement.offsetHeight,
+                    autoCenter: true,
+                    display: 'double',
+                    acceleration: true,
+                    elevation: 50,
+                    gradients: true,
+                    when: {
+                        turning: function(event, page, view) {
+                            const book = $(this);
+                        }
+                    }
+                });
+                
+                document.getElementById('prev-btn').addEventListener('click', function() {
+                    $(flipbookElement).turn('previous');
+                });
+                
+                document.getElementById('next-btn').addEventListener('click', function() {
+                    $(flipbookElement).turn('next');
+                });
+                
+                $(document).keydown(function(e) {
+                    if (e.keyCode == 37) {
+                        $(flipbookElement).turn('previous');
+                    } else if (e.keyCode == 39) {
+                        $(flipbookElement).turn('next');
+                    }
+                });
+
+                $(window).resize(function() {
+                    $(flipbookElement).turn('size', 
+                        flipbookElement.parentElement.offsetWidth,
+                        flipbookElement.parentElement.offsetHeight);
+                });
+                
+            } catch (error) {
+                console.error('Error rendering PDF:', error);
+                document.getElementById('flipbook').innerHTML = '<p style="padding: 20px;">Error loading PDF. Please ensure a file named "portfolio.pdf" is in the same directory as this HTML file.</p>';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', renderPdf);
     </script>
-
 </body>
 </html>
