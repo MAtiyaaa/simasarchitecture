@@ -6,7 +6,6 @@
     <title>Sima's Architecture Portfolio</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
@@ -18,7 +17,6 @@
         
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-image: url('https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/images/ajax-loader.gif');
             background-color: #f2efe4;
             color: #333;
             line-height: 1.6;
@@ -76,14 +74,69 @@
         #flipbook {
             width: 100%;
             height: 100%;
-            background-color: white;
+        }
+        
+        .hard {
+            background-color: #f5f1e6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background-image: url('https://images.unsplash.com/photo-1601001815894-4bb6c81416d7?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
         }
         
         .page {
             background-color: white;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .page-content {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #333;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         footer {
@@ -116,6 +169,10 @@
     </style>
 </head>
 <body>
+    <div class="loader">
+        <div class="spinner"></div>
+    </div>
+
     <div class="social-container">
         <a href="https://instagram.com/simasarchitecture" target="_blank" aria-label="Instagram">
             <i class="fab fa-instagram"></i>
@@ -136,90 +193,189 @@
     </footer>
     
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
-        
-        const pdfPath = 'portfolio.pdf';
-        
-        async function renderPdf() {
-            try {
+        document.addEventListener('DOMContentLoaded', function() {
+            let pdfPath = './portfolio.pdf';
+            let pdfDoc = null;
+            const scale = 1.5;
+            const flipbook = $('#flipbook');
+            
+            function loadPDF() {
                 const loadingTask = pdfjsLib.getDocument(pdfPath);
-                const pdf = await loadingTask.promise;
                 
+                return loadingTask.promise.then(function(pdf) {
+                    pdfDoc = pdf;
+                    return pdfDoc.getPage(1);
+                }).then(function(page) {
+                    const viewport = page.getViewport({ scale: scale });
+                    return { pdf: pdfDoc, viewport: viewport };
+                });
+            }
+            
+            function renderPages(pdf, viewport) {
                 const numPages = pdf.numPages;
-                const flipbookElement = document.getElementById('flipbook');
+                const pageWidth = viewport.width;
+                const pageHeight = viewport.height;
                 
-                for (let i = 1; i <= numPages; i++) {
-                    const page = document.createElement('div');
-                    page.className = 'page';
-                    flipbookElement.appendChild(page);
-                    
-                    const pdfPage = await pdf.getPage(i);
-                    
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    
-                    const viewport = pdfPage.getViewport({ scale: 1.5 });
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-                    
-                    await pdfPage.render({
-                        canvasContext: context,
-                        viewport: viewport
-                    }).promise;
-                    
-                    page.appendChild(canvas);
+                const book = document.getElementById('flipbook');
+                
+                function addPage(pageNum) {
+                    return pdf.getPage(pageNum).then(function(page) {
+                        const pageDiv = document.createElement('div');
+                        pageDiv.className = 'page';
+                        
+                        if (pageNum === 1 || pageNum === numPages) {
+                            pageDiv.classList.add('hard');
+                        }
+                        
+                        const content = document.createElement('div');
+                        content.className = 'page-content';
+                        pageDiv.appendChild(content);
+                        
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        
+                        const viewport = page.getViewport({ scale: scale });
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        
+                        content.appendChild(canvas);
+                        
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        
+                        return page.render(renderContext).promise.then(function() {
+                            book.appendChild(pageDiv);
+                            return pageDiv;
+                        });
+                    });
                 }
                 
-                $(flipbookElement).turn({
-                    width: flipbookElement.offsetWidth,
-                    height: flipbookElement.offsetHeight,
+                const pagePromises = [];
+                for (let i = 1; i <= numPages; i++) {
+                    pagePromises.push(addPage(i));
+                }
+                
+                return Promise.all(pagePromises).then(function() {
+                    return { width: pageWidth, height: pageHeight };
+                });
+            }
+            
+            function initFlipbook(dimensions) {
+                flipbook.turn({
+                    width: dimensions.width * 2,
+                    height: dimensions.height,
+                    elevation: 50,
+                    gradients: true,
                     autoCenter: true,
                     display: 'double',
                     acceleration: true,
-                    elevation: 50,
-                    gradients: true
-                });
-                
-                $(document).keydown(function(e) {
-                    if (e.keyCode == 37) {
-                        $(flipbookElement).turn('previous');
-                    } else if (e.keyCode == 39) {
-                        $(flipbookElement).turn('next');
-                    }
-                });
-                
-                const hammer = new Hammer(flipbookElement);
-                hammer.on('swipeleft', function() {
-                    $(flipbookElement).turn('next');
-                });
-                
-                hammer.on('swiperight', function() {
-                    $(flipbookElement).turn('previous');
-                });
-                
-                flipbookElement.addEventListener('click', function(e) {
-                    const halfWidth = this.offsetWidth / 2;
-                    const clickX = e.offsetX;
-                    
-                    if (clickX < halfWidth) {
-                        $(this).turn('previous');
-                    } else {
-                        $(this).turn('next');
+                    when: {
+                        turning: function(e, page, view) {
+                            const book = $(this);
+                            if (page === 1) {
+                                book.turn('peel', 'br');
+                            }
+                        },
+                        turned: function(e, page, view) {
+                            const book = $(this);
+                            if (page === 1) {
+                                book.turn('peel', false);
+                            }
+                        }
                     }
                 });
                 
                 $(window).resize(function() {
-                    $(flipbookElement).turn('size', 
-                        flipbookElement.parentElement.offsetWidth,
-                        flipbookElement.parentElement.offsetHeight);
+                    const container = $('.flipbook-container');
+                    const containerWidth = container.width();
+                    const containerHeight = container.height();
+                    
+                    const ratio = dimensions.width * 2 / dimensions.height;
+                    let width = containerWidth;
+                    let height = width / ratio;
+                    
+                    if (height > containerHeight) {
+                        height = containerHeight;
+                        width = height * ratio;
+                    }
+                    
+                    flipbook.turn('size', width, height);
+                    flipbook.turn('resize');
+                }).resize();
+                
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowLeft') {
+                        flipbook.turn('previous');
+                    } else if (e.key === 'ArrowRight') {
+                        flipbook.turn('next');
+                    }
                 });
                 
-            } catch (error) {
-                document.getElementById('flipbook').innerHTML = '<p style="padding: 20px;">Error loading PDF. Please ensure a file named "portfolio.pdf" is in the same directory as this HTML file.</p>';
+                const hammer = new Hammer(document.getElementById('flipbook'));
+                hammer.on('swipeleft', function() {
+                    flipbook.turn('next');
+                });
+                
+                hammer.on('swiperight', function() {
+                    flipbook.turn('previous');
+                });
+                
+                document.getElementById('flipbook').addEventListener('click', function(e) {
+                    const halfWidth = this.offsetWidth / 2;
+                    const clickX = e.offsetX;
+                    
+                    if (clickX < halfWidth) {
+                        flipbook.turn('previous');
+                    } else {
+                        flipbook.turn('next');
+                    }
+                });
+                
+                $('.loader').fadeOut(1000);
             }
-        }
-        
-        document.addEventListener('DOMContentLoaded', renderPdf);
+            
+            const PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js';
+            
+            function loadScript(src) {
+                return new Promise(function(resolve, reject) {
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+            
+            loadScript(PDFJS_URL)
+                .then(function() {
+                    return loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js');
+                })
+                .then(function() {
+                    window.pdfjsLib = window.pdfjsLib || window.pdfjsDistBrowserified;
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+                    
+                    return loadPDF();
+                })
+                .then(function(data) {
+                    return renderPages(data.pdf, data.viewport);
+                })
+                .then(function(dimensions) {
+                    initFlipbook(dimensions);
+                })
+                .catch(function(error) {
+                    console.error('Error loading PDF:', error);
+                    document.getElementById('flipbook').innerHTML = `
+                        <div class="page hard" style="text-align: center; padding: 20px;">
+                            <h2>Error Loading PDF</h2>
+                            <p>Please ensure that 'portfolio.pdf' is in the same directory as this HTML file.</p>
+                            <p>Error: ${error.message}</p>
+                        </div>
+                    `;
+                    $('.loader').fadeOut(500);
+                });
+        });
     </script>
 </body>
 </html>
