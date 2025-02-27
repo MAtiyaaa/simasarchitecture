@@ -58,12 +58,31 @@
         </a>
     </nav>
 
-    <div class="flipbook-container">
-        <flip-book pdf="portfolio.pdf"></flip-book>
-    </div>
+    <div class="flipbook-container" id="flipbook"></div>
 
     <footer>
         © 2025 Sima Assaf | Architecture Portfolio
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new St.PageFlip(document.getElementById("flipbook"), {
+                width: 800,
+                height: 600,
+                size: "stretch",
+                minWidth: 315,
+                maxWidth: 1000,
+                minHeight: 420,
+                maxHeight: 1350,
+                autoSize: true,
+                maxShadowOpacity: 0.5,
+                showCover: true,
+                mobileScrollSupport: false,
+            });
+
+            document.getElementById("flipbook").loadFromPDF("portfolio.pdf");
+        });
+    </script>
+
 </body>
 </html>
