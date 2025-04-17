@@ -3,610 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sima Assaf | Architecture Portfolio</title>
-    <link rel="icon" href="assets/images/icon.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Consolas, monospace;
-        }
-        body {
-            color: #fff;
-            line-height: 1.6;
-            background-color: #121212;
-            background-image: url('https://images.unsplash.com/photo-1568528365195-a0da42409d6a?q=80&w=3840&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            overflow: hidden;
-            height: 100vh;
-            position: relative;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
-        .logo {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            text-align: center;
-        }
-        .logo h1 {
-            font-weight: 700;
-            font-size: 28px;
-            letter-spacing: 2px;
-            color: #fff;
-            margin: 0;
-            text-transform: uppercase;
-        }
-        .logo span {
-            font-size: 14px;
-            letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            display: block;
-            margin-top: 2px;
-        }
-        .social-container-left {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 20px;
-        }
-        .social-container-right {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 20px;
-        }
-        .social-link {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            text-decoration: none;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .social-link:hover {
-            color: #000;
-            background-color: #fff;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        .main-content {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .book-container {
-            width: 1684px; 
-            height: 1191px; 
-            position: relative;
-            perspective: 2000px;
-            transform: scale(0.6); 
-            transform-origin: center center;
-        }
-        #book {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.5s;
-        }
-        .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            transform-style: preserve-3d;
-            transform-origin: left center;
-            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-            background-color: white;
-            overflow: hidden;
-        }
-        .page-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-        }
-        .page-content.single {
-            position: relative;
-        }
-        .page-content.double {
-            display: flex;
-            flex-direction: row;
-        }
-        .page-half {
-            width: 50%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        .page-half:first-child {
-            border-right: 1px solid #ddd;
-        }
-        .page-canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        .page-content.double::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.1);
-            z-index: 5;
-        }
-        .controls {
-            position: fixed;
-            bottom: 40px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            z-index: 100;
-        }
-        .control-btn {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .control-btn:hover:not(:disabled) {
-            background-color: #fff;
-            color: #000;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        .control-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        .page-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 2px;
-        }
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #121212;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 30px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .loading-text {
-            color: white;
-            font-size: 16px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-        .loading-progress {
-            width: 200px;
-            height: 2px;
-            background-color: rgba(255, 255, 255, 0.1);
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        .loading-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0%;
-            background-color: #fff;
-            transition: width 0.3s ease;
-        }
-        .page.flipped {
-            transform: rotateY(-180deg);
-        }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding: 15px 0;
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-        .zoom-btn {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 22px;
-            z-index: 1000;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .zoom-btn:hover {
-            background-color: #fff;
-            color: #000;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        .zoomed {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: zoom-out;
-        }
-        .zoomed img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-        }
-        @media (max-width: 1800px) {
-            .book-container {
-                transform: scale(0.5);
-            }
-        }
-        @media (max-width: 1400px) {
-            .book-container {
-                transform: scale(0.4);
-            }
-        }
-        @media (max-width: 1100px) {
-            .book-container {
-                transform: scale(0.3);
-            }
-        }
-        @media (max-width: 800px) {
-            .book-container {
-                transform: scale(0.25);
-            }
-        }
-    </style>
+    <title>Sima Assaf - Portfolio</title>
+    <link rel="icon" href="pdf/icon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="spinner"></div>
-        <div class="loading-text">Loading Portfolio</div>
-        <div class="loading-progress">
-            <div class="loading-bar" id="loading-bar"></div>
-        </div>
+    <div class="page-container">
+        <header>
+            <a href="#" class="logo">
+                <span class="logo-text">Sima Assaf</span>
+                <span class="logo-dot"></span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" id="portfolio-link" class="active">Portfolio</a></li>
+                    <li><a href="#" id="about-link">About</a></li>
+                    <li><a href="#" id="contact-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </header>
+        <main>
+            <aside class="sidebar">
+                <div class="profile">
+                    <div class="profile-image">
+                        <img src="pdf/sima.jpg" alt="Sima Assaf" class="profile-img">
+                    </div>
+                    <h2>Sima Assaf</h2>
+                    <p>Architect Student at American University in Dubai</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/sima.assaf/" class="social-btn instagram">
+                        <i class="fab fa-instagram"></i><span>Instagram</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/sima-assaf-013b31206/" class="social-btn linkedin">
+                        <i class="fab fa-linkedin"></i><span>LinkedIn</span>
+                    </a>
+                    <a href="mailto:sima.assaf@outlook.com" class="social-btn email">
+                        <i class="fas fa-envelope"></i><span>Email</span>
+                    </a>
+                    <a href="https://www.behance.net/simaassaf" class="social-btn behance">
+                        <i class="fab fa-behance"></i><span>Behance</span>
+                    </a>
+                </div>
+                <div class="pdf-controls">
+                    <div class="pdf-navigation">
+                        <button class="nav-btn" id="prev-page"><i class="fas fa-chevron-left"></i></button>
+                        <div class="page-indicator">
+                            Page <span id="current-page">1</span> of <span id="total-pages">1</span>
+                        </div>
+                        <button class="nav-btn" id="next-page"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <button class="download-btn" id="download-pdf">
+                        <i class="fas fa-download"></i><span>Download Portfolio</span>
+                    </button>
+                </div>
+            </aside>
+            <div class="content-container">
+                <div class="pdf-container active">
+                    <div class="loading-animation">
+                        <div class="spinner"></div>
+                        <p>Loading Portfolio...</p>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div class="page-transitions prev-page-arrow">
+                        <button class="page-arrow-btn" id="prev-page-arrow"><i class="fas fa-chevron-left"></i></button>
+                    </div>
+                    <div class="page-transitions next-page-arrow">
+                        <button class="page-arrow-btn" id="next-page-arrow"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="swipe-indicator">
+                        <i class="fas fa-hand-point-left"></i>
+                        Swipe to navigate
+                        <i class="fas fa-hand-point-right"></i>
+                    </div>
+                    <div id="pdf-viewer"></div>
+                </div>
+                <div class="about-container">
+                    <h2 class="about-header">About Me</h2>
+                    <div class="about-content">
+                        <div class="about-text">
+                            <p>I'm Sima Assaf, an architectural designer with a passion for creating innovative and sustainable spaces. With a strong foundation in architectural drafting and 3D modeling, I strive to blend functionality with aesthetic appeal in every project.</p>
+                            <p>My work is driven by a commitment to excellence, attention to detail, and a deep understanding of client needs. From conceptual design to final execution, I aim to deliver spaces that inspire and endure.</p>
+                            <button class="download-cv-btn" id="download-cv">
+                                <i class="fas fa-download"></i><span>Download CV</span>
+                            </button>
+                        </div>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                                <div class="stat-info">
+                                    <h4>Education</h4>
+                                    <p>American University in Dubai</p>
+                                </p>3.50 GPA</p>
+                            </p>Deans List - Spring 2024</p>
+                        </p>Deans List - Fall 2024</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <div class="stat-info">
+                                    <h4>Location</h4>
+                                    <p>Dubai, United Arab Emirates</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon"><i class="fas fa-language"></i></div>
+                                <div class="stat-info">
+                                    <h4>Languages</h4>
+                                    <p>English, Arabic</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon"><i class="fas fa-brain"></i></div>
+                                <div class="stat-info">
+                                    <h4>Design Philosophy</h4>
+                                    <p>Human-Centered Architecture</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top: 40px; margin-bottom: 20px;">Skills & Expertise</h3>
+                    <div class="about-grid">
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-building"></i></div>
+                            <div class="skill-name">Revit</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-drafting-compass"></i></div>
+                            <div class="skill-name">AutoCAD</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-map"></i></div>
+                            <div class="skill-name">ARCGIS</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-shapes"></i></div>
+                            <div class="skill-name">Rhino</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-cube"></i></div>
+                            <div class="skill-name">Sketchup</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-image"></i></div>
+                            <div class="skill-name">Photoshop</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-vr-cardboard"></i></div>
+                            <div class="skill-name">TwinMotion</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon"><i class="fas fa-paint-brush"></i></div>
+                            <div class="skill-name">Procreate</div>
+                            <div class="skill-level">
+                                <div class="skill-progress" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>© 2025 Sima Assaf. All rights reserved.</p>
+        </footer>
     </div>
-    <div class="logo">
-        <h1>Sima Assaf</h1>
-        <span>Architecture Portfolio</span>
-    </div>
-    <div class="social-container-left">
-        <a href="mailto:simasarchitecture@gmail.com" class="social-link" target="_blank" aria-label="Email">
-            <i class="fas fa-envelope"></i>
-        </a>
-        <a href="https://instagram.com/simasarchitecture" class="social-link" target="_blank" aria-label="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-    </div>
-    <div class="social-container-right">
-        <a href="https://linkedin.com/in/simasarchitecture" class="social-link" target="_blank" aria-label="LinkedIn">
-            <i class="fab fa-linkedin"></i>
-        </a>
-        <a href="https://www.behance.net/simaassaf" class="social-link" target="_blank" aria-label="Behance">
-            <i class="fab fa-behance"></i>
-        </a>
-    </div>
-    <div class="main-content">
-        <div class="book-container">
-            <div id="book"></div>
-        </div>
-    </div>
-    <div class="controls">
-        <button id="prev-btn" class="control-btn"><i class="fas fa-chevron-left"></i></button>
-        <button id="next-btn" class="control-btn"><i class="fas fa-chevron-right"></i></button>
-    </div>
-    <div class="zoom-btn" id="zoom-btn">
-        <i class="fas fa-search-plus"></i>
-    </div>
-    <div class="page-indicator" id="page-indicator">Cover</div>
-    <div class="footer">
-        <p>© 2025 Sima Assaf | Architecture Portfolio</p>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
-            const book = document.getElementById('book');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const zoomBtn = document.getElementById('zoom-btn');
-            const loadingOverlay = document.getElementById('loading-overlay');
-            const loadingBar = document.getElementById('loading-bar');
-            const pageIndicator = document.getElementById('page-indicator');
-            const basePath = './assets/portfolio/';
-            const totalPDFs = 45;
-            let currentPage = 0;
-            let pagesLoaded = 0;
-            let isFlipping = false;
-            function updateLoadingProgress() {
-                const progress = Math.floor((pagesLoaded / totalPDFs) * 100);
-                loadingBar.style.width = `${progress}%`;
-            }
-            function updatePageIndicator() {
-                if (currentPage === 0) {
-                    pageIndicator.textContent = "Cover";
-                } else {
-                    const leftPage = currentPage * 2 - 1;
-                    const rightPage = currentPage * 2;
-                    pageIndicator.textContent = `Pages ${leftPage}-${rightPage}`;
-                }
-            }
-            async function renderPdfToCanvas(pdfPath, canvasId) {
-                try {
-                    const canvas = document.getElementById(canvasId);
-                    if (!canvas) {
-                        console.error(`Canvas ${canvasId} not found`);
-                        return;
-                    }
-                    const context = canvas.getContext('2d');
-                    const pdf = await pdfjsLib.getDocument(pdfPath).promise;
-                    const page = await pdf.getPage(1);
-                    const viewport = page.getViewport({ scale: 1.0 });
-                    const isFullPage = canvas.parentElement.classList.contains('single');
-                    if (isFullPage) {
-                        canvas.width = 1684; 
-                    } else {
-                        canvas.width = 842; 
-                    }
-                    canvas.height = 1191; 
-                    const containerWidth = canvas.width;
-                    const containerHeight = canvas.height;
-                    const scaleX = containerWidth / viewport.width;
-                    const scaleY = containerHeight / viewport.height;
-                    const scale = Math.min(scaleX, scaleY);
-                    const scaledViewport = page.getViewport({ scale: scale });
-                    const offsetX = (containerWidth - scaledViewport.width) / 2;
-                    const offsetY = (containerHeight - scaledViewport.height) / 2;
-                    context.fillStyle = '#ffffff';
-                    context.fillRect(0, 0, canvas.width, canvas.height);
-                    const renderContext = {
-                        canvasContext: context,
-                        viewport: scaledViewport,
-                        transform: [1, 0, 0, 1, offsetX, offsetY]
-                    };
-                    await page.render(renderContext).promise;
-                    canvas.dataset.imageData = canvas.toDataURL('image/png');
-                    pagesLoaded++;
-                    updateLoadingProgress();
-                } catch (error) {
-                    console.error(`Error rendering PDF ${pdfPath}:`, error);
-                    pagesLoaded++;
-                    updateLoadingProgress();
-                }
-            }
-            function createBookPages() {
-                const coverPage = document.createElement('div');
-                coverPage.className = 'page';
-                coverPage.id = 'page-0';
-                coverPage.style.zIndex = totalPDFs;
-                const coverContent = document.createElement('div');
-                coverContent.className = 'page-content single';
-                const coverCanvas = document.createElement('canvas');
-                coverCanvas.className = 'page-canvas';
-                coverCanvas.id = 'canvas-0';
-                coverContent.appendChild(coverCanvas);
-                coverPage.appendChild(coverContent);
-                book.appendChild(coverPage);
-                const numSpreads = Math.ceil((totalPDFs - 1) / 2);
-                for (let i = 1; i <= numSpreads; i++) {
-                    const pageIndex = i;
-                    const leftPdfIndex = 2 * i - 1;
-                    const rightPdfIndex = 2 * i;
-                    const pageDiv = document.createElement('div');
-                    pageDiv.className = 'page';
-                    pageDiv.id = `page-${pageIndex}`;
-                    pageDiv.style.zIndex = totalPDFs - i;
-                    const pageContent = document.createElement('div');
-                    pageContent.className = 'page-content double';
-                    const leftHalf = document.createElement('div');
-                    leftHalf.className = 'page-half';
-                    const leftCanvas = document.createElement('canvas');
-                    leftCanvas.className = 'page-canvas';
-                    leftCanvas.id = `canvas-${leftPdfIndex}`;
-                    leftHalf.appendChild(leftCanvas);
-                    const rightHalf = document.createElement('div');
-                    rightHalf.className = 'page-half';
-                    const rightCanvas = document.createElement('canvas');
-                    rightCanvas.className = 'page-canvas';
-                    rightCanvas.id = `canvas-${rightPdfIndex}`;
-                    rightHalf.appendChild(rightCanvas);
-                    pageContent.appendChild(leftHalf);
-                    pageContent.appendChild(rightHalf);
-                    pageDiv.appendChild(pageContent);
-                    book.appendChild(pageDiv);
-                }
-            }
-            async function loadAllPdfs() {
-                await renderPdfToCanvas(`${basePath}0.pdf`, 'canvas-0');
-                const batchSize = 2;
-                const remainingPdfs = totalPDFs - 1;
-                const batches = Math.ceil(remainingPdfs / batchSize);
-                for (let batch = 0; batch < batches; batch++) {
-                    const start = (batch * batchSize) + 1; 
-                    const end = Math.min(start + batchSize, totalPDFs);
-                    const batchPromises = [];
-                    for (let i = start; i < end; i++) {
-                        batchPromises.push(renderPdfToCanvas(`${basePath}${i}.pdf`, `canvas-${i}`));
-                    }
-                    await Promise.all(batchPromises);
-                }
-                loadingOverlay.style.opacity = '0';
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                }, 500);
-            }
-            function flipToPage(pageNum) {
-                if (pageNum < 0 || pageNum > Math.ceil(totalPDFs / 2) || isFlipping) return;
-                isFlipping = true;
-                const pages = document.querySelectorAll('.page');
-                pages.forEach((page, index) => {
-                    const pageId = parseInt(page.id.split('-')[1]);
-                    if (pageId < pageNum) {
-                        page.classList.add('flipped');
-                    } else {
-                        page.classList.remove('flipped');
-                    }
-                });
-                currentPage = pageNum;
-                updatePageIndicator();
-                updateButtons();
-                setTimeout(() => {
-                    isFlipping = false;
-                }, 800);
-            }
-            function updateButtons() {
-                prevBtn.disabled = currentPage === 0;
-                nextBtn.disabled = currentPage >= Math.ceil(totalPDFs / 2);
-            }
-            function setupEventListeners() {
-                prevBtn.addEventListener('click', () => flipToPage(currentPage - 1));
-                nextBtn.addEventListener('click', () => flipToPage(currentPage + 1));
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') flipToPage(currentPage - 1);
-                    else if (e.key === 'ArrowRight') flipToPage(currentPage + 1);
-                });
-                zoomBtn.addEventListener('click', () => {
-                    let visibleCanvases = [];
-                    if (currentPage === 0) {
-                        const canvas = document.getElementById('canvas-0');
-                        if (canvas && canvas.dataset.imageData) {
-                            visibleCanvases.push({
-                                src: canvas.dataset.imageData,
-                                pageNum: 0
-                            });
-                        }
-                    } else {
-                        const leftPageNum = currentPage * 2 - 1;
-                        const rightPageNum = currentPage * 2;
-                        const leftCanvas = document.getElementById(`canvas-${leftPageNum}`);
-                        const rightCanvas = document.getElementById(`canvas-${rightPageNum}`);
-                        if (leftCanvas && leftCanvas.dataset.imageData) {
-                            visibleCanvases.push({
-                                src: leftCanvas.dataset.imageData,
-                                pageNum: leftPageNum
-                            });
-                        }
-                        if (rightCanvas && rightCanvas.dataset.imageData) {
-                            visibleCanvases.push({
-                                src: rightCanvas.dataset.imageData,
-                                pageNum: rightPageNum
-                            });
-                        }
-                    }
-                    if (visibleCanvases.length > 0) {
-                        const zoomContainer = document.createElement('div');
-                        zoomContainer.className = 'zoomed';
-                        visibleCanvases.forEach(canvas => {
-                            const img = document.createElement('img');
-                            img.src = canvas.src;
-                            zoomContainer.appendChild(img);
-                        });
-                        zoomContainer.addEventListener('click', () => {
-                            document.body.removeChild(zoomContainer);
-                        });
-                        document.body.appendChild(zoomContainer);
-                    }
-                });
-            }
-            function init() {
-                createBookPages();
-                loadAllPdfs();
-                setupEventListeners();
-                updateButtons();
-                updatePageIndicator();
-            }
-            init();
-            setTimeout(() => {
-                loadingOverlay.style.opacity = '0';
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                }, 500);
-            }, 60000);
-        });
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
