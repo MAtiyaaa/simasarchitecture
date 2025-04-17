@@ -449,7 +449,7 @@ const pageNavigation = {
             aboutLink.classList.remove('active');
             pdfContainer.classList.remove('active');
             aboutContainer.classList.remove('active');
-            window.location.href = 'mailto:simasarchitecure@gmail.com';
+            window.location.href = 'mailto:sima.assaf@outlook.com';
         });
     },
     
