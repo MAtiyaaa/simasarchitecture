@@ -35,7 +35,7 @@
 body {
     font-family: Consolas, monospace;
     color: var(--text-primary);
-    background-color: var(--primary-color);
+    background-color: var (--primary-color);
     line-height: 1.6;
     overflow-x: hidden;
     font-size: 16px;
@@ -346,7 +346,7 @@ footer::before {
     border-radius: var(--border-radius-md);
     background-color: var(--primary-color);
     color: var(--text-primary);
-    font-weight: 500;
+    font-weight: normal;
     box-shadow: var(--shadow-light);
     transition: var(--transition-standard);
     position: relative;
@@ -468,7 +468,7 @@ footer::before {
 }
 
 .page-indicator {
-    font-weight: 500;
+    font-weight: normal;
     background-color: var(--background-light);
     padding: 5px 15px;
     border-radius: var(--border-radius-md);
@@ -480,7 +480,6 @@ footer::before {
 
 #current-page, #total-pages {
     color: var(--accent-color);
-    font-weight: 600;
 }
 
 .download-btn, .download-cv-btn {
@@ -494,7 +493,7 @@ footer::before {
     justify-content: center;
     gap: var(--spacing-md);
     cursor: pointer;
-    font-weight: 500;
+    font-weight: normal;
     transition: var(--transition-standard);
     position: relative;
     overflow: hidden;
@@ -663,7 +662,6 @@ footer::before {
 }
 
 .stat-info p {
-    font-weight: 600;
     color: var(--text-primary);
 }
 
@@ -704,7 +702,6 @@ footer::before {
 }
 
 .skill-name {
-    font-weight: 600;
     margin-bottom: 5px;
 }
 
@@ -896,7 +893,14 @@ footer::before {
 
 @media (max-width: 576px) {
     .nav-links {
-        display: none;
+        display: flex;
+        flex-direction: row;
+        gap: var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+    
+    .nav-links a {
+        padding: var(--spacing-xs) var(--spacing-sm);
     }
     
     .social-btn span {
@@ -910,6 +914,10 @@ footer::before {
     
     .social-btn i {
         margin: 0;
+    }
+    
+    .about-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 }
 
