@@ -120,7 +120,7 @@ footer::before {
 }
 
 .logo-text {
-    font-size: 1.5rem;
+    font-size: 0.75rem;
     letter-spacing: 1px;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -129,8 +129,8 @@ footer::before {
 }
 
 .logo-dot {
-    width: 10px;
-    height: 10px;
+    width: 2.5px;
+    height: 2.5px;
     background: var(--accent-gradient);
     border-radius: 50%;
     position: relative;
@@ -139,10 +139,10 @@ footer::before {
 .logo-dot::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 3px;
+    height: 3px;
     background: transparent;
-    border: 2px solid var(--accent-color);
+    border: 3px solid var(--accent-color);
     border-radius: 50%;
     top: 50%;
     left: 50%;
@@ -153,8 +153,8 @@ footer::before {
 
 .logo:hover .logo-dot::after {
     opacity: 1;
-    width: 24px;
-    height: 24px;
+    width: 2px;
+    height: 2px;
 }
 
 .nav-links {
