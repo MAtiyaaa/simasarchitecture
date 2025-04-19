@@ -67,7 +67,10 @@ const pdfViewer = {
         else console.error('Download button not found');
         
         if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
+        else console.error('Zoom in button not found');
+        
         if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
+        else console.error('Zoom out button not found');
     },
     
     async loadPDF() {
@@ -286,15 +289,19 @@ const pdfViewer = {
     },
     
     zoomIn() {
-        this.scale += 0.2;
-        this.scale = Math.min(this.scale, 3.0);
-        this.renderPage(this.currentPage);
+        this.scale = Math.min(this.scale + 0.2, 3.0);
+        this.updatePage();
     },
     
     zoomOut() {
-        this.scale -= 0.2;
-        this.scale = Math.max(this.scale, 0.5);
-        this.renderPage(this.currentPage);
+        this.scale = Math.max(this.scale - 0.2, 0.5);
+        this.updatePage();
+    },
+    
+    async updatePage() {
+        this.renderedPages = {};
+        this.viewerContainer.innerHTML = '';
+        await this.renderPage(this.currentPage);
     },
     
     downloadPDF() {
@@ -401,9 +408,23 @@ const cvViewer = {
         const zoomOutBtn = document.getElementById('cv-zoom-out');
         const backBtn = document.getElementById('back-to-about');
         
-        if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
-        if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
-        if (backBtn) backBtn.addEventListener('click', () => pageNavigation.showAbout());
+        if (zoomInBtn) {
+            zoomInBtn.addEventListener('click', () => this.zoomIn());
+        } else {
+            console.error('CV zoom in button not found');
+        }
+        
+        if (zoomOutBtn) {
+            zoomOutBtn.addEventListener('click', () => this.zoomOut());
+        } else {
+            console.error('CV zoom out button not found');
+        }
+        
+        if (backBtn) {
+            backBtn.addEventListener('click', () => pageNavigation.showAbout());
+        } else {
+            console.error('Back to about button not found');
+        }
     },
     
     async loadPDF() {
@@ -457,20 +478,17 @@ const cvViewer = {
     async renderPage(pageNumber) {
         if (!this.viewerContainer || !this.pdfDoc) return;
         
-        if (this.renderedPages[pageNumber]) {
-            this.showPage(pageNumber);
-            return;
-        }
-        
         try {
             console.log(`Rendering CV page ${pageNumber} with scale ${this.scale}`);
             const page = await this.pdfDoc.getPage(pageNumber);
             const viewport = page.getViewport({ scale: this.scale });
+
+            this.viewerContainer.innerHTML = '';
+            this.renderedPages = {};
             
             const pageDiv = document.createElement('div');
             pageDiv.className = 'pdf-page';
             pageDiv.dataset.pageNumber = pageNumber;
-            pageDiv.style.display = 'none';
             
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
@@ -489,7 +507,7 @@ const cvViewer = {
             await page.render(renderContext).promise;
             
             this.renderedPages[pageNumber] = pageDiv;
-            this.showPage(pageNumber);
+            this.currentPage = pageNumber;
             
             console.log(`CV page ${pageNumber} rendered successfully`);
         } catch (error) {
@@ -503,25 +521,15 @@ const cvViewer = {
         }
     },
     
-    showPage(pageNumber) {
-        Object.values(this.renderedPages).forEach(pageDiv => {
-            pageDiv.style.display = 'none';
-        });
-        if (this.renderedPages[pageNumber]) {
-            this.renderedPages[pageNumber].style.display = 'block';
-            this.currentPage = pageNumber;
-        }
-    },
-    
     zoomIn() {
-        this.scale += 0.2;
-        this.scale = Math.min(this.scale, 3.0);
+        this.scale = Math.min(this.scale + 0.2, 3.0);
+        console.log(`Zooming in CV to scale ${this.scale}`);
         this.renderPage(this.currentPage);
     },
     
     zoomOut() {
-        this.scale -= 0.2;
-        this.scale = Math.max(this.scale, 0.5);
+        this.scale = Math.max(this.scale - 0.2, 0.5);
+        console.log(`Zooming out CV to scale ${this.scale}`);
         this.renderPage(this.currentPage);
     }
 };
