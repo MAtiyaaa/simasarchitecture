@@ -5,7 +5,7 @@ const pdfViewer = {
     pdfPath: 'pdf/portfolio.pdf',
     viewerContainer: document.getElementById('pdf-viewer'),
     loadingAnimation: document.querySelector('.pdf-container .loading-animation'),
-    canvas: null,
+    renderedPages: {},
     
     init() {
         console.log('Initializing PDF viewer...');
@@ -67,10 +67,7 @@ const pdfViewer = {
         else console.error('Download button not found');
         
         if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
-        else console.warn('Zoom in button not found');
-        
         if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
-        else console.warn('Zoom out button not found');
     },
     
     async loadPDF() {
@@ -147,6 +144,11 @@ const pdfViewer = {
     async renderPage(pageNumber) {
         if (!this.viewerContainer || !this.pdfDoc) return;
         
+        if (this.renderedPages[pageNumber]) {
+            this.showPage(pageNumber);
+            return;
+        }
+        
         try {
             console.log(`Rendering page ${pageNumber} with scale ${this.scale}`);
             if (pageNumber < 1 || pageNumber > this.pdfDoc.numPages) {
@@ -156,15 +158,19 @@ const pdfViewer = {
             const page = await this.pdfDoc.getPage(pageNumber);
             const viewport = page.getViewport({ scale: this.scale });
             
-            if (!this.canvas) {
-                this.canvas = document.createElement('canvas');
-                this.viewerContainer.innerHTML = '';
-                this.viewerContainer.appendChild(this.canvas);
-            }
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'pdf-page';
+            pageDiv.dataset.pageNumber = pageNumber;
+            pageDiv.style.display = 'none';
             
-            const context = this.canvas.getContext('2d');
-            this.canvas.height = viewport.height;
-            this.canvas.width = viewport.width;
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            
+            pageDiv.appendChild(canvas);
+            this.viewerContainer.appendChild(pageDiv);
             
             const renderContext = {
                 canvasContext: context,
@@ -173,7 +179,8 @@ const pdfViewer = {
             
             await page.render(renderContext).promise;
             
-            this.currentPage = pageNumber;
+            this.renderedPages[pageNumber] = pageDiv;
+            this.showPage(pageNumber);
             
             const currentPageElement = document.getElementById('current-page');
             if (currentPageElement) {
@@ -198,6 +205,20 @@ const pdfViewer = {
         }
     },
     
+    showPage(pageNumber) {
+        Object.values(this.renderedPages).forEach(pageDiv => {
+            pageDiv.style.display = 'none';
+        });
+        if (this.renderedPages[pageNumber]) {
+            this.renderedPages[pageNumber].style.display = 'block';
+            this.currentPage = pageNumber;
+            const currentPageElement = document.getElementById('current-page');
+            if (currentPageElement) {
+                currentPageElement.textContent = pageNumber;
+            }
+        }
+    },
+    
     addPageNumberEffect() {
         const pageNumber = document.getElementById('current-page');
         if (pageNumber) {
@@ -211,24 +232,68 @@ const pdfViewer = {
     async prevPage() {
         if (this.currentPage <= 1) return;
         console.log('Navigating to previous page');
-        await this.renderPage(this.currentPage - 1);
+        
+        const newPage = this.currentPage - 1;
+        const currentPageDiv = this.renderedPages[this.currentPage];
+        
+        if (currentPageDiv) {
+            currentPageDiv.style.transform = 'translateX(100px)';
+            currentPageDiv.style.opacity = '0';
+            
+            setTimeout(async () => {
+                await this.renderPage(newPage);
+                const newPageDiv = this.renderedPages[newPage];
+                if (newPageDiv) {
+                    newPageDiv.style.transform = 'translateX(-100px)';
+                    newPageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        newPageDiv.style.transform = 'translateX(0)';
+                        newPageDiv.style.opacity = '1';
+                    }, 50);
+                }
+            }, 200);
+        } else {
+            await this.renderPage(newPage);
+        }
     },
     
     async nextPage() {
         if (!this.pdfDoc || this.currentPage >= this.pdfDoc.numPages) return;
         console.log('Navigating to next page');
-        await this.renderPage(this.currentPage + 1);
+        
+        const newPage = this.currentPage + 1;
+        const currentPageDiv = this.renderedPages[this.currentPage];
+        
+        if (currentPageDiv) {
+            currentPageDiv.style.transform = 'translateX(-100px)';
+            currentPageDiv.style.opacity = '0';
+            
+            setTimeout(async () => {
+                await this.renderPage(newPage);
+                const newPageDiv = this.renderedPages[newPage];
+                if (newPageDiv) {
+                    newPageDiv.style.transform = 'translateX(100px)';
+                    newPageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        newPageDiv.style.transform = 'translateX(0)';
+                        newPageDiv.style.opacity = '1';
+                    }, 50);
+                }
+            }, 200);
+        } else {
+            await this.renderPage(newPage);
+        }
     },
     
     zoomIn() {
-        this.scale = Math.min(this.scale + 0.2, 2.0);
-        console.log(`Zooming in to scale ${this.scale}`);
+        this.scale += 0.2;
+        this.scale = Math.min(this.scale, 3.0);
         this.renderPage(this.currentPage);
     },
     
     zoomOut() {
-        this.scale = Math.max(this.scale - 0.2, 0.5);
-        console.log(`Zooming out to scale ${this.scale}`);
+        this.scale -= 0.2;
+        this.scale = Math.max(this.scale, 0.5);
         this.renderPage(this.currentPage);
     },
     
@@ -299,12 +364,10 @@ const pdfViewer = {
     
     setupKeyboardNavigation() {
         document.addEventListener('keydown', (e) => {
-            if (document.querySelector('.pdf-container.active')) {
-                if (e.key === 'ArrowLeft') {
-                    this.prevPage();
-                } else if (e.key === 'ArrowRight') {
-                    this.nextPage();
-                }
+            if (e.key === 'ArrowLeft') {
+                this.prevPage();
+            } else if (e.key === 'ArrowRight') {
+                this.nextPage();
             }
         });
     }
@@ -317,7 +380,7 @@ const cvViewer = {
     pdfPath: 'pdf/cv.pdf',
     viewerContainer: document.getElementById('cv-viewer'),
     loadingAnimation: document.querySelector('.cv-container .loading-animation'),
-    canvas: null,
+    renderedPages: {},
     
     init() {
         console.log('Initializing CV viewer...');
@@ -327,27 +390,25 @@ const cvViewer = {
         }
         
         if (!this.loadingAnimation) {
-            console.error('CV loading animation not found!');
+            console.error('Loading animation not found!');
         }
         
         this.addEventListeners();
-        this.loadPDF();
     },
     
     addEventListeners() {
         const zoomInBtn = document.getElementById('cv-zoom-in');
         const zoomOutBtn = document.getElementById('cv-zoom-out');
+        const backBtn = document.getElementById('back-to-about');
         
         if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
-        else console.warn('CV zoom in button not found');
-        
         if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
-        else console.warn('CV zoom out button not found');
+        if (backBtn) backBtn.addEventListener('click', () => pageNavigation.showAbout());
     },
     
     async loadPDF() {
         try {
-            console.log('Starting CV PDF loading process...');
+            console.log('Starting CV loading process...');
             
             if (!window.pdfjsLib) {
                 throw new Error('PDF.js library failed to load.');
@@ -356,34 +417,16 @@ const cvViewer = {
             await this.testPDFAccess();
             const loadingTask = pdfjsLib.getDocument(this.pdfPath);
             
-            loadingTask.onProgress = (progress) => {
-                console.log(`CV Loading progress: ${Math.round(progress.loaded / progress.total * 100)}%`);
-                const progressBar = document.getElementById('cv-progress-bar');
-                if (progressBar) {
-                    const percentLoaded = progress.loaded / progress.total * 100;
-                    progressBar.style.width = `${Math.round(percentLoaded)}%`;
-                }
-            };
-            
             this.pdfDoc = await loadingTask.promise;
-            console.log(`CV PDF loaded successfully with ${this.pdfDoc.numPages} pages`);
-            
-            if (!this.pdfDoc.numPages || this.pdfDoc.numPages < 1) {
-                throw new Error('Invalid CV PDF: No pages found in the document.');
-            }
+            console.log('CV loaded successfully');
             
             await this.renderPage(this.currentPage);
             
             if (this.loadingAnimation) {
                 this.loadingAnimation.style.display = 'none';
             }
-            
-            const progressBar = document.getElementById('cv-progress-bar');
-            if (progressBar) {
-                progressBar.style.width = '100%';
-            }
         } catch (error) {
-            console.error('CV PDF Loading Error:', error);
+            console.error('CV Loading Error:', error);
             if (this.loadingAnimation) {
                 this.loadingAnimation.innerHTML = `
                     <div style="color: #ff3333; font-size: 24px; margin-bottom: 10px;">!</div>
@@ -399,39 +442,44 @@ const cvViewer = {
     
     async testPDFAccess() {
         try {
-            console.log('Testing CV PDF access...');
+            console.log('Testing CV access...');
             const response = await fetch(this.pdfPath, { method: 'HEAD' });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            console.log('CV PDF file is accessible');
+            console.log('CV file is accessible');
         } catch (error) {
-            console.error('CV PDF access test failed:', error);
-            throw new Error(`Cannot access CV PDF file at ${this.pdfPath}: ${error.message}`);
+            console.error('CV access test failed:', error);
+            throw new Error(`Cannot access CV file at ${this.pdfPath}: ${error.message}`);
         }
     },
     
     async renderPage(pageNumber) {
         if (!this.viewerContainer || !this.pdfDoc) return;
         
+        if (this.renderedPages[pageNumber]) {
+            this.showPage(pageNumber);
+            return;
+        }
+        
         try {
             console.log(`Rendering CV page ${pageNumber} with scale ${this.scale}`);
-            if (pageNumber !== 1) {
-                throw new Error('CV has only one page');
-            }
-            
             const page = await this.pdfDoc.getPage(pageNumber);
             const viewport = page.getViewport({ scale: this.scale });
             
-            if (!this.canvas) {
-                this.canvas = document.createElement('canvas');
-                this.viewerContainer.innerHTML = '';
-                this.viewerContainer.appendChild(this.canvas);
-            }
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'pdf-page';
+            pageDiv.dataset.pageNumber = pageNumber;
+            pageDiv.style.display = 'none';
             
-            const context = this.canvas.getContext('2d');
-            this.canvas.height = viewport.height;
-            this.canvas.width = viewport.width;
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            
+            pageDiv.appendChild(canvas);
+            this.viewerContainer.appendChild(pageDiv);
             
             const renderContext = {
                 canvasContext: context,
@@ -440,18 +488,14 @@ const cvViewer = {
             
             await page.render(renderContext).promise;
             
-            this.currentPage = pageNumber;
+            this.renderedPages[pageNumber] = pageDiv;
+            this.showPage(pageNumber);
             
-            const progressBar = document.getElementById('cv-progress-bar');
-            if (progressBar) {
-                progressBar.style.width = '100%';
-            }
-            
-            console.log(`CV Page ${pageNumber} rendered successfully`);
+            console.log(`CV page ${pageNumber} rendered successfully`);
         } catch (error) {
             console.error('Error rendering CV page:', error);
             this.viewerContainer.innerHTML = `
-                <p style="color: #ff3333; text-align: center;">Error rendering CV page: ${error.message}</p>
+                <p style="color: #ff3333; text-align: center;">Error rendering CV: ${error.message}</p>
                 <p style="text-align: center; font-size: 14px; color: #666;">
                     <a href="${this.pdfPath}" target="_blank" style="color: #0070f3;">Open CV in default viewer</a>
                 </p>
@@ -459,15 +503,25 @@ const cvViewer = {
         }
     },
     
+    showPage(pageNumber) {
+        Object.values(this.renderedPages).forEach(pageDiv => {
+            pageDiv.style.display = 'none';
+        });
+        if (this.renderedPages[pageNumber]) {
+            this.renderedPages[pageNumber].style.display = 'block';
+            this.currentPage = pageNumber;
+        }
+    },
+    
     zoomIn() {
-        this.scale = Math.min(this.scale + 0.2, 2.0);
-        console.log(`CV Zooming in to scale ${this.scale}`);
+        this.scale += 0.2;
+        this.scale = Math.min(this.scale, 3.0);
         this.renderPage(this.currentPage);
     },
     
     zoomOut() {
-        this.scale = Math.max(this.scale - 0.2, 0.5);
-        console.log(`CV Zooming out to scale ${this.scale}`);
+        this.scale -= 0.2;
+        this.scale = Math.max(this.scale, 0.5);
         this.renderPage(this.currentPage);
     }
 };
@@ -511,36 +565,23 @@ const pageNavigation = {
         const contactLink = document.getElementById('contact-link');
         const downloadCVBtn = document.getElementById('download-cv');
         const viewCVBtn = document.getElementById('view-cv');
-        const backToAboutBtn = document.getElementById('back-to-about');
-        const pdfControls = document.getElementById('pdf-controls');
-        const cvControls = document.getElementById('cv-controls');
         
         if (!portfolioLink || !aboutLink || !contactLink) {
             console.error('Navigation links not found');
             return;
         }
         
-        if (!downloadCVBtn) {
-            console.error('Download CV button not found');
+        if (!downloadCVBtn || !viewCVBtn) {
+            console.error('CV buttons not found');
         } else {
             downloadCVBtn.addEventListener('click', () => this.downloadCV());
-        }
-        
-        if (!viewCVBtn) {
-            console.error('View CV button not found');
-        } else {
-            viewCVBtn.addEventListener('click', () => this.viewCV());
-        }
-        
-        if (!backToAboutBtn) {
-            console.error('Back to About button not found');
-        } else {
-            backToAboutBtn.addEventListener('click', () => this.showAbout());
+            viewCVBtn.addEventListener('click', () => this.showCV());
         }
         
         const pdfContainer = document.querySelector('.pdf-container');
         const aboutContainer = document.querySelector('.about-container');
         const cvContainer = document.querySelector('.cv-container');
+        const pdfControls = document.querySelector('.pdf-controls');
         
         if (!pdfContainer || !aboutContainer || !cvContainer) {
             console.error('Content containers not found');
@@ -549,36 +590,12 @@ const pageNavigation = {
         
         portfolioLink.addEventListener('click', (e) => {
             e.preventDefault();
-            portfolioLink.classList.add('active');
-            aboutLink.classList.remove('active');
-            contactLink.classList.remove('active');
-            pdfContainer.classList.add('active');
-            aboutContainer.classList.remove('active');
-            cvContainer.classList.remove('active');
-            pdfControls.style.display = 'flex';
-            cvControls.style.display = 'none';
-            pdfViewer.loadPDF();
+            this.showPortfolio();
         });
         
         aboutLink.addEventListener('click', (e) => {
             e.preventDefault();
-            aboutLink.classList.add('active');
-            portfolioLink.classList.remove('active');
-            contactLink.classList.remove('active');
-            aboutContainer.classList.add('active');
-            pdfContainer.classList.remove('active');
-            cvContainer.classList.remove('active');
-            pdfControls.style.display = 'none';
-            cvControls.style.display = 'none';
-            setTimeout(() => {
-                const skillBars = document.querySelectorAll('.skill-progress');
-                console.log('Skill bars found:', skillBars.length);
-                console.log('About container content:', aboutContainer.innerHTML.substring(0, 200) + '...');
-                if (skillBars.length === 0) {
-                    console.warn('No skill progress bars found. Check .about-grid in DOM.');
-                }
-                this.animateSkillBars();
-            }, 500);
+            this.showAbout();
         });
         
         contactLink.addEventListener('click', (e) => {
@@ -590,9 +607,68 @@ const pageNavigation = {
             aboutContainer.classList.remove('active');
             cvContainer.classList.remove('active');
             pdfControls.style.display = 'none';
-            cvControls.style.display = 'none';
             window.location.href = 'mailto:simasarchitecture@gmail.com';
         });
+    },
+    
+    showPortfolio() {
+        const portfolioLink = document.getElementById('portfolio-link');
+        const aboutLink = document.getElementById('about-link');
+        const contactLink = document.getElementById('contact-link');
+        const pdfContainer = document.querySelector('.pdf-container');
+        const aboutContainer = document.querySelector('.about-container');
+        const cvContainer = document.querySelector('.cv-container');
+        const pdfControls = document.querySelector('.pdf-controls');
+        
+        portfolioLink.classList.add('active');
+        aboutLink.classList.remove('active');
+        contactLink.classList.remove('active');
+        pdfContainer.classList.add('active');
+        aboutContainer.classList.remove('active');
+        cvContainer.classList.remove('active');
+        pdfControls.style.display = 'flex';
+        pdfViewer.loadPDF();
+    },
+    
+    showAbout() {
+        const portfolioLink = document.getElementById('portfolio-link');
+        const aboutLink = document.getElementById('about-link');
+        const contactLink = document.getElementById('contact-link');
+        const pdfContainer = document.querySelector('.pdf-container');
+        const aboutContainer = document.querySelector('.about-container');
+        const cvContainer = document.querySelector('.cv-container');
+        const pdfControls = document.querySelector('.pdf-controls');
+        
+        aboutLink.classList.add('active');
+        portfolioLink.classList.remove('active');
+        contactLink.classList.remove('active');
+        aboutContainer.classList.add('active');
+        pdfContainer.classList.remove('active');
+        cvContainer.classList.remove('active');
+        pdfControls.style.display = 'none';
+        setTimeout(() => {
+            const skillBars = document.querySelectorAll('.skill-progress');
+            this.animateSkillBars();
+        }, 500);
+    },
+    
+    showCV() {
+        const portfolioLink = document.getElementById('portfolio-link');
+        const aboutLink = document.getElementById('about-link');
+        const contactLink = document.getElementById('contact-link');
+        const pdfContainer = document.querySelector('.pdf-container');
+        const aboutContainer = document.querySelector('.about-container');
+        const cvContainer = document.querySelector('.cv-container');
+        const pdfControls = document.querySelector('.pdf-controls');
+        
+        aboutLink.classList.add('active');
+        portfolioLink.classList.remove('active');
+        contactLink.classList.remove('active');
+        cvContainer.classList.add('active');
+        pdfContainer.classList.remove('active');
+        aboutContainer.classList.remove('active');
+        pdfControls.style.display = 'none';
+        cvViewer.loadPDF();
     },
     
     animateSkillBars() {
@@ -625,53 +701,6 @@ const pageNavigation = {
         }
         
         pdfViewer.showNotification('CV downloaded successfully!');
-    },
-    
-    viewCV() {
-        const portfolioLink = document.getElementById('portfolio-link');
-        const aboutLink = document.getElementById('about-link');
-        const contactLink = document.getElementById('contact-link');
-        const pdfContainer = document.querySelector('.pdf-container');
-        const aboutContainer = document.querySelector('.about-container');
-        const cvContainer = document.querySelector('.cv-container');
-        const pdfControls = document.getElementById('pdf-controls');
-        const cvControls = document.getElementById('cv-controls');
-        
-        aboutLink.classList.add('active');
-        portfolioLink.classList.remove('active');
-        contactLink.classList.remove('active');
-        cvContainer.classList.add('active');
-        pdfContainer.classList.remove('active');
-        aboutContainer.classList.remove('active');
-        pdfControls.style.display = 'none';
-        cvControls.style.display = 'flex';
-        
-        cvViewer.init();
-        pdfViewer.showNotification('Loading CV...');
-    },
-    
-    showAbout() {
-        const portfolioLink = document.getElementById('portfolio-link');
-        const aboutLink = document.getElementById('about-link');
-        const contactLink = document.getElementById('contact-link');
-        const pdfContainer = document.querySelector('.pdf-container');
-        const aboutContainer = document.querySelector('.about-container');
-        const cvContainer = document.querySelector('.cv-container');
-        const pdfControls = document.getElementById('pdf-controls');
-        const cvControls = document.getElementById('cv-controls');
-        
-        aboutLink.classList.add('active');
-        portfolioLink.classList.remove('active');
-        contactLink.classList.remove('active');
-        aboutContainer.classList.add('active');
-        pdfContainer.classList.remove('active');
-        cvContainer.classList.remove('active');
-        pdfControls.style.display = 'none';
-        cvControls.style.display = 'none';
-        
-        setTimeout(() => {
-            this.animateSkillBars();
-        }, 500);
     }
 };
 
@@ -679,6 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Document loaded, initializing components...');
     setTimeout(() => {
         pdfViewer.init();
+        cvViewer.init();
         themeToggler.init();
         pageNavigation.init();
         
