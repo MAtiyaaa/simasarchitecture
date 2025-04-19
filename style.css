@@ -1,7 +1,7 @@
 :root {
     --primary-color: #ffffff;
     --accent-color: #b3743a;
-    --accent-gradient: linear-gradient(135deg, #b3743a, #c18c4c);
+    --accent-gradient: linear-gradient(135deg, #b3743a, #b3743a);
     --text-primary: #333333;
     --text-secondary: #666666;
     --background-light: #f8f9fa;
@@ -35,7 +35,7 @@
 body {
     font-family: Consolas, monospace;
     color: var(--text-primary);
-    background-color: var (--primary-color);
+    background-color: var(--primary-color);
     line-height: 1.6;
     overflow-x: hidden;
     font-size: 16px;
@@ -408,7 +408,7 @@ footer::before {
     opacity: 1;
 }
 
-.pdf-controls {
+.pdf-controls, .cv-controls {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
@@ -423,6 +423,12 @@ footer::before {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.pdf-zoom-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
 }
 
 .nav-btn {
@@ -482,7 +488,7 @@ footer::before {
     color: var(--accent-color);
 }
 
-.download-btn, .download-cv-btn {
+.download-btn, .download-cv-btn, .back-btn {
     background: var(--accent-gradient);
     color: white;
     border: none;
@@ -499,7 +505,7 @@ footer::before {
     overflow: hidden;
 }
 
-.download-btn::after, .download-cv-btn::after {
+.download-btn::after, .download-cv-btn::after, .back-btn::after {
     content: '';
     position: absolute;
     width: 0;
@@ -510,14 +516,27 @@ footer::before {
     transition: all 0.6s ease-out;
 }
 
-.download-btn:hover, .download-cv-btn:hover {
+.download-btn:hover, .download-cv-btn:hover, .back-btn:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
 }
 
-.download-btn:active::after, .download-cv-btn:active::after {
+.download-btn:active::after, .download-cv-btn:active::after, .back-btn:active::after {
     width: 300%;
     height: 300%;
+}
+
+.back-btn {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    z-index: 10;
+}
+
+.cv-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
 }
 
 .content-container {
@@ -529,7 +548,7 @@ footer::before {
     transition: var(--transition-smooth);
 }
 
-.pdf-container, .about-container {
+.pdf-container, .about-container, .cv-container {
     flex: 1;
     background-color: var(--background-light);
     border-radius: var(--border-radius-lg);
@@ -545,14 +564,14 @@ footer::before {
     opacity: 0;
 }
 
-.pdf-container {
+.pdf-container, .cv-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.pdf-container.active {
+.pdf-container.active, .cv-container.active {
     visibility: visible;
     opacity: 1;
     z-index: 2;
@@ -563,6 +582,7 @@ footer::before {
     padding: var(--spacing-xl);
     min-height: 600px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .about-container.active {
@@ -582,6 +602,12 @@ footer::before {
 }
 
 .pdf-page canvas {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+canvas {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
@@ -653,6 +679,11 @@ footer::before {
     justify-content: center;
     color: white;
     flex-shrink: 0;
+}
+
+.stat-icon img {
+    width: 24px;
+    height: 24px;
 }
 
 .stat-info h4 {
@@ -856,19 +887,22 @@ footer::before {
 @media (max-width: 1024px) {
     main {
         flex-direction: column;
+        align-items: center;
     }
 
     .sidebar {
         width: 100%;
+        max-width: 500px;
     }
     
     .social-links {
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: center;
     }
     
     .social-btn {
-        flex: 1;
+        flex: 0 1 auto;
         min-width: 120px;
     }
 }
@@ -876,18 +910,45 @@ footer::before {
 @media (max-width: 768px) {
     header {
         padding: var(--spacing-md);
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--spacing-md);
     }
     
     .nav-links {
         gap: var(--spacing-md);
+        justify-content: center;
     }
     
     main {
         padding: var(--spacing-md);
     }
     
-    .pdf-container {
+    .pdf-container, .cv-container {
         min-height: 400px;
+    }
+    
+    .about-container {
+        padding: var(--spacing-md);
+    }
+    
+    .about-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .about-stats {
+        width: 100%;
+    }
+    
+    .about-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .cv-buttons {
+        flex-direction: column;
+        align-items: center;
     }
 }
 
@@ -917,7 +978,12 @@ footer::before {
     }
     
     .about-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: 1fr;
+    }
+    
+    .pdf-zoom-controls {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }
 
@@ -942,12 +1008,14 @@ body.dark-mode .theme-toggle::after {
 
 body.dark-mode .sidebar,
 body.dark-mode .pdf-container,
-body.dark-mode .about-container {
+body.dark-mode .about-container,
+body.dark-mode .cv-container {
     background-color: #222;
 }
 
 body.dark-mode .social-btn,
 body.dark-mode .pdf-controls,
+body.dark-mode .cv-controls,
 body.dark-mode .about-stats,
 body.dark-mode .skill-card {
     background-color: #333;
