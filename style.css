@@ -583,8 +583,6 @@ footer::before {
     flex: 1;
     background-color: var(--background-light);
     border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-medium);
     position: absolute;
     top: 0;
     left: 0;
@@ -600,6 +598,7 @@ footer::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .pdf-container.active, .cv-container.active, .about-container.active {
@@ -614,6 +613,7 @@ footer::before {
     align-items: center;
     justify-content: flex-start;
     padding: var(--spacing-md);
+    overflow-y: auto;
 }
 
 .cv-controls {
@@ -630,22 +630,23 @@ footer::before {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
+    overflow-y: auto;
 }
 
 .pdf-page {
     margin: 0 auto;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    max-height: 100%;
+    max-height: none;
     max-width: 100%;
     display: flex;
     justify-content: center;
 }
 
 .pdf-page canvas {
-    max-height: 100%;
+    max-height: none;
     max-width: 100%;
     object-fit: contain;
 }
@@ -719,8 +720,9 @@ footer::before {
 }
 
 .aud-logo {
-    width: 24px;
-    height: 24px;
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
 }
 
 .stat-info h4 {
