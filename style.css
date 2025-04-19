@@ -408,7 +408,7 @@ footer::before {
     opacity: 1;
 }
 
-.pdf-controls, .cv-controls {
+.pdf-controls {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
@@ -423,12 +423,6 @@ footer::before {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.pdf-zoom-controls {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
 }
 
 .nav-btn {
@@ -473,6 +467,50 @@ footer::before {
     transform: translateY(0);
 }
 
+.zoom-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.zoom-btn {
+    background-color: var(--background-light);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-standard);
+    position: relative;
+    overflow: hidden;
+}
+
+.zoom-btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: var(--accent-gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.zoom-btn:hover {
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.zoom-btn:hover::after {
+    opacity: 1;
+}
+
 .page-indicator {
     font-weight: normal;
     background-color: var(--background-light);
@@ -488,7 +526,7 @@ footer::before {
     color: var(--accent-color);
 }
 
-.download-btn, .download-cv-btn, .back-btn {
+.download-btn, .download-cv-btn, .view-cv-btn, .back-btn {
     background: var(--accent-gradient);
     color: white;
     border: none;
@@ -505,7 +543,7 @@ footer::before {
     overflow: hidden;
 }
 
-.download-btn::after, .download-cv-btn::after, .back-btn::after {
+.download-btn::after, .download-cv-btn::after, .view-cv-btn::after, .back-btn::after {
     content: '';
     position: absolute;
     width: 0;
@@ -516,21 +554,14 @@ footer::before {
     transition: all 0.6s ease-out;
 }
 
-.download-btn:hover, .download-cv-btn:hover, .back-btn:hover {
+.download-btn:hover, .download-cv-btn:hover, .view-cv-btn:hover, .back-btn:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
 }
 
-.download-btn:active::after, .download-cv-btn:active::after, .back-btn:active::after {
+.download-btn:active::after, .download-cv-btn:active::after, .view-cv-btn:active::after, .back-btn:active::after {
     width: 300%;
     height: 300%;
-}
-
-.back-btn {
-    position: absolute;
-    top: var(--spacing-md);
-    left: var(--spacing-md);
-    z-index: 10;
 }
 
 .cv-buttons {
@@ -564,31 +595,43 @@ footer::before {
     opacity: 0;
 }
 
-.pdf-container, .cv-container {
+.pdf-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.pdf-container.active, .cv-container.active {
+.pdf-container.active, .cv-container.active, .about-container.active {
     visibility: visible;
     opacity: 1;
     z-index: 2;
 }
 
-.about-container {
-    display: block;
-    padding: var(--spacing-xl);
-    min-height: 600px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+.cv-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-md);
 }
 
-.about-container.active {
-    visibility: visible;
-    opacity: 1;
-    z-index: 2;
+.cv-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--spacing-md);
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+#cv-viewer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .pdf-page {
@@ -602,12 +645,6 @@ footer::before {
 }
 
 .pdf-page canvas {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-}
-
-canvas {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
@@ -681,7 +718,7 @@ canvas {
     flex-shrink: 0;
 }
 
-.stat-icon img {
+.aud-logo {
     width: 24px;
     height: 24px;
 }
@@ -694,6 +731,11 @@ canvas {
 
 .stat-info p {
     color: var(--text-primary);
+}
+
+.stat-info p.small-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
 }
 
 .about-grid {
@@ -887,22 +929,19 @@ canvas {
 @media (max-width: 1024px) {
     main {
         flex-direction: column;
-        align-items: center;
     }
 
     .sidebar {
         width: 100%;
-        max-width: 500px;
     }
     
     .social-links {
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
     }
     
     .social-btn {
-        flex: 0 1 auto;
+        flex: 1;
         min-width: 120px;
     }
 }
@@ -910,14 +949,10 @@ canvas {
 @media (max-width: 768px) {
     header {
         padding: var(--spacing-md);
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: var(--spacing-md);
     }
     
     .nav-links {
         gap: var(--spacing-md);
-        justify-content: center;
     }
     
     main {
@@ -926,29 +961,6 @@ canvas {
     
     .pdf-container, .cv-container {
         min-height: 400px;
-    }
-    
-    .about-container {
-        padding: var(--spacing-md);
-    }
-    
-    .about-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .about-stats {
-        width: 100%;
-    }
-    
-    .about-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-    
-    .cv-buttons {
-        flex-direction: column;
-        align-items: center;
     }
 }
 
@@ -978,12 +990,11 @@ canvas {
     }
     
     .about-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
     
-    .pdf-zoom-controls {
-        flex-wrap: wrap;
-        justify-content: center;
+    .cv-buttons {
+        flex-direction: column;
     }
 }
 
@@ -1015,9 +1026,9 @@ body.dark-mode .cv-container {
 
 body.dark-mode .social-btn,
 body.dark-mode .pdf-controls,
-body.dark-mode .cv-controls,
 body.dark-mode .about-stats,
-body.dark-mode .skill-card {
+body.dark-mode .skill-card,
+body.dark-mode .cv-controls {
     background-color: #333;
     color: white;
 }
@@ -1036,7 +1047,8 @@ body.dark-mode footer {
 }
 
 body.dark-mode .nav-btn,
-body.dark-mode .page-indicator {
+body.dark-mode .page-indicator,
+body.dark-mode .zoom-btn {
     background-color: #444;
     color: white;
 }
