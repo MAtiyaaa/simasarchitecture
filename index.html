@@ -42,14 +42,14 @@
                     <a href="https://www.linkedin.com/in/simasarchitecture/" class="social-btn linkedin">
                         <i class="fab fa-linkedin"></i><span>LinkedIn</span>
                     </a>
-                    <a href="mailto:simasarchitecture@gmail.com" class="social-btn email">
-                        <i class="fas fa-envelope"></i><span>Email</span>
-                    </a>
                     <a href="https://www.behance.net/simaassaf" class="social-btn behance">
                         <i class="fab fa-behance"></i><span>Behance</span>
                     </a>
+                    <a href="mailto:simasarchitecture@gmail.com" class="social-btn email">
+                        <i class="fas fa-envelope"></i><span>Email</span>
+                    </a>
                 </div>
-                <div class="pdf-controls" id="pdf-controls">
+                <div class="pdf-controls">
                     <div class="pdf-navigation">
                         <button class="nav-btn" id="prev-page"><i class="fas fa-chevron-left"></i></button>
                         <div class="page-indicator">
@@ -57,19 +57,13 @@
                         </div>
                         <button class="nav-btn" id="next-page"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div class="pdf-zoom-controls">
-                        <button class="nav-btn" id="zoom-in"><i class="fas fa-search-plus"></i></button>
-                        <button class="nav-btn" id="zoom-out"><i class="fas fa-search-minus"></i></button>
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="zoom-in"><i class="fas fa-search-plus"></i></button>
+                        <button class="zoom-btn" id="zoom-out"><i class="fas fa-search-minus"></i></button>
                     </div>
                     <button class="download-btn" id="download-pdf">
                         <i class="fas fa-download"></i><span>Download Portfolio</span>
                     </button>
-                </div>
-                <div class="cv-controls" id="cv-controls" style="display: none;">
-                    <div class="pdf-zoom-controls">
-                        <button class="nav-btn" id="cv-zoom-in"><i class="fas fa-search-plus"></i></button>
-                        <button class="nav-btn" id="cv-zoom-out"><i class="fas fa-search-minus"></i></button>
-                    </div>
                 </div>
             </aside>
             <div class="content-container">
@@ -94,6 +88,20 @@
                     </div>
                     <div id="pdf-viewer"></div>
                 </div>
+                <div class="cv-container">
+                    <div class="loading-animation">
+                        <div class="spinner"></div>
+                        <p>Loading CV...</p>
+                    </div>
+                    <div class="cv-controls">
+                        <button class="back-btn" id="back-to-about"><i class="fas fa-arrow-left"></i> Back to About</button>
+                        <div class="zoom-controls">
+                            <button class="zoom-btn" id="cv-zoom-in"><i class="fas fa-search-plus"></i></button>
+                            <button class="zoom-btn" id="cv-zoom-out"><i class="fas fa-search-minus"></i></button>
+                        </div>
+                    </div>
+                    <div id="cv-viewer"></div>
+                </div>
                 <div class="about-container">
                     <h2 class="about-header">About Me</h2>
                     <div class="about-content">
@@ -101,23 +109,23 @@
                             <p>I'm Sima Assaf, an architectural designer with a passion for creating innovative and sustainable spaces. With a strong foundation in architectural drafting and 3D modeling, I strive to blend functionality with aesthetic appeal in every project.</p>
                             <p>My work is driven by a commitment to excellence, attention to detail, and a deep understanding of client needs. From conceptual design to final execution, I aim to deliver spaces that inspire and endure.</p>
                             <div class="cv-buttons">
-                                <button class="download-cv-btn" id="view-cv">
-                                    <i class="fas fa-eye"></i><span>View CV</span>
-                                </button>
                                 <button class="download-cv-btn" id="download-cv">
                                     <i class="fas fa-download"></i><span>Download CV</span>
+                                </button>
+                                <button class="view-cv-btn" id="view-cv">
+                                    <i class="fas fa-eye"></i><span>View CV</span>
                                 </button>
                             </div>
                         </div>
                         <div class="about-stats">
                             <div class="stat-item">
-                                <div class="stat-icon"><img src="pdf/aud-logo.png" alt="AUD Logo" style="width: 24px; height: 24px;"></div>
+                                <div class="stat-icon"><img src="pdf/aud-logo.png" alt="AUD Logo" class="aud-logo"></div>
                                 <div class="stat-info">
                                     <h4>Education</h4>
                                     <p>American University in Dubai</p>
-                                    <p style="font-size: 0.8rem;">3.50 GPA</p>
-                                    <p style="font-size: 0.8rem;">Deans List - Spring 2024</p>
-                                    <p style="font-size: 0.8rem;">Deans List - Fall 2024</p>
+                                    <p class="small-text">3.50 GPA</p>
+                                    <p class="small-text">Deans List - Spring 2024</p>
+                                    <p class="small-text">Deans List - Fall 2024</p>
                                 </div>
                             </div>
                             <div class="stat-item">
@@ -201,21 +209,6 @@
                                 <div class="skill-progress" style="width: 100%;"></div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="cv-container">
-                    <div class="loading-animation">
-                        <div class="spinner"></div>
-                        <p>Loading CV...</p>
-                    </div>
-                    <button class="back-btn" id="back-to-about">
-                        <i class="fas fa-arrow-left"></i><span>Back to About</span>
-                    </button>
-                    <div class="progress-track">
-                        <div class="progress-bar" id="cv-progress-bar"></div>
-                    </div>
-                    <div class="cv-viewer-wrapper">
-                        <div id="cv-viewer"></div>
                     </div>
                 </div>
             </div>
