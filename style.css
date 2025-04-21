@@ -958,11 +958,15 @@
   
   .download-cv-btn {
     background-color: transparent;
-    color: var(--accent-color);
+    color: var(--accent-color) !important;
     border: 1px solid var(--accent-color);
     position: relative;
     overflow: hidden;
     z-index: 1;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    text-decoration: none !important;
   }
   
   .download-cv-btn::before {
