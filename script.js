@@ -495,7 +495,7 @@ function initPdfViewer() {
             }
             
             
-            this.showNotification('Portfolio downloaded successfully!');
+            this.showNotification('Downloaded!');
         },
         
         showNotification(message) {
@@ -1207,7 +1207,7 @@ function initPageNavigation() {
             }
             
             
-            this.showDownloadNotification('CV downloaded successfully!');
+            this.showDownloadNotification('Downloaded!');
         },
         
         showDownloadNotification(message) {
