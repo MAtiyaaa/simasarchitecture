@@ -911,6 +911,7 @@
     display: flex;
     gap: var(--spacing-md);
     margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
   }
   
   .view-cv-btn, .download-cv-btn {
@@ -1466,6 +1467,13 @@
     box-shadow: var(--shadow-medium);
   }
   
+  .dark-mode .about-header,
+  .dark-mode .skills-header,
+  .dark-mode .stat-info h4,
+  .dark-mode .stat-info p {
+    color: var(--accent-color);
+  }
+
   body.dark-mode .social-btn,
   body.dark-mode .about-stats,
   body.dark-mode .skill-card,
