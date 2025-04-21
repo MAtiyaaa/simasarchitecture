@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sima Assaf</title>
+    <meta name="description" content="Sima Assaf - Architecture Student at American University in Dubai. View portfolio, CV and contact information.">
     <link rel="icon" href="pdf/icon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta name="theme-color" content="#b3743a">
 </head>
 <body>
     <div class="page-container">
@@ -22,7 +24,7 @@
                     <li><a href="#" id="contact-link">Contact</a></li>
                 </ul>
             </nav>
-            <div class="theme-toggle">
+            <div class="theme-toggle" title="Toggle dark/light mode">
                 <i class="fas fa-moon"></i>
             </div>
         </header>
@@ -33,37 +35,21 @@
                         <img src="pdf/sima.jpg" alt="Sima Assaf" class="profile-img">
                     </div>
                     <h2>Sima Assaf</h2>
-                    <p>Architect Student at American University in Dubai</p>
+                    <p>Architecture Student at American University in Dubai</p>
                 </div>
                 <div class="social-links">
-                    <a href="https://www.instagram.com/simasarchitecture/" class="social-btn instagram">
+                    <a href="https://www.instagram.com/simasarchitecture/" class="social-btn instagram" target="_blank" rel="noopener" aria-label="Instagram Profile">
                         <i class="fab fa-instagram"></i><span>Instagram</span>
                     </a>
-                    <a href="https://www.linkedin.com/in/simasarchitecture/" class="social-btn linkedin">
+                    <a href="https://www.linkedin.com/in/simasarchitecture/" class="social-btn linkedin" target="_blank" rel="noopener" aria-label="LinkedIn Profile">
                         <i class="fab fa-linkedin"></i><span>LinkedIn</span>
                     </a>
-                    <a href="https://www.behance.net/simaassaf" class="social-btn behance">
+                    <a href="https://www.behance.net/simaassaf" class="social-btn behance" target="_blank" rel="noopener" aria-label="Behance Portfolio">
                         <i class="fab fa-behance"></i><span>Behance</span>
                     </a>
-                    <a href="mailto:simasarchitecture@gmail.com" class="social-btn email">
+                    <a href="mailto:simasarchitecture@gmail.com" class="social-btn email" aria-label="Email Contact">
                         <i class="fas fa-envelope"></i><span>Email</span>
                     </a>
-                </div>
-                <div class="pdf-controls">
-                    <div class="pdf-navigation">
-                        <button class="nav-btn" id="prev-page"><i class="fas fa-chevron-left"></i></button>
-                        <div class="page-indicator">
-                            Page <span id="current-page">1</span> of <span id="total-pages">1</span>
-                        </div>
-                        <button class="nav-btn" id="next-page"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="zoom-controls">
-                        <button class="zoom-btn" id="zoom-in"><i class="fas fa-search-plus"></i></button>
-                        <button class="zoom-btn" id="zoom-out"><i class="fas fa-search-minus"></i></button>
-                    </div>
-                    <button class="download-btn" id="download-pdf">
-                        <i class="fas fa-download"></i><span>Download Portfolio</span>
-                    </button>
                 </div>
             </aside>
             <div class="content-container">
@@ -75,18 +61,23 @@
                     <div class="progress-track">
                         <div class="progress-bar" id="progress-bar"></div>
                     </div>
-                    <div class="page-transitions prev-page-arrow">
-                        <button class="page-arrow-btn" id="prev-page-arrow"><i class="fas fa-chevron-left"></i></button>
+                    <div class="page-transitions prev-page-arrow bottom-aligned">
+                        <button class="page-arrow-btn" id="prev-page-arrow" aria-label="Previous page"><i class="fas fa-chevron-left"></i></button>
                     </div>
-                    <div class="page-transitions next-page-arrow">
-                        <button class="page-arrow-btn" id="next-page-arrow"><i class="fas fa-chevron-right"></i></button>
+                    <div class="page-transitions next-page-arrow bottom-aligned">
+                        <button class="page-arrow-btn" id="next-page-arrow" aria-label="Next page"><i class="fas fa-chevron-right"></i></button>
                     </div>
                     <div class="swipe-indicator">
                         <i class="fas fa-hand-point-left"></i>
                         Swipe to navigate
                         <i class="fas fa-hand-point-right"></i>
                     </div>
-                    <div id="pdf-viewer"></div>
+                    <div id="pdf-viewer" class="pdf-content"></div>
+                    <div class="portfolio-download-container">
+                        <button class="download-btn compact-elegant" id="download-pdf">
+                            <i class="fas fa-download"></i><span>Download Portfolio</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="cv-container">
                     <div class="loading-animation">
@@ -94,13 +85,13 @@
                         <p>Loading CV...</p>
                     </div>
                     <div class="cv-controls">
-                        <button class="back-btn" id="back-to-about"><i class="fas fa-arrow-left"></i> Back to About</button>
+                        <button class="back-btn" id="back-to-about" aria-label="Back to About"><i class="fas fa-arrow-left"></i> Back to About</button>
                         <div class="zoom-controls">
-                            <button class="zoom-btn" id="cv-zoom-in"><i class="fas fa-search-plus"></i></button>
-                            <button class="zoom-btn" id="cv-zoom-out"><i class="fas fa-search-minus"></i></button>
+                            <button class="zoom-btn" id="cv-zoom-in" aria-label="Zoom in"><i class="fas fa-search-plus"></i></button>
+                            <button class="zoom-btn" id="cv-zoom-out" aria-label="Zoom out"><i class="fas fa-search-minus"></i></button>
                         </div>
                     </div>
-                    <div id="cv-viewer"></div>
+                    <div id="cv-viewer" class="cv-content"></div>
                 </div>
                 <div class="about-container">
                     <h2 class="about-header">About Me</h2>
@@ -151,7 +142,7 @@
                             </div>
                         </div>
                     </div>
-                    <h3 style="margin-top: 40px; margin-bottom: 20px;">Skills</h3>
+                    <h3 class="skills-header">Professional Skills</h3>
                     <div class="about-grid">
                         <div class="skill-card">
                             <div class="skill-icon"><i class="fas fa-building"></i></div>
@@ -214,13 +205,68 @@
             </div>
         </main>
         <footer>
-            <p>© 2025 Sima Assaf. All rights reserved.</p>
+            <div class="footer-content">
+                <div class="footer-branding">
+                    <div class="footer-logo">
+                        <span class="logo-text">Sima Assaf</span>
+                        <span class="logo-dot"></span>
+                    </div>
+                    <p class="footer-tagline">Creating and innovating</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" id="footer-portfolio">Portfolio</a>
+                    <a href="#" id="footer-about">About</a>
+                    <a href="mailto:simasarchitecture@gmail.com">Contact</a>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/simasarchitecture/" class="footer-social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/simasarchitecture/" class="footer-social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://www.behance.net/simaassaf" class="footer-social-icon" target="_blank" rel="noopener" aria-label="Behance">
+                        <i class="fab fa-behance"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Sima Assaf. All rights reserved.</p>
+                <div class="footer-designed">
+                    <span>Architecture Portfolio</span>
+                </div>
+            </div>
         </footer>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
     <script src="script.js"></script>
+    
+        <script>
+        
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.querySelector('.loading-screen');
+                const loaderProgress = document.querySelector('.loader-progress');
+                
+                
+                loaderProgress.style.width = '100%';
+                
+                
+                document.body.classList.add('content-loaded');
+                
+                
+                setTimeout(function() {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }, 600);
+            }, 500);
+        });
+    </script>
 </body>
 </html>
