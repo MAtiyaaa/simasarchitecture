@@ -1641,7 +1641,7 @@ extraStyles.textContent = `
     }
     
         .disabled-arrow {
-        opacity: 0.3 !important;
+        opacity: 0.29 !important;
         cursor: default !important;
     }
     
