@@ -988,7 +988,6 @@ function initThemeToggler() {
 function initPageNavigation() {
     const pageNavigation = {
         init() {
-            const projectsLink  = document.getElementById('projects-link');
             const portfolioLink = document.getElementById('portfolio-link');
             const aboutLink = document.getElementById('about-link');
             const contactLink = document.getElementById('contact-link');
@@ -1007,13 +1006,6 @@ function initPageNavigation() {
                 this.showPortfolio();
             });
             
-            projectsLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.animateNavLink(projectsLink);
-                this.showProjects();
-              });
-
-              
             aboutLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.animateNavLink(aboutLink);
@@ -1072,7 +1064,6 @@ function initPageNavigation() {
         },
         
         showPortfolio() {
-            const projectsLink  = document.getElementById('projects-link');
             const portfolioLink = document.getElementById('portfolio-link');
             const aboutLink = document.getElementById('about-link');
             const contactLink = document.getElementById('contact-link');
@@ -1082,7 +1073,6 @@ function initPageNavigation() {
             
             
             portfolioLink.classList.add('active');
-            projectsLink.classList.remove('active');
             aboutLink.classList.remove('active');
             contactLink.classList.remove('active');
             
@@ -1094,58 +1084,17 @@ function initPageNavigation() {
                 window.pdfViewer.loadPDF();
             }
         },
-        hideAll() {                                                     
-            document
-              .querySelectorAll(
-                '.pdf-container, .about-container, .cv-container, .projects-container'
-              )
-              .forEach(c => c.classList.remove('active'));
-      
-            document
-              .querySelectorAll(
-                '#portfolio-link, #about-link, #projects-link,' +
-                '#footer-portfolio, #footer-about, #footer-projects'
-              )
-              .forEach(l => l.classList.remove('active'));
-          },
-
-          showProjects() {
-
-            const projectsLink  = document.getElementById('projects-link');   
-            const portfolioLink    = document.getElementById('portfolio-link');
-            const aboutLink        = document.getElementById('about-link');
-            const contactLink      = document.getElementById('contact-link');
-      
-            const projectsContainer = document.querySelector('.projects-container');
-            const pdfContainer      = document.querySelector('.pdf-container');
-            const aboutContainer    = document.querySelector('.about-container');
-            const cvContainer       = document.querySelector('.cv-container');
-      
-            projectsLink.classList.add('active');
-            portfolioLink.classList.remove('active');
-            aboutLink.classList.remove('active');
-            contactLink.classList.remove('active');
-      
-            this.animateContainerTransition(
-                projectsContainer,
-                [pdfContainer, aboutContainer, cvContainer]
-              );
-          },
         
         showAbout() {
-            const projectsLink  = document.getElementById('projects-link');   
-            const portfolioLink    = document.getElementById('portfolio-link');
-            const aboutLink        = document.getElementById('about-link');
-            const contactLink      = document.getElementById('contact-link');
-            const projectsContainer = document.querySelector('.projects-container');
-            const pdfContainer      = document.querySelector('.pdf-container');
-            const aboutContainer    = document.querySelector('.about-container');
-            const cvContainer       = document.querySelector('.cv-container');
-      
+            const portfolioLink = document.getElementById('portfolio-link');
+            const aboutLink = document.getElementById('about-link');
+            const contactLink = document.getElementById('contact-link');
+            const pdfContainer = document.querySelector('.pdf-container');
+            const aboutContainer = document.querySelector('.about-container');
+            const cvContainer = document.querySelector('.cv-container');
             
             
             aboutLink.classList.add('active');
-            projectsLink.classList.remove('active');
             portfolioLink.classList.remove('active');
             contactLink.classList.remove('active');
             
@@ -1159,7 +1108,6 @@ function initPageNavigation() {
         },
         
         showCV() {
-            const projectsLink  = document.getElementById('projects-link');
             const portfolioLink = document.getElementById('portfolio-link');
             const aboutLink = document.getElementById('about-link');
             const contactLink = document.getElementById('contact-link');
@@ -1169,7 +1117,6 @@ function initPageNavigation() {
             
             
             aboutLink.classList.add('active');
-            projectsLink.classList.remove('active');
             portfolioLink.classList.remove('active');
             contactLink.classList.remove('active');
             
@@ -1183,7 +1130,6 @@ function initPageNavigation() {
             
             hideContainers.forEach(container => {
                 if (container && container.classList.contains('active')) {
-                    container.style.pointerEvents = 'none';
                     container.style.opacity = '0';
                     container.style.transform = 'translateY(10px)';
                     
@@ -1197,7 +1143,6 @@ function initPageNavigation() {
             
             
             showContainer.classList.add('active');
-            showContainer.style.pointerEvents = 'auto';
             showContainer.style.opacity = '0';
             showContainer.style.transform = 'translateY(10px)';
             
@@ -1320,6 +1265,25 @@ function initPageNavigation() {
                 const pdfContainer = document.querySelector('.pdf-container');
                 const aboutContainer = document.querySelector('.about-container');
                 const cvContainer = document.querySelector('.cv-container');
+                
+                if (pdfContainer.classList.contains('active')) {
+                    
+                    if (swipeDistance > 0) {
+                        this.showAbout();
+                    }
+                } else if (aboutContainer.classList.contains('active')) {
+                    
+                    if (swipeDistance < 0) {
+                        this.showPortfolio();
+                    } else if (window.innerWidth <= 768) {
+                        this.showCV();
+                    }
+                } else if (cvContainer.classList.contains('active')) {
+                    
+                    if (swipeDistance < 0) {
+                        this.showAbout();
+                    }
+                }
             };
         },
         
@@ -1357,7 +1321,46 @@ function initPageNavigation() {
     return pageNavigation;
 }
 
- 
+
+function initSocialButtons() {
+    const socialButtons = document.querySelectorAll('.social-btn');
+    
+    socialButtons.forEach(btn => {
+        
+        btn.addEventListener('mouseenter', () => {
+            btn.style.transform = 'translateY(-5px) scale(1.02)';
+            animateIcon(btn.querySelector('i'));
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        
+        btn.addEventListener('click', () => {
+            btn.classList.add('social-btn-clicked');
+            
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(30);
+            }
+            
+            setTimeout(() => {
+                btn.classList.remove('social-btn-clicked');
+            }, 300);
+        });
+        
+        
+        function animateIcon(icon) {
+            if (!icon) return;
+            icon.classList.add('icon-pulse');
+            setTimeout(() => {
+                icon.classList.remove('icon-pulse');
+            }, 500);
+        }
+    });
+}
+
 
 function initMobileOptimizations() {
     
@@ -1400,7 +1403,54 @@ function initMobileOptimizations() {
 }
 
 
-  function initFooterNavigation() {
+function showMobileHints() {
+    
+    if (localStorage.getItem('mobile-hints-shown')) return;
+    
+    setTimeout(() => {
+        const hint = document.createElement('div');
+        hint.className = 'mobile-hint';
+        hint.innerHTML = `
+            <div class="hint-content">
+                <i class="fas fa-hand-pointer hint-icon"></i>
+                <p>Swipe between sections & pages</p>
+                <p class="hint-small">Double-tap to zoom in portfolio view</p>
+                <button class="hint-dismiss">Got it</button>
+            </div>
+        `;
+        
+        document.body.appendChild(hint);
+        
+        setTimeout(() => {
+            hint.classList.add('show-hint');
+        }, 100);
+        
+        
+        hint.querySelector('.hint-dismiss').addEventListener('click', () => {
+            hint.classList.remove('show-hint');
+            setTimeout(() => {
+                document.body.removeChild(hint);
+            }, 300);
+            localStorage.setItem('mobile-hints-shown', 'true');
+        });
+        
+        
+        setTimeout(() => {
+            if (document.body.contains(hint)) {
+                hint.classList.remove('show-hint');
+                setTimeout(() => {
+                    if (document.body.contains(hint)) {
+                        document.body.removeChild(hint);
+                    }
+                }, 300);
+                localStorage.setItem('mobile-hints-shown', 'true');
+            }
+        }, 5000);
+    }, 2000);
+}
+
+
+function initFooterNavigation() {
     const footerPortfolio = document.getElementById('footer-portfolio');
     const footerAbout = document.getElementById('footer-about');
     
@@ -1422,6 +1472,7 @@ function initMobileOptimizations() {
         });
     }
 }
+
 
 function initAnimations() {
     
@@ -1641,7 +1692,7 @@ extraStyles.textContent = `
     }
     
         .disabled-arrow {
-        opacity: 0.29 !important;
+        opacity: 0.3 !important;
         cursor: default !important;
     }
     
