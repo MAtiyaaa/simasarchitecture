@@ -101,20 +101,6 @@ function initPdfViewer() {
                 });
             }
             
-            
-            if (this.viewerContainer) {
-                let lastTap = 0;
-                this.viewerContainer.addEventListener('touchend', (e) => {
-                    const currentTime = new Date().getTime();
-                    const tapLength = currentTime - lastTap;
-                    if (tapLength < 300 && tapLength > 0) {
-                        
-                        e.preventDefault();
-                        this.toggleZoom(e);
-                    }
-                    lastTap = currentTime;
-                });
-            }
         },
         
         addClickEffect(element) {
@@ -985,341 +971,127 @@ function initThemeToggler() {
 }
 
 
-function initPageNavigation() {
-    const pageNavigation = {
-        init() {
-            const portfolioLink = document.getElementById('portfolio-link');
-            const aboutLink = document.getElementById('about-link');
-            const contactLink = document.getElementById('contact-link');
-            const downloadCVBtn = document.getElementById('download-cv');
-            const viewCVBtn = document.getElementById('view-cv');
-            
-            if (!portfolioLink || !aboutLink || !contactLink) {
-                console.error('Navigation links not found');
-                return;
-            }
-            
-            
-            portfolioLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.animateNavLink(portfolioLink);
-                this.showPortfolio();
-            });
-            
-            aboutLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.animateNavLink(aboutLink);
-                this.showAbout();
-            });
-            
-            contactLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.animateNavLink(contactLink);
-                window.location.href = 'mailto:simasarchitecture@gmail.com';
-            });
-            
-            if (downloadCVBtn && viewCVBtn) {
-                downloadCVBtn.addEventListener('click', (e) => {
-                    this.animateButton(downloadCVBtn);
-                    this.downloadCV();
-                });
-                
-                viewCVBtn.addEventListener('click', (e) => {
-                    this.animateButton(viewCVBtn);
-                    this.showCV();
-                });
-            }
-            
-            
-            this.setupSwipeNavigation();
-            
-            
-            this.setupScrollAnimations();
-        },
+function initPageNavigation () {
+
         
-        animateNavLink(link) {
-            
-            if (navigator.vibrate) {
-                navigator.vibrate(30);
-            }
-            
-            
-            link.classList.add('nav-link-clicked');
-            setTimeout(() => {
-                link.classList.remove('nav-link-clicked');
-            }, 300);
-        },
-        
-        animateButton(button) {
-            
-            if (navigator.vibrate) {
-                navigator.vibrate(30);
-            }
-            
-            
-            button.classList.add('button-clicked');
-            setTimeout(() => {
-                button.classList.remove('button-clicked');
-            }, 300);
-        },
-        
-        showPortfolio() {
-            const portfolioLink = document.getElementById('portfolio-link');
-            const aboutLink = document.getElementById('about-link');
-            const contactLink = document.getElementById('contact-link');
-            const pdfContainer = document.querySelector('.pdf-container');
-            const aboutContainer = document.querySelector('.about-container');
-            const cvContainer = document.querySelector('.cv-container');
-            
-            
-            portfolioLink.classList.add('active');
-            aboutLink.classList.remove('active');
-            contactLink.classList.remove('active');
-            
-            
-            this.animateContainerTransition(pdfContainer, [aboutContainer, cvContainer]);
-            
-            
-            if (window.pdfViewer && !window.pdfViewer.pdfDoc) {
-                window.pdfViewer.loadPDF();
-            }
-        },
-        
-        showAbout() {
-            const portfolioLink = document.getElementById('portfolio-link');
-            const aboutLink = document.getElementById('about-link');
-            const contactLink = document.getElementById('contact-link');
-            const pdfContainer = document.querySelector('.pdf-container');
-            const aboutContainer = document.querySelector('.about-container');
-            const cvContainer = document.querySelector('.cv-container');
-            
-            
-            aboutLink.classList.add('active');
-            portfolioLink.classList.remove('active');
-            contactLink.classList.remove('active');
-            
-            
-            this.animateContainerTransition(aboutContainer, [pdfContainer, cvContainer]);
-            
-            
-            setTimeout(() => {
-                this.animateSkillBars();
-            }, 300);
-        },
-        
-        showCV() {
-            const portfolioLink = document.getElementById('portfolio-link');
-            const aboutLink = document.getElementById('about-link');
-            const contactLink = document.getElementById('contact-link');
-            const pdfContainer = document.querySelector('.pdf-container');
-            const aboutContainer = document.querySelector('.about-container');
-            const cvContainer = document.querySelector('.cv-container');
-            
-            
-            aboutLink.classList.add('active');
-            portfolioLink.classList.remove('active');
-            contactLink.classList.remove('active');
-            
-            
-            this.animateContainerTransition(cvContainer, [pdfContainer, aboutContainer]);
-        },
-        
-        animateContainerTransition(showContainer, hideContainers) {
-            if (!showContainer) return;
-            
-            
-            hideContainers.forEach(container => {
-                if (container && container.classList.contains('active')) {
-                    container.style.opacity = '0';
-                    container.style.transform = 'translateY(10px)';
-                    
-                    setTimeout(() => {
-                        container.classList.remove('active');
-                        container.style.removeProperty('opacity');
-                        container.style.removeProperty('transform');
-                    }, 300);
-                }
-            });
-            
-            
-            showContainer.classList.add('active');
-            showContainer.style.opacity = '0';
-            showContainer.style.transform = 'translateY(10px)';
-            
-            
-            void showContainer.offsetWidth;
-            
-            
-            showContainer.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-            showContainer.style.opacity = '1';
-            showContainer.style.transform = 'translateY(0)';
-            
-            
-            setTimeout(() => {
-                showContainer.style.transition = '';
-            }, 400);
-        },
-        
-        animateSkillBars() {
-            const skillBars = document.querySelectorAll('.skill-progress');
-            skillBars.forEach((bar, index) => {
-                const width = bar.dataset.width || bar.style.width || '0%';
-                bar.style.width = '0';
-                
-                
-                setTimeout(() => {
-                    bar.style.width = width;
-                    
-                    
-                    setTimeout(() => {
-                        bar.classList.add('skill-shimmer');
-                        setTimeout(() => {
-                            bar.classList.remove('skill-shimmer');
-                        }, 1000);
-                    }, parseFloat(width) * 10);
-                }, 100 + (index * 100));
-            });
-        },
-        
-        downloadCV() {
-            const link = document.createElement('a');
-            link.href = 'pdf/cv.pdf';
-            link.download = 'sima_assaf_cv.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            const btn = document.getElementById('download-cv');
-            if (btn) {
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i><span>Downloaded</span>';
-                btn.classList.add('download-success');
-                
-                
-                if (navigator.vibrate) {
-                    navigator.vibrate([15, 30, 15]);
-                }
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.classList.remove('download-success');
-                }, 2000);
-            }
-            
-            
-            this.showDownloadNotification('Downloaded!');
-        },
-        
-        showDownloadNotification(message) {
-            
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `
-                <div class="notification-content">
-                    <i class="fas fa-check-circle notification-icon"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            
-            setTimeout(() => {
-                notification.classList.add('show-notification');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show-notification');
-                    notification.classList.add('hide-notification');
-                    
-                    setTimeout(() => {
-                        document.body.removeChild(notification);
-                    }, 300);
-                }, 3000);
-            }, 10);
-        },
-        
-        setupSwipeNavigation() {
-            
-            const content = document.querySelector('.content-container');
-            if (!content || window.innerWidth > 768) return;
-            
-            let touchStartX = 0;
-            let touchEndX = 0;
-            
-            content.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            
-            content.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, { passive: true });
-            
-            const handleSwipe = () => {
-                const threshold = 100;
-                const swipeDistance = touchEndX - touchStartX;
-                
-                if (Math.abs(swipeDistance) < threshold) return;
-                
-                
-                const pdfContainer = document.querySelector('.pdf-container');
-                const aboutContainer = document.querySelector('.about-container');
-                const cvContainer = document.querySelector('.cv-container');
-                
-                if (pdfContainer.classList.contains('active')) {
-                    
-                    if (swipeDistance > 0) {
-                        this.showAbout();
-                    }
-                } else if (aboutContainer.classList.contains('active')) {
-                    
-                    if (swipeDistance < 0) {
-                        this.showPortfolio();
-                    } else if (window.innerWidth <= 768) {
-                        this.showCV();
-                    }
-                } else if (cvContainer.classList.contains('active')) {
-                    
-                    if (swipeDistance < 0) {
-                        this.showAbout();
-                    }
-                }
-            };
-        },
-        
-        setupScrollAnimations() {
-            
-            const aboutContainer = document.querySelector('.about-container');
-            if (!aboutContainer) return;
-            
-            
-            const observerOptions = {
-                root: aboutContainer,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-in');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-            
-            
-            document.querySelectorAll('.skill-card, .stat-item, .about-text p').forEach(el => {
-                el.classList.add('animate-on-scroll');
-                observer.observe(el);
-            });
-        }
-    };
+    function hideAll () {
+      document
+        .querySelectorAll(
+          '.pdf-container, .about-container, .cv-container, .projects-container'
+        )
+        .forEach(c => c.classList.remove('active'));
+  
+      document
+        .querySelectorAll(
+          '#portfolio-link, #about-link, #projects-link'
+        )
+        .forEach(l => l.classList.remove('active'));
+    }
+  
+        function showPortfolio () {
+      hideAll();
+      pdfContainer.classList.add('active');
+      portfolioLink.classList.add('active');
+  
+      
+      if (window.pdfViewer && !window.pdfViewer.pdfDoc) {
+        window.pdfViewer.loadPDF();
+      }
+    }
+  
+    function showProjects () {
+      hideAll();
+      projectsContainer.classList.add('active');
+      projectsLink.classList.add('active');
+    }
+  
+    function showAbout () {
+      hideAll();
+      aboutContainer.classList.add('active');
+      aboutLink.classList.add('active');
+      animateSkillBars();                
+    }
+  
+    function showCV () {
+      hideAll();
+      cvContainer.classList.add('active');
+      aboutLink.classList.add('active'); 
+    }
+  
     
-    pageNavigation.init();
-    window.pageNavigation = pageNavigation;
-    return pageNavigation;
-}
+    function showContact () { window.location.href = 'mailto:simasarchitecture@gmail.com'; }
+  
+        const portfolioLink    = document.getElementById('portfolio-link');
+    const projectsLink     = document.getElementById('projects-link');
+    const aboutLink        = document.getElementById('about-link');
+    const contactLink      = document.getElementById('contact-link');
+  
+    const pdfContainer     = document.querySelector('.pdf-container');
+    const projectsContainer= document.querySelector('.projects-container');
+    const aboutContainer   = document.querySelector('.about-container');
+    const cvContainer      = document.querySelector('.cv-container');
+  
+    const viewCVBtn        = document.getElementById('view-cv');
+    const downloadCVBtn    = document.getElementById('download-cv');
+  
+        portfolioLink?.addEventListener('click', e => { e.preventDefault(); showPortfolio(); });
+    projectsLink ?.addEventListener('click', e => { e.preventDefault(); showProjects (); });
+    aboutLink    ?.addEventListener('click', e => { e.preventDefault(); showAbout    (); });
+    contactLink  ?.addEventListener('click', e => { e.preventDefault(); showContact  (); });
+  
+    viewCVBtn    ?.addEventListener('click', () => showCV());
+    downloadCVBtn?.addEventListener('click', () => downloadCV());
+  
+        function animateSkillBars () {
+      document.querySelectorAll('.skill-progress').forEach((bar, i) => {
+        const w = bar.dataset.width || bar.style.width || '0%';
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = w; }, 100 + i * 120);
+      });
+    }
+  
+    function downloadCV () {
+      const link = document.createElement('a');
+      link.href = 'pdf/cv.pdf';
+      link.download = 'sima_assaf_cv.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  
+        setupSwipeNavigation();
+    function setupSwipeNavigation () {
+      if (window.innerWidth > 768) return;     
+  
+      const area = document.querySelector('.content-container');
+      if (!area) return;
+  
+      let startX = 0, endX = 0;
+      area.addEventListener('touchstart', e => (startX = e.touches[0].clientX), { passive:true });
+      area.addEventListener('touchend'  , e => {
+        endX = e.changedTouches[0].clientX;
+        const dx = endX - startX;
+        if (Math.abs(dx) < 60) return;         
+  
+        if (projectsContainer.classList.contains('active')) {
+          if (dx < 0) showAbout();             
+        } else if (aboutContainer.classList.contains('active')) {
+          if (dx > 0) showProjects();          
+          else        showPortfolio();         
+        } else if (pdfContainer.classList.contains('active') && dx > 0) {
+          showAbout();                         
+        }
+      }, { passive:true });
+    }
+  
+        showPortfolio();                           
+  
+        const api = { showPortfolio, showProjects, showAbout, showCV, showContact };
+    window.pageNavigation = api;               
+    return api;
+  }
+  
+  initPageNavigation();  
 
 
 function initSocialButtons() {
@@ -1361,6 +1133,22 @@ function initSocialButtons() {
     });
 }
 
+function initProjects() {
+    document.querySelectorAll('.project-card').forEach(card => {
+      const page = +card.dataset.pdfpage;
+      card.addEventListener('click', () => {
+        pageNavigation.showPortfolio();
+        pdfViewer.renderPage(page);
+      });
+      card.querySelector('.view-chapter-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        pageNavigation.showPortfolio();
+        pdfViewer.renderPage(page);
+      });
+    });
+  }
+  initProjects();
+  
 
 function initMobileOptimizations() {
     
@@ -1414,7 +1202,6 @@ function showMobileHints() {
             <div class="hint-content">
                 <i class="fas fa-hand-pointer hint-icon"></i>
                 <p>Swipe between sections & pages</p>
-                <p class="hint-small">Double-tap to zoom in portfolio view</p>
                 <button class="hint-dismiss">Got it</button>
             </div>
         `;
@@ -1453,12 +1240,22 @@ function showMobileHints() {
 function initFooterNavigation() {
     const footerPortfolio = document.getElementById('footer-portfolio');
     const footerAbout = document.getElementById('footer-about');
-    
+    const footerProjects = document.getElementById('footer-projects');
+
     if (footerPortfolio) {
         footerPortfolio.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.pageNavigation) {
                 window.pageNavigation.showPortfolio();
+            }
+        });
+    }
+
+    if (footerProjects) {
+        footerProjects.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.pageNavigation) {
+                window.pageNavigation.showProjects();
             }
         });
     }
