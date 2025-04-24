@@ -11,141 +11,88 @@
     <meta name="theme-color" content="#b3743a">
 </head>
 <body>
-<div class="page-container">
-
-<header>
-    <a href="#" class="logo">
-        <span class="logo-text">Sima Assaf</span>
-        <span class="logo-dot"></span>
-    </a>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="#" id="portfolio-link" class="active">Portfolio</a></li>
-            <li><a href="#" id="projects-link">Projects</a></li>
-            <li><a href="#" id="about-link">About</a></li>
-            <li><a href="#" id="contact-link">Contact</a></li>
-        </ul>
-    </nav>
-    <div class="theme-toggle" title="Toggle dark/light mode"><i class="fas fa-moon"></i></div>
-</header>
-
-<main>
-    
-    <aside class="sidebar">
-        <div class="profile">
-            <div class="profile-image">
-                <img src="pdf/sima.jpg" alt="Sima Assaf" class="profile-img">
+    <div class="page-container">
+        <header>
+            <a href="#" class="logo">
+                <span class="logo-text">Sima Assaf</span>
+                <span class="logo-dot"></span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" id="portfolio-link" class="active">Portfolio</a></li>
+                    <li><a href="#" id="about-link">About</a></li>
+                    <li><a href="#" id="contact-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="theme-toggle" title="Toggle dark/light mode">
+                <i class="fas fa-moon"></i>
             </div>
-            <h2>Sima Assaf</h2>
-            <p>Architecture Student at American University in Dubai</p>
-        </div>
-
-        <div class="social-links">
-            <a href="https://www.instagram.com/simasarchitecture/" class="social-btn instagram" target="_blank"><i class="fab fa-instagram"></i><span>Instagram</span></a>
-            <a href="https://www.linkedin.com/in/simasarchitecture/" class="social-btn linkedin"  target="_blank"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
-            <a href="https://www.behance.net/simaassaf"             class="social-btn behance"   target="_blank"><i class="fab fa-behance"></i><span>Behance</span></a>
-            <a href="mailto:simasarchitecture@gmail.com"            class="social-btn email"><i class="fas fa-envelope"></i><span>Email</span></a>
-        </div>
-    </aside>
-
-    
-    <div class="content-container">
-
-        
-        <div class="pdf-container active">
-            <div class="loading-animation"><div class="spinner"></div><p>Loading Portfolio...</p></div>
-            <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
-
-            <div class="page-transitions prev-page-arrow bottom-aligned">
-                <button class="page-arrow-btn" id="prev-page-arrow" aria-label="Previous page"><i class="fas fa-chevron-left"></i></button>
-            </div>
-            <div class="page-transitions next-page-arrow bottom-aligned">
-                <button class="page-arrow-btn" id="next-page-arrow" aria-label="Next page"><i class="fas fa-chevron-right"></i></button>
-            </div>
-
-            <div class="swipe-indicator"><i class="fas fa-hand-point-left"></i>Swipe to navigate<i class="fas fa-hand-point-right"></i></div>
-
-            <div id="pdf-viewer" class="pdf-content"></div>
-
-            <div class="portfolio-download-container">
-                <button class="download-btn compact-elegant" id="download-pdf"><i class="fas fa-download"></i><span>Download Portfolio</span></button>
-            </div>
-        </div>
-
-        
-        <div class="cv-container">
-            <div class="loading-animation"><div class="spinner"></div><p>Loading CV...</p></div>
-
-            <div class="cv-controls">
-                <button class="back-btn" id="back-to-about" aria-label="Back to About"><i class="fas fa-arrow-left"></i> Back to About</button>
-                <div class="zoom-controls">
-                    <button class="zoom-btn" id="cv-zoom-in"  aria-label="Zoom in"><i class="fas fa-search-plus"></i></button>
-                    <button class="zoom-btn" id="cv-zoom-out" aria-label="Zoom out"><i class="fas fa-search-minus"></i></button>
+        </header>
+        <main>
+            <aside class="sidebar">
+                <div class="profile">
+                    <div class="profile-image">
+                        <img src="pdf/sima.jpg" alt="Sima Assaf" class="profile-img">
+                    </div>
+                    <h2>Sima Assaf</h2>
+                    <p>Architecture Student at American University in Dubai</p>
                 </div>
-            </div>
-
-            <div id="cv-viewer" class="cv-content"></div>
-        </div>
-
-        
-        <div class="projects-container">
-            <h2 class="projects-header">Studio Projects</h2>
-
-            <div class="projects-grid">
-
-                
-                <article class="project-card" data-pdfpage="3">
-                    <img src="img/cohousing-thumb.jpg" alt="Ascending Avenue">
-                    <div class="project-overlay">
-                        <h3>Ascending Avenue</h3>
-                        <!-- <p class="project-blurb">PLACEHOLDER</p> -->
-                        <button class="view-chapter-btn">View chapter</button>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/simasarchitecture/" class="social-btn instagram" target="_blank" rel="noopener" aria-label="Instagram Profile">
+                        <i class="fab fa-instagram"></i><span>Instagram</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/simasarchitecture/" class="social-btn linkedin" target="_blank" rel="noopener" aria-label="LinkedIn Profile">
+                        <i class="fab fa-linkedin"></i><span>LinkedIn</span>
+                    </a>
+                    <a href="https://www.behance.net/simaassaf" class="social-btn behance" target="_blank" rel="noopener" aria-label="Behance Portfolio">
+                        <i class="fab fa-behance"></i><span>Behance</span>
+                    </a>
+                    <a href="mailto:simasarchitecture@gmail.com" class="social-btn email" aria-label="Email Contact">
+                        <i class="fas fa-envelope"></i><span>Email</span>
+                    </a>
+                </div>
+            </aside>
+            <div class="content-container">
+                <div class="pdf-container active">
+                    <div class="loading-animation">
+                        <div class="spinner"></div>
+                        <p>Loading Portfolio...</p>
                     </div>
-                </article>
-
-                
-                <article class="project-card" data-pdfpage="7">
-                    <img src="img/karama-thumb.jpg" alt="Reclaiming Karama">
-                    <div class="project-overlay">
-                        <h3>Reclaiming Karama</h3>
-                        <!-- <p class="project-blurb">PLACEHOLDER</p> -->
-                        <button class="view-chapter-btn">View chapter</button>
+                    <div class="progress-track">
+                        <div class="progress-bar" id="progress-bar"></div>
                     </div>
-                </article>
-
-                
-                <article class="project-card" data-pdfpage="11">
-                    <img src="img/education-thumb.jpg" alt="Education Academy">
-                    <div class="project-overlay">
-                        <h3>Education Academy</h3>
-                        <!-- <p class="project-blurb">PLACEHOLDER</p> -->
-                        <button class="view-chapter-btn">View chapter</button>
+                    <div class="page-transitions prev-page-arrow bottom-aligned">
+                        <button class="page-arrow-btn" id="prev-page-arrow" aria-label="Previous page"><i class="fas fa-chevron-left"></i></button>
                     </div>
-                </article>
-
-                
-                <article class="project-card" data-pdfpage="15">
-                    <img src="img/music-thumb.jpg" alt="Music & Art Conservatory">
-                    <div class="project-overlay">
-                        <h3>Music & Art Conservatory</h3>
-                        <!-- <p class="project-blurb">PLACEHOLDER</p> -->
-                        <button class="view-chapter-btn">View chapter</button>
+                    <div class="page-transitions next-page-arrow bottom-aligned">
+                        <button class="page-arrow-btn" id="next-page-arrow" aria-label="Next page"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                </article>
-
-                
-                <article class="project-card" data-pdfpage="17">
-                    <img src="img/rooted-thumb.jpg" alt="Rooted Living">
-                    <div class="project-overlay">
-                        <h3>Rooted Living</h3>
-                        <!-- <p class="project-blurb">PLACEHOLDER</p> -->
-                        <button class="view-chapter-btn">View chapter</button>
+                    <div class="swipe-indicator">
+                        <i class="fas fa-hand-point-left"></i>
+                        Swipe to navigate
+                        <i class="fas fa-hand-point-right"></i>
                     </div>
-                </article>
-
-            </div>
-        </div>
-
+                    <div id="pdf-viewer" class="pdf-content"></div>
+                    <div class="portfolio-download-container">
+                        <button class="download-btn compact-elegant" id="download-pdf">
+                            <i class="fas fa-download"></i><span>Download Portfolio</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="cv-container">
+                    <div class="loading-animation">
+                        <div class="spinner"></div>
+                        <p>Loading CV...</p>
+                    </div>
+                    <div class="cv-controls">
+                        <button class="back-btn" id="back-to-about" aria-label="Back to About"><i class="fas fa-arrow-left"></i> Back to About</button>
+                        <div class="zoom-controls">
+                            <button class="zoom-btn" id="cv-zoom-in" aria-label="Zoom in"><i class="fas fa-search-plus"></i></button>
+                            <button class="zoom-btn" id="cv-zoom-out" aria-label="Zoom out"><i class="fas fa-search-minus"></i></button>
+                        </div>
+                    </div>
+                    <div id="cv-viewer" class="cv-content"></div>
+                </div>
                 <div class="about-container full-scroll">
                     <h2 class="about-header">About Me</h2>
                     <div class="about-content">
@@ -268,7 +215,6 @@
                 </div>
                 <div class="footer-links">
                     <a href="#" id="footer-portfolio">Portfolio</a>
-                    <a href="#" id="footer-projects">Projects</a>
                     <a href="#" id="footer-about">About</a>
                     <a href="mailto:simasarchitecture@gmail.com">Contact</a>
                 </div>
