@@ -7,6 +7,7 @@
     <meta name="description" content="Sima Assaf - Architecture Student at American University in Dubai. View portfolio, CV and contact information.">
     <link rel="icon" href="pdf/icon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="3d.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <meta name="theme-color" content="#b3743a">
 </head>
@@ -80,6 +81,39 @@
                         </button>
                     </div>
                 </div>
+                <div class="model-container">
+                    <div class="model-loading-animation">
+                        <div class="model-spinner"></div>
+                        <p>Loading 3D Model...</p>
+                    </div>
+                    <div class="model-controls">
+                        <button class="back-btn model-back" id="back-to-projects" aria-label="Back to Projects">
+                            <i class="fas fa-arrow-left"></i> Back to Projects
+                        </button>
+                        <div class="model-actions">
+                            <button class="model-btn" id="rotate-toggle" title="Toggle Rotation">
+                                <i class="fas fa-pause"></i>
+                            </button>
+                            <button class="model-btn" id="reset-view" title="Reset View">
+                                <i class="fas fa-home"></i>
+                            </button>
+                            <button class="model-btn" id="wireframe-toggle" title="Toggle Wireframe">
+                                <i class="fas fa-border-all"></i>
+                            </button>
+                            <button class="model-btn" id="info-toggle" title="Toggle Information">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="model-viewer-container">
+                        <div id="model-viewer"></div>
+                        <div class="model-information">
+                            <h4>Architectural Model</h4>
+                            <p>Interactive 3D model of the project. Explore it by rotating, zooming, and panning.</p>
+                            <p class="tip">Tip: Drag to rotate, scroll to zoom, right-click to pan</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="cv-container">
                     <div class="loading-animation">
                         <div class="spinner"></div>
@@ -98,15 +132,18 @@
                     <h2 class="projects-header">Studio Projects</h2>
                   
                     <div class="projects-grid">
-                      <article class="project-card" data-pdfpage="3">
-                        <img src="img/co-housing-thumb.jpg" alt="Co-housing Space">
+                        <article class="project-card project-card-3d" data-model="co-housing" data-stl="stl/cohousing-space.stl">
+                            <img src="img/co-housing-thumb.jpg" alt="Co-housing Space">
                         <div class="project-overlay">
                           <h3>Co-housing Space</h3>
                           <p class="project-blurb">
                             A vibrant coliving space centered around a lush green courtyard,
                             designed to inspire connection and relaxation.
                           </p>
-                          <button class="view-chapter-btn">View chapter</button>
+                          <div class="project-buttons">
+                            <button class="view-chapter-btn" data-pdfpage="3">View chapter</button>
+                            <button class="view-3d-btn">View 3D model</button>
+                          </div>
                         </div>
                       </article>
                       <article class="project-card" data-pdfpage="7">
@@ -122,19 +159,23 @@
                           <button class="view-chapter-btn">View chapter</button>
                         </div>
                       </article>
-                      <article class="project-card" data-pdfpage="11">
+                      <article class="project-card project-card-3d" data-model="education-academy" data-stl="stl/education-academy.stl">
                         <img src="img/education-academy-thumb.jpg" alt="Education Academy">
                         <div class="project-overlay">
                           <h3>Education Academy</h3>
-                        <p class="project-blurb">
+                          <p class="project-blurb">
                             This project guides visitors through
                             workshops, culminating in a serene garden
                             with a traditional wind tower for natural
-                            ventilation.                          </p>
-                          <button class="view-chapter-btn">View chapter</button>
+                            ventilation.
+                          </p>
+                          <div class="project-buttons">
+                            <button class="view-chapter-btn" data-pdfpage="11">View chapter</button>
+                            <button class="view-3d-btn">View 3D model</button>
+                          </div>
                         </div>
                       </article>
-                      <article class="project-card" data-pdfpage="15">
+                      <article class="project-card project-card-3d" data-model="music-conservatory" data-stl="stl/music-conservatory.stl">
                         <img src="img/conservatory-thumb.jpg" alt="Music Conservatory">
                         <div class="project-overlay">
                           <h3>Music Conservatory</h3>
@@ -142,7 +183,10 @@
                             A symphony of design and artistic pursuit, crafting a space
                             where creativity flourishes.
                           </p>
-                          <button class="view-chapter-btn">View chapter</button>
+                          <div class="project-buttons">
+                            <button class="view-chapter-btn" data-pdfpage="15">View chapter</button>
+                            <button class="view-3d-btn">View 3D model</button>
+                          </div>
                         </div>
                       </article>
                       <article class="project-card" data-pdfpage="17">
@@ -156,11 +200,22 @@
                           <button class="view-chapter-btn">View chapter</button>
                         </div>
                       </article>
-                  
+                      <article class="project-card project-card-3d" data-model="abstract-block" data-stl="stl/abstract-block.stl">
+                        <img src="img/office-thumb.jpg" alt="Abstract Block">
+                        <div class="project-overlay">
+                          <h3>Abstract Block</h3>
+                          <p class="project-blurb">
+                            A bold office building design that challenges conventional forms, 
+                            using geometric abstraction to create dynamic spaces and unique 
+                            work environments.
+                          </p>
+                          <div class="project-buttons">
+                            <button class="view-3d-btn">View 3D model</button>
+                          </div>
+                        </div>
+                      </article>
                     </div>
                   </div>
-                  
-  
                 <div class="about-container full-scroll">
                     <h2 class="about-header">About Me</h2>
                     <div class="about-content">
@@ -283,35 +338,15 @@
             </div>
         </footer>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
-    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     
-        <script>
-        
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const loadingScreen = document.querySelector('.loading-screen');
-                const loaderProgress = document.querySelector('.loader-progress');
-                
-                
-                loaderProgress.style.width = '100%';
-                
-                
-                document.body.classList.add('content-loaded');
-                
-                
-                setTimeout(function() {
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(function() {
-                        loadingScreen.style.display = 'none';
-                    }, 500);
-                }, 600);
-            }, 500);
-        });
-    </script>
+    <script src="script.js"></script>
+    <script src="3d.js"></script>
 </body>
 </html>

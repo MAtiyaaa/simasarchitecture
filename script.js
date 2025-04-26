@@ -970,14 +970,11 @@ function initThemeToggler() {
     return themeToggler;
 }
 
-
 function initPageNavigation () {
-
-        
     function hideAll () {
       document
         .querySelectorAll(
-          '.pdf-container, .about-container, .cv-container, .projects-container'
+          '.pdf-container, .about-container, .cv-container, .projects-container, .model-container'
         )
         .forEach(c => c.classList.remove('active'));
   
@@ -988,12 +985,12 @@ function initPageNavigation () {
         .forEach(l => l.classList.remove('active'));
     }
   
-        function showPortfolio () {
+    function showPortfolio () {
       hideAll();
       pdfContainer.classList.add('active');
       portfolioLink.classList.add('active');
   
-      
+
       if (window.pdfViewer && !window.pdfViewer.pdfDoc) {
         window.pdfViewer.loadPDF();
       }
@@ -1017,11 +1014,30 @@ function initPageNavigation () {
       cvContainer.classList.add('active');
       aboutLink.classList.add('active'); 
     }
-  
     
+    function show3DModel(modelPath, name, info) {
+      hideAll();
+      
+
+      modelContainer.dataset.modelPath = modelPath;
+      modelContainer.dataset.modelName = name || 'Architectural Model';
+      modelContainer.dataset.modelInfo = info || 'Interactive 3D model of the project. Explore it by rotating, zooming, and panning.';
+      
+
+      modelContainer.classList.add('active');
+      projectsLink.classList.add('active');
+      
+
+      if (window.modelViewer) {
+        window.modelViewer.loadModel(modelPath, name, info);
+      }
+    }
+  
+
     function showContact () { window.location.href = 'mailto:simasarchitecture@gmail.com'; }
   
-        const portfolioLink    = document.getElementById('portfolio-link');
+
+    const portfolioLink    = document.getElementById('portfolio-link');
     const projectsLink     = document.getElementById('projects-link');
     const aboutLink        = document.getElementById('about-link');
     const contactLink      = document.getElementById('contact-link');
@@ -1030,11 +1046,13 @@ function initPageNavigation () {
     const projectsContainer= document.querySelector('.projects-container');
     const aboutContainer   = document.querySelector('.about-container');
     const cvContainer      = document.querySelector('.cv-container');
+    const modelContainer   = document.querySelector('.model-container');
   
     const viewCVBtn        = document.getElementById('view-cv');
     const downloadCVBtn    = document.getElementById('download-cv');
   
-        portfolioLink?.addEventListener('click', e => { e.preventDefault(); showPortfolio(); });
+
+    portfolioLink?.addEventListener('click', e => { e.preventDefault(); showPortfolio(); });
     projectsLink ?.addEventListener('click', e => { e.preventDefault(); showProjects (); });
     aboutLink    ?.addEventListener('click', e => { e.preventDefault(); showAbout    (); });
     contactLink  ?.addEventListener('click', e => { e.preventDefault(); showContact  (); });
@@ -1042,7 +1060,8 @@ function initPageNavigation () {
     viewCVBtn    ?.addEventListener('click', () => showCV());
     downloadCVBtn?.addEventListener('click', () => downloadCV());
   
-        function animateSkillBars () {
+
+    function animateSkillBars () {
       document.querySelectorAll('.skill-progress').forEach((bar, i) => {
         const w = bar.dataset.width || bar.style.width || '0%';
         bar.style.width = '0';
@@ -1059,7 +1078,8 @@ function initPageNavigation () {
       document.body.removeChild(link);
     }
   
-        setupSwipeNavigation();
+
+    setupSwipeNavigation();
     function setupSwipeNavigation () {
       if (window.innerWidth > 768) return;     
   
@@ -1080,13 +1100,24 @@ function initPageNavigation () {
           else        showPortfolio();         
         } else if (pdfContainer.classList.contains('active') && dx > 0) {
           showAbout();                         
+        } else if (modelContainer.classList.contains('active') && dx > 0) {
+          showProjects();                       
         }
       }, { passive:true });
     }
   
-        showPortfolio();                           
+
+    showPortfolio();                           
   
-        const api = { showPortfolio, showProjects, showAbout, showCV, showContact };
+
+    const api = { 
+      showPortfolio, 
+      showProjects, 
+      showAbout, 
+      showCV, 
+      showContact,
+      show3DModel
+    };
     window.pageNavigation = api;               
     return api;
   }
@@ -1132,24 +1163,72 @@ function initSocialButtons() {
         }
     });
 }
-
 function initProjects() {
     document.querySelectorAll('.project-card').forEach(card => {
-      const page = +card.dataset.pdfpage;
-      card.addEventListener('click', () => {
-        pageNavigation.showPortfolio();
-        pdfViewer.renderPage(page);
-      });
-      card.querySelector('.view-chapter-btn').addEventListener('click', e => {
-        e.stopPropagation();
-        pageNavigation.showPortfolio();
-        pdfViewer.renderPage(page);
-      });
+
+      const is3DCard = card.classList.contains('project-card-3d');
+      
+
+      const pageBtn = card.querySelector('.view-chapter-btn');
+      const page = pageBtn ? (pageBtn.dataset.pdfpage || card.dataset.pdfpage) : card.dataset.pdfpage;
+      
+
+      if (!is3DCard && page) {
+        card.addEventListener('click', () => {
+          pageNavigation.showPortfolio();
+          pdfViewer.renderPage(parseInt(page));
+        });
+        
+
+        if (pageBtn) {
+          pageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            pageNavigation.showPortfolio();
+            pdfViewer.renderPage(parseInt(page));
+          });
+        }
+      } 
+
+      else if (is3DCard) {
+
+        card.addEventListener('click', (e) => {
+
+          if (!e.target.closest('.view-chapter-btn') && !e.target.closest('.view-3d-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        });
+        
+
+        if (pageBtn && page) {
+          pageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            pageNavigation.showPortfolio();
+            pdfViewer.renderPage(parseInt(page));
+          });
+        }
+        
+
+        const view3DBtn = card.querySelector('.view-3d-btn');
+        if (view3DBtn && card.dataset.stl) {
+          view3DBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+
+            const stlPath = card.dataset.stl;
+            const modelName = card.querySelector('h3').textContent || 'Architectural Model';
+            const modelDesc = card.querySelector('.project-blurb').textContent || 
+                            'Interactive 3D model of the project. Explore it by rotating, zooming, and panning.';
+            
+
+            if (window.pageNavigation && window.pageNavigation.show3DModel) {
+              window.pageNavigation.show3DModel(stlPath, modelName, modelDesc);
+            }
+          });
+        }
+      }
     });
   }
-  initProjects();
-  
-
 function initMobileOptimizations() {
     
     const isMobile = window.innerWidth <= 768;
@@ -1620,3 +1699,4 @@ extraStyles.textContent = `
 `;
 
 document.head.appendChild(extraStyles);
+document.addEventListener('DOMContentLoaded', initProjects);
