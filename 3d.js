@@ -1,4 +1,3 @@
-
 function init3DViewer() {
     const modelViewer = {
         scene: null,
@@ -165,6 +164,17 @@ function init3DViewer() {
 
             if (this.model) {
                 this.scene.remove(this.model);
+                
+                if (this.model.geometry) {
+                    this.model.geometry.dispose();
+                }
+                if (this.model.material) {
+                    if (Array.isArray(this.model.material)) {
+                        this.model.material.forEach(m => m.dispose());
+                    } else {
+                        this.model.material.dispose();
+                    }
+                }
                 this.model = null;
             }
             
@@ -181,92 +191,120 @@ function init3DViewer() {
                 })
                 .catch(error => {
                     console.warn(`Could not load STL file: ${error.message}.`);
+                    
+                    
+                    if (this.loadingAnimation) {
+                        this.loadingAnimation.innerHTML = `
+                            <div class="error-icon">!</div>
+                            <p>Failed to load model: ${error.message}</p>
+                            <button class="retry-btn" onclick="window.modelViewer.retryLoading('${modelPath}')">Try Again</button>
+                        `;
+                    }
+                    
+                    this.isLoading = false;
                 });
+        },
+        
+        retryLoading(modelPath) {
+            
+            if (this.loadingAnimation) {
+                this.loadingAnimation.innerHTML = `
+                    <div class="model-spinner"></div>
+                    <p>Loading 3D Model...</p>
+                `;
+            }
+            
+            
+            this.currentModel = '';
+            
+            
+            this.loadModel(modelPath);
         },
         
         loadSTLFile(modelPath) {
             return new Promise((resolve, reject) => {
                 try {
-
                     const loader = new THREE.STLLoader();
                     
                     loader.load(
                         modelPath,
                         (geometry) => {
-
-                            console.log(`STL file loaded successfully: ${modelPath}`);
-                            console.log("Geometry stats:", {
-                                vertices: geometry.attributes.position.count,
-                                faces: geometry.attributes.position.count / 3
-                            });
-                            
-
-                            if (!geometry.attributes.normal) {
-                                geometry.computeVertexNormals();
+                            try {
+                                console.log(`STL file loaded successfully: ${modelPath}`);
+                                
+                                
+                                if (!geometry.attributes.normal) {
+                                    geometry.computeVertexNormals();
+                                }
+                                
+                                
+                                const material = new THREE.MeshPhongMaterial({
+                                    color: 0xb3743a,
+                                    specular: 0x111111,
+                                    shininess: 200,
+                                    flatShading: false
+                                });
+                                
+                                
+                                const mesh = new THREE.Mesh(geometry, material);
+                                
+                                
+                                mesh.rotation.x = -Math.PI / 2;
+                                
+                                
+                                geometry.computeBoundingBox();
+                                const boundingBox = geometry.boundingBox;
+                                
+                                const center = new THREE.Vector3();
+                                boundingBox.getCenter(center);
+                                mesh.position.set(-center.x, -center.y, -center.z);
+                                
+                                
+                                const size = boundingBox.getSize(new THREE.Vector3());
+                                const maxDim = Math.max(size.x, size.y, size.z);
+                                const scale = 10 / maxDim;
+                                mesh.scale.set(scale, scale, scale);
+                                
+                                
+                                mesh.castShadow = true;
+                                mesh.receiveShadow = true;
+                                
+                                
+                                this.model = mesh;
+                                this.scene.add(this.model);
+                                
+                                
+                                this.resetCamera();
+                                
+                                
+                                if (this.loadingAnimation) {
+                                    this.loadingAnimation.style.opacity = '0';
+                                    setTimeout(() => {
+                                        this.loadingAnimation.style.display = 'none';
+                                    }, 300);
+                                }
+                                
+                                this.isLoading = false;
+                                resolve();
+                            } catch (innerError) {
+                                console.error('Error processing geometry:', innerError);
+                                reject(innerError);
                             }
-                            
-
-                            const material = new THREE.MeshPhongMaterial({
-                                color: 0xb3743a,
-                                specular: 0x111111,
-                                shininess: 200,
-                                flatShading: false
-                            });
-                            
-
-                            const mesh = new THREE.Mesh(geometry, material);
-                            
-                            mesh.rotation.x = -Math.PI / 2;
-
-                            geometry.computeBoundingBox();
-                            const boundingBox = geometry.boundingBox;
-                            console.log("Original bounding box:", {
-                                min: boundingBox.min,
-                                max: boundingBox.max
-                            });
-                            
-                            const center = new THREE.Vector3();
-                            boundingBox.getCenter(center);
-                            mesh.position.set(-center.x, -center.y, -center.z);
-                            
-
-                            const size = boundingBox.getSize(new THREE.Vector3());
-                            const maxDim = Math.max(size.x, size.y, size.z);
-                            const scale = 10 / maxDim;
-                            mesh.scale.set(scale, scale, scale);
-                            
-                            console.log(`Model centered at (${-center.x}, ${-center.y}, ${-center.z}) with scale ${scale}`);
-                            
-
-                            mesh.castShadow = true;
-                            mesh.receiveShadow = true;
-                            
-
-                            this.model = mesh;
-                            this.scene.add(this.model);
-                            
-
-                            this.resetCamera();
-                            
-
-                            if (this.loadingAnimation) {
-                                this.loadingAnimation.style.opacity = '0';
-                                setTimeout(() => {
-                                    this.loadingAnimation.style.display = 'none';
-                                }, 300);
-                            }
-                            
-                            this.isLoading = false;
-                            console.log(`Model added to scene at position:`, mesh.position);
-                            resolve();
                         },
+                        
                         (xhr) => {
-
                             console.log(`${(xhr.loaded / xhr.total * 100).toFixed(0)}% loaded`);
                         },
+                        
                         (error) => {
-                            console.error('Error loading STL model:', error);
-                            reject(error);
+                            
+                            if (error.message && error.message.includes('allocation failed')) {
+                                console.error('Memory allocation error - model may be too large');
+                                reject(new Error('Model is too large for available memory. Try a smaller model.'));
+                            } else {
+                                console.error('Error loading STL model:', error);
+                                reject(error);
+                            }
                         }
                     );
                 } catch (error) {
@@ -322,13 +360,6 @@ function init3DViewer() {
         toggleWireframe() {
             if (!this.model) return;
             
-            const maxSafeVertices = 12000000;
-            const vertirces = this.model.geometry?.attributes?.position?.count || 0;
-            if (vertirces > maxSafeVertices) {
-                console.warn(`Model has too many vertices (${vertirces}). Wireframe mode may not be supported.`);
-                return;
-            }
-
             this.model.traverse((child) => {
                 if (child.isMesh) {
                     child.material.wireframe = !child.material.wireframe;
@@ -366,7 +397,9 @@ function init3DViewer() {
             const backBtn = document.getElementById('back-to-projects');
             if (backBtn) {
                 backBtn.addEventListener('click', () => {
-                    window.pageNavigation.showProjects();
+                    if (window.pageNavigation && window.pageNavigation.showProjects) {
+                        window.pageNavigation.showProjects();
+                    }
                 });
             }
             
