@@ -1077,35 +1077,6 @@ function initPageNavigation () {
       link.click();
       document.body.removeChild(link);
     }
-  
-
-    setupSwipeNavigation();
-    function setupSwipeNavigation () {
-      if (window.innerWidth > 768) return;     
-  
-      const area = document.querySelector('.content-container');
-      if (!area) return;
-  
-      let startX = 0, endX = 0;
-      area.addEventListener('touchstart', e => (startX = e.touches[0].clientX), { passive:true });
-      area.addEventListener('touchend'  , e => {
-        endX = e.changedTouches[0].clientX;
-        const dx = endX - startX;
-        if (Math.abs(dx) < 60) return;         
-  
-        if (projectsContainer.classList.contains('active')) {
-          if (dx < 0) showAbout();             
-        } else if (aboutContainer.classList.contains('active')) {
-          if (dx > 0) showProjects();          
-          else        showPortfolio();         
-        } else if (pdfContainer.classList.contains('active') && dx > 0) {
-          showAbout();                         
-        } else if (modelContainer.classList.contains('active') && dx > 0) {
-          showProjects();                       
-        }
-      }, { passive:true });
-    }
-  
 
     showPortfolio();                           
   
