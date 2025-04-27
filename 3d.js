@@ -161,7 +161,12 @@ function init3DViewer() {
                 `;
             }
             
-
+            this.modelInfo.classList.add('hidden');
+            const infoBtn = document.getElementById('info-toggle');
+            if (infoBtn) {
+                infoBtn.classList.remove('active');
+            }
+        
             if (this.model) {
                 this.scene.remove(this.model);
                 
