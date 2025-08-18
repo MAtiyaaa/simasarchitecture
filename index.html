@@ -22,6 +22,7 @@
                 <ul class="nav-links">
                     <li><a href="#" id="portfolio-link" class="active">Portfolio</a></li>
                     <li><a href="#" id="projects-link">Projects</a></li>
+                    <li><a href="#" id="artworks-link">Artworks</a></li>
                     <li><a href="#" id="about-link">About</a></li>
                     <li><a href="#" id="contact-link">Contact</a></li>
                   </ul>                  
@@ -130,7 +131,6 @@
                 </div>
                 <div class="projects-container">
                     <h2 class="projects-header">Studio Projects</h2>
-                  
                     <div class="projects-grid">
                         <article class="project-card project-card-3d" data-model="co-housing" data-stl="stl/cohousing-space.stl">
                             <img src="img/co-housing-thumb.jpg" alt="Co-housing Space">
@@ -214,6 +214,68 @@
                       </article>
                     </div>
                   </div>
+                <div class="artworks-container">
+                    <h2 class="artworks-header">Artworks</h2>
+                    <div class="artworks-content">
+                        
+                        <div class="artwork-item">
+                            <div class="artwork-visual">
+                                <div class="artwork-slider-container">
+                                    <div class="artwork-image-wrapper">
+                                        <img src="img/art/gaza-original.jpg" alt="Gaza - Before" class="artwork-before">
+                                        <img src="img/art/gaza.jpg" alt="Gaza - After" class="artwork-after">
+                                    </div>
+                                    <div class="slider-control">
+                                        <input type="range" min="0" max="100" value="100" class="slider" id="gaza-slider">
+                                        <div class="slider-labels">
+                                            <span>Before</span>
+                                            <span>After</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="artwork-details">
+                                <h3 class="artwork-title">Gaza</h3>
+                                <div class="artwork-info">
+                                    <p><strong>Date:</strong> 21/05/25</p>
+                                    <p><strong>Method:</strong> Procreate</p>
+                                    <p><strong>Age:</strong> 21</p>
+                                    <p><strong>Photo Reference:</strong> Devastation around the Saleh family home is seen through destroyed walls in the Jabaliya refugee camp in the northern Gaza Strip, Feb. 5 2025. (AP Photo/Abdel Kareem Hana)</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="artwork-item">
+                            <div class="artwork-visual">
+                                <div class="artwork-slider-container">
+                                    <div class="artwork-image-wrapper">
+                                        <img src="img/art/venice-original.jpg" alt="Venice - Before" class="artwork-before">
+                                        <img src="img/art/venice.jpg" alt="Venice - After" class="artwork-after">
+                                    </div>
+                                    <div class="slider-control">
+                                        <input type="range" min="0" max="100" value="100" class="slider" id="venice-slider">
+                                        <div class="slider-labels">
+                                            <span>Before</span>
+                                            <span>After</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="artwork-details">
+                                <h3 class="artwork-title">Venice</h3>
+                                <div class="artwork-info">
+                                    <p><strong>Date:</strong> 06/08/2025</p>
+                                    <p><strong>Method:</strong> Photoshop</p>
+                                    <p><strong>Age:</strong> 22</p>
+                                    <p><strong>Photo Reference:</strong> <a href="https://unsplash.com/photos/a-view-of-a-canal-from-a-bridge-in-venice-x-dIFwi8PRI" target="_blank" rel="noopener">Unsplash+</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="artworks-legal">
+                        <p>This is the work of Sima Assaf. Distributing my work for any commercial reason is strictly prohibited. Distributing online must include credit, either by linking my Instagram (<a href="https://www.instagram.com/simasarchitecture/" target="_blank">simasarchitecture</a>), or this website.</p>
+                    </div>
+                </div>
                 <div class="about-container full-scroll">
                     <h2 class="about-header">About Me</h2>
                     <div class="about-content">
@@ -326,6 +388,7 @@
                 <div class="footer-links">
                     <a href="#" id="footer-portfolio">Portfolio</a>
                     <a href="#" id="footer-projects">Projects</a>
+                    <a href="#" id="footer-artworks">Artworks</a>
                     <a href="#" id="footer-about">About</a>
                     <a href="mailto:simasarchitecture@gmail.com">Contact</a>
                 </div>
@@ -356,7 +419,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    
     <script src="script.js"></script>
     <script src="3d.js"></script>
 </body>
