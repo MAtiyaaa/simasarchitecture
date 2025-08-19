@@ -783,14 +783,10 @@ function initPageNavigation () {
         }
         slider.addEventListener('input', function() {
           const value = parseInt(this.value);
-          
-          
           const leftEdge = value; 
           beforeImage.style.clipPath = `polygon(${leftEdge}% 0%, 100% 0%, 100% 100%, ${leftEdge}% 100%)`;
-          
           beforeImage.style.transform = 'translate(-50%, -50%)';
         });
-        
         const initialValue = parseInt(slider.value);
         beforeImage.style.clipPath = `polygon(${initialValue}% 0%, 100% 0%, 100% 100%, ${initialValue}% 100%)`;
         beforeImage.style.transform = 'translate(-50%, -50%)';
