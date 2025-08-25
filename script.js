@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initMobileOptimizations();
         initAnimations();
         initFooterNavigation();
+    initImageLightbox();
         document.body.classList.add('page-loaded');
         addTactileFeedback();
         window.portfolioApp = {
@@ -1032,6 +1033,127 @@ function initFooterNavigation() {
             }
         });
     }
+}
+function initImageLightbox() {
+        const overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+        const img = document.createElement('img');
+        img.className = 'lightbox-image';
+        img.alt = '';
+        const compare = document.createElement('div');
+        compare.className = 'lightbox-compare';
+        compare.innerHTML = `
+            <div class="lightbox-compare-wrapper">
+                <img class="lb-image lb-after" alt="After">
+                <img class="lb-image lb-before" alt="Before">
+            </div>
+            <div class="lightbox-slider-bar">
+                <input type="range" class="lightbox-slider" min="0" max="100" value="100" aria-label="Compare before and after">
+                <div class="lightbox-slider-labels"><span>Before</span><span>After</span></div>
+            </div>
+        `;
+        const lbBefore = compare.querySelector('.lb-before');
+        const lbAfter  = compare.querySelector('.lb-after');
+        const lbRange  = compare.querySelector('.lightbox-slider');
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'lightbox-close';
+    closeBtn.setAttribute('aria-label', 'Close image');
+    closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
+        overlay.appendChild(img);
+        overlay.appendChild(compare);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+    let active = false;
+    function openLightboxSingle(src, altText) {
+        if (!src) return;
+        img.src = src;
+        img.alt = altText || '';
+        img.style.display = 'block';
+        compare.style.display = 'none';
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('no-scroll');
+        active = true;
+    }
+    function openLightboxCompare(beforeSrc, afterSrc) {
+        if (!beforeSrc || !afterSrc) return openLightboxSingle(afterSrc || beforeSrc, '');
+        lbBefore.src = beforeSrc;
+        lbAfter.src  = afterSrc;
+        lbRange.value = 100;
+        lbBefore.style.clipPath = `polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)`;
+        img.style.display = 'none';
+        compare.style.display = 'flex';
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('no-scroll');
+        active = true;
+    }
+    function closeLightbox() {
+        if (!active) return;
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('no-scroll');
+        setTimeout(() => { img.removeAttribute('src'); }, 150);
+        active = false;
+    }
+    closeBtn.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+    lbRange.addEventListener('input', function() {
+        const value = parseInt(this.value);
+        const leftEdge = value;
+        lbBefore.style.clipPath = `polygon(${leftEdge}% 0%, 100% 0%, 100% 100%, ${leftEdge}% 100%)`;
+    });
+    function bindImages(scope=document) {
+        const imgs = scope.querySelectorAll('img');
+        imgs.forEach(el => {
+            if (el.dataset.lightboxBound) return;
+            el.dataset.lightboxBound = 'true';
+            el.style.cursor = 'zoom-in';
+            el.addEventListener('click', (e) => {
+                const anchor = el.closest('a');
+                if (anchor) e.preventDefault();
+                const sliderContainer = el.closest('.artwork-slider-container');
+                if (sliderContainer) {
+                    const wrapper = sliderContainer.querySelector('.artwork-image-wrapper');
+                    const bImg = wrapper?.querySelector('.artwork-before');
+                    const aImg = wrapper?.querySelector('.artwork-after');
+                    if (bImg && aImg) {
+                        const beforeSrc = bImg.currentSrc || bImg.src;
+                        const afterSrc  = aImg.currentSrc || aImg.src;
+                        openLightboxCompare(beforeSrc, afterSrc);
+                        e.stopPropagation();
+                        return;
+                    }
+                }
+                const src = el.currentSrc || el.src;
+                openLightboxSingle(src, el.alt || '');
+                e.stopPropagation();
+            });
+        });
+    }
+    bindImages();
+    const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+            if (m.addedNodes && m.addedNodes.length) {
+                m.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) { 
+                        if (node.tagName === 'IMG') {
+                            bindImages(node.parentElement || document);
+                        } else {
+                            bindImages(node);
+                        }
+                    }
+                });
+            }
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
 }
 function initAnimations() {
     const elements = [
