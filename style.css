@@ -950,6 +950,41 @@
   .artworks-legal a:hover {
     text-decoration: underline;
   }
+  .before-ref { margin-top: var(--spacing-sm); }
+  .ref-details {
+    border: 1px solid rgba(179, 116, 58, 0.2);
+    border-radius: 8px;
+    background: rgba(179, 116, 58, 0.05);
+    overflow: hidden;
+  }
+  .ref-details > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 10px 12px;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ref-details > summary::-webkit-details-marker { display: none; }
+  .ref-details > summary::after {
+    content: '\25BC';
+    margin-left: auto;
+    font-size: 0.8rem;
+    opacity: 0.8;
+    transition: transform 0.2s ease;
+  }
+  .ref-details[open] > summary::after { transform: rotate(180deg); }
+  .ref-body {
+    padding: 10px 12px 12px 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  body.dark-mode .ref-details {
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04);
+  }
+  body.dark-mode .ref-details > summary { color: #ffd7b3; }
   .lightbox-overlay {
     position: fixed;
     inset: 0;
@@ -1886,12 +1921,39 @@
     .artwork-item {
       flex-direction: column !important;
       text-align: center;
+      padding: var(--spacing-md);
+      gap: var(--spacing-md);
     }
     .artwork-visual,
     .artwork-details {
       max-width: 100%;
       width: 100%;
     }
+    .artwork-title {
+      font-size: 1.6rem;
+      margin-bottom: var(--spacing-md);
+    }
+    .artwork-info {
+      padding: var(--spacing-md);
+      text-align: left;
+    }
+    .artwork-info p {
+      margin-bottom: var(--spacing-xs);
+      line-height: 1.5;
+      font-size: 0.9rem;
+      padding-left: var(--spacing-xxs);
+    }
+    .artwork-info strong {
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      min-width: unset;
+      margin-right: 6px;
+    }
+    .artwork-image-wrapper {
+      min-height: 240px;
+    }
+    .before-ref .ref-details > summary { padding: 8px 10px; }
+    .ref-body { padding: 8px 10px 10px 10px; }
     .about-grid {
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
