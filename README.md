@@ -104,7 +104,7 @@ SPACES
 
 ```mermaid
 flowchart LR
-  A([2021<br/>Start @ AUD]) --> B([Spring 2024<br/>Dean's List]) --> C([Fall 2024<br/>Dean's List]) --> D([Spring 2025<br/>Dean's List]) --> E([May 2025<br/>JT+Partners Internship]) --> F([Sept 2025<br/>Portfolio Expansion]) --> G([Present<br/>Open for Opportunities])
+  A([2021<br/>Start @ AUD]) --> B([Spring 2024<br/>Dean's List]) --> C([Fall 2024<br/>Dean's List]) --> D([Spring 2025<br/>Dean's List]) --> E([May 2025<br/>JT+Partners Internship]) --> F([Sept 2025<br/>Thesis Year]) --> G([June 2026<br/>Graduation])
 
   %% Styling
   classDef bronze fill:#8c5a2d,stroke:#ffffff,stroke-width:2px,color:#ffffff;
