@@ -11,6 +11,11 @@ function init3DViewer() {
         viewerContainer: document.getElementById('model-viewer'),
         loadingAnimation: document.querySelector('.model-loading-animation'),
         modelInfo: document.querySelector('.model-information'),
+    progressBarEl: null,
+    progressTextEl: null,
+    loadStartTime: 0,
+    lastProgressTime: 0,
+    lastLoadedBytes: 0,
         init() {
             console.log('Initializing 3D model viewer...');
             if (!this.viewerContainer) {
@@ -114,6 +119,18 @@ function init3DViewer() {
             if (this.loadingAnimation) {
                 this.loadingAnimation.style.display = 'flex';
                 this.loadingAnimation.style.opacity = '1';
+                this.loadingAnimation.innerHTML = `
+                    <div class="model-spinner" aria-hidden="true"></div>
+                    <div class="model-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="model-progress-bar"><span></span></div>
+                        <div class="model-progress-text">0% - estimating...</div>
+                    </div>
+                `;
+                this.progressBarEl = this.loadingAnimation.querySelector('.model-progress-bar span');
+                this.progressTextEl = this.loadingAnimation.querySelector('.model-progress-text');
+                this.loadStartTime = performance.now();
+                this.lastProgressTime = this.loadStartTime;
+                this.lastLoadedBytes = 0;
             }
             if (this.modelInfo && name && info) {
                 this.modelInfo.innerHTML = `
@@ -212,6 +229,12 @@ function init3DViewer() {
                                     }, 300);
                                 }
                                 this.isLoading = false;
+                                if (this.progressBarEl) {
+                                    this.progressBarEl.style.width = '100%';
+                                }
+                                if (this.progressTextEl) {
+                                    this.progressTextEl.textContent = '100% - Loaded';
+                                }
                                 resolve();
                             } catch (innerError) {
                                 console.error('Error processing geometry:', innerError);
@@ -219,7 +242,45 @@ function init3DViewer() {
                             }
                         },
                         (xhr) => {
-                            console.log(`${(xhr.loaded / xhr.total * 100).toFixed(0)}% loaded`);
+                            if (!this.loadingAnimation) return;
+                            if (xhr.total && xhr.total > 0) {
+                                const percent = (xhr.loaded / xhr.total) * 100;
+                                const now = performance.now();
+                                const elapsedSec = (now - this.loadStartTime) / 1000;
+                                const deltaBytes = xhr.loaded - this.lastLoadedBytes;
+                                const deltaTime = (now - this.lastProgressTime) / 1000 || 0.001;
+                                const instantRate = deltaBytes / deltaTime; 
+                                const averageRate = xhr.loaded / elapsedSec;
+                                const rate = (instantRate * 0.4) + (averageRate * 0.6);
+                                const remainingBytes = xhr.total - xhr.loaded;
+                                let etaSec = remainingBytes / (rate || 1);
+                                if (!isFinite(etaSec) || etaSec < 0) etaSec = 0;
+                                let etaText;
+                                if (etaSec >= 60) {
+                                    const m = Math.floor(etaSec / 60);
+                                    const s = Math.round(etaSec % 60);
+                                    etaText = `${m}m ${s}s`;
+                                } else {
+                                    etaText = `${etaSec.toFixed(1)}s`;
+                                }
+                                if (this.progressBarEl) {
+                                    this.progressBarEl.style.width = `${percent.toFixed(2)}%`;
+                                }
+                                if (this.progressTextEl) {
+                                    this.progressTextEl.textContent = `${percent.toFixed(1)}% - ${etaSec > 0 ? etaText + ' remaining' : 'Finalizing...'}`;
+                                }
+                                const progressWrapper = this.loadingAnimation.querySelector('.model-progress');
+                                if (progressWrapper) {
+                                    progressWrapper.setAttribute('aria-valuenow', percent.toFixed(0));
+                                }
+                                this.lastLoadedBytes = xhr.loaded;
+                                this.lastProgressTime = now;
+                            } else {
+                                this.loadingAnimation.classList.add('indeterminate');
+                                if (this.progressTextEl) {
+                                    this.progressTextEl.textContent = 'Loading...';
+                                }
+                            }
                         },
                         (error) => {
                             if (error.message && error.message.includes('allocation failed')) {
