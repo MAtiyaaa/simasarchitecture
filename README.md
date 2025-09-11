@@ -227,7 +227,7 @@ flowchart LR
 <table style="width:100%;">
 <tr>
 <td align="center" width="33.33%" style="padding: 15px;">
-<img src="http://127.0.0.1:5502/img/art/gaza.jpg" width="280" height="200" style="object-fit: cover; border-radius:8px; border: 2px solid #b3743a;" alt="Gaza Artwork"/>
+<img src="http://simasarchitecture.com/img/art/gaza.jpg" width="280" height="200" style="object-fit: cover; border-radius:8px; border: 2px solid #b3743a;" alt="Gaza Artwork"/>
 <div style="background-color:#b3743a; padding:10px; border-radius:8px; margin-top:10px;">
 <h4 style="color:#000000; margin:5px 0;">Gaza</h4>
 </div>
@@ -235,7 +235,7 @@ flowchart LR
 🎨 <i>Procreate</i><br>
 </td>
 <td align="center" width="33.33%" style="padding: 15px;">
-<img src="http://127.0.0.1:5502/img/art/venice.jpg" width="280" height="200" style="object-fit: cover; border-radius:8px; border: 2px solid #b3743a;" alt="Venice Artwork"/>
+<img src="http://simasarchitecture.com/img/art/venice.jpg" width="280" height="200" style="object-fit: cover; border-radius:8px; border: 2px solid #b3743a;" alt="Venice Artwork"/>
 <div style="background-color:#d9a066; padding:10px; border-radius:8px; margin-top:10px;">
 <h4 style="color:#000000; margin:5px 0;">Venice</h4>
 </div>
@@ -243,7 +243,7 @@ flowchart LR
 🎨 <i>Photoshop</i><br>
 </td>
 <td align="center" width="33.33%" style="padding: 15px;">
-<img src="http://127.0.0.1:5502/img/art/25.jpeg" width="280" height="200" style="object-fit: cover; border-radius:8px; border: 2px solid #d9a066;" alt="25/08/2025 Artwork"/>
+<img src="http://simasarchitecture.com/img/art/25.jpeg" width="280" height="200" style="object-fit: cover; border-radius:8px; border: 2px solid #d9a066;" alt="25/08/2025 Artwork"/>
 <div style="background-color:#e6c097; padding:10px; border-radius:8px; margin-top:10px;">
 <h4 style="color:#000000; margin:5px 0;">25/08/2025</h4>
 </div>
