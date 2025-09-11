@@ -14,7 +14,7 @@
 <br>
 
 <h3 align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Architects+Daughter&size=30&duration=3000&pause=1000&color=b3743a&center=true&vCenter=true&width=600&lines=Innovative+Architectural+Design;Sustainable+%26+Human-Centered+Spaces;Where+Art+Meets+Engineering;Creating+Tomorrow's+Landmarks" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Architects+Daughter&size=30&duration=3000&pause=1000&color=b3743a&center=true&vCenter=true&width=600&lines=Innovative+Architectural+Design;Sustainable+%26+Human-Centered+Spaces;Where+Art+Meets+Passion;Creating+Tomorrow's+Landmarks" alt="Typing SVG" />
 </h3>
 
 <br>
