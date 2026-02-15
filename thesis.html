@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Page images loaded as JPGs -->
+    
     <style>
         :root {
             --gold: #c9a46b;
@@ -32,7 +32,7 @@
             min-height: 100vh;
         }
 
-        /* Navigation */
+        
         .nav {
             position: fixed;
             top: 0;
@@ -108,7 +108,7 @@
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* Page Header */
+        
         .page-header {
             padding: 140px 48px 0;
             text-align: center;
@@ -132,7 +132,7 @@
             margin-bottom: 40px;
         }
 
-        /* Subtabs */
+        
         .subtabs {
             display: flex;
             justify-content: center;
@@ -166,7 +166,7 @@
             border-bottom-color: var(--gold);
         }
 
-        /* Content Sections */
+        
         .content-section {
             display: none;
             min-height: 600px;
@@ -176,7 +176,7 @@
             display: block;
         }
 
-        /* Chiseled Section */
+        
         .chiseled-header {
             padding: 40px 48px;
             text-align: center;
@@ -223,7 +223,7 @@
             box-shadow: 0 8px 24px rgba(201, 164, 107, 0.3);
         }
 
-        /* PDF Viewer */
+        
         .pdf-container {
             padding: 40px 48px;
             max-width: 1200px;
@@ -306,7 +306,7 @@
             text-align: center;
         }
 
-        /* Project Section - Coming Soon */
+        
         .project-soon {
             padding: 100px 48px;
             text-align: center;
@@ -408,7 +408,7 @@
             color: var(--gold);
         }
 
-        /* Responsive */
+        
         @media (max-width: 768px) {
             .nav { padding: 16px 24px; }
             .nav-links { display: none; }
@@ -468,7 +468,7 @@
         </div>
     </header>
 
-    <!-- Chiseled Tab Content -->
+    
     <div id="chiseled" class="content-section active">
         <div class="chiseled-header">
             <p class="chiseled-subtitle">Chiseled is an architectural intervention in Petra that is carved from the landscape like a deliberate cut in stone, guiding movement, framing monuments, and honoring Nabataean craft through precise, low-impact form.</p>
@@ -503,7 +503,7 @@
         </div>
     </div>
 
-    <!-- Project Tab Content -->
+    
     <div id="project" class="content-section">
         <div class="project-soon">
             <div class="soon-badge">
@@ -550,7 +550,7 @@
     </div>
 
     <script>
-        // Tab switching
+        
         function showTab(tabName) {
             document.querySelectorAll('.subtab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
@@ -559,23 +559,23 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        // Mobile menu
+        
         function toggleMobileMenu() {
             document.getElementById('mobileNav').classList.toggle('active');
         }
 
-        // Page flipper for thesis images
+        
         const totalPages = 121;
         let currentPage = 1;
         const pageImage = document.getElementById('page-image');
         const pageDisplay = document.getElementById('page-display');
 
         function loadPage(pageNum) {
-            // Show loading state
+            
             pageDisplay.querySelector('.pdf-loading').style.display = 'block';
             pageImage.style.display = 'none';
             
-            // Load the image
+            
             const img = new Image();
             img.onload = function() {
                 pageImage.src = img.src;
@@ -609,16 +609,16 @@
             document.getElementById('next-btn').disabled = currentPage >= totalPages;
         }
 
-        // Keyboard navigation
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') prevPage();
             if (e.key === 'ArrowRight') nextPage();
         });
 
-        // Load first page on startup
+        
         loadPage(1);
 
-        // Countdown for Project tab
+        
         const targetDate = new Date('2026-05-01T00:00:00');
         const startDate = new Date('2026-02-12T00:00:00');
         const totalDuration = targetDate - startDate;
@@ -651,7 +651,7 @@
             document.getElementById('progress-fill').style.width = progress + '%';
         }
 
-        // Initialize countdown
+        
         updateCountdown();
         setInterval(updateCountdown, 1000);
     </script>

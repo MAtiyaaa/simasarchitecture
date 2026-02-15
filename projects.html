@@ -33,7 +33,7 @@
             color: var(--text-primary);
         }
 
-        /* Navigation */
+        
         .nav {
             position: fixed;
             top: 0;
@@ -78,7 +78,7 @@
             color: var(--gold);
         }
 
-        /* Header */
+        
         .page-header {
             padding: 140px 48px 60px;
             text-align: center;
@@ -100,7 +100,7 @@
             font-weight: 300;
         }
 
-        /* Projects Grid */
+        
         .projects-container {
             padding: 60px 48px;
             max-width: 1400px;
@@ -192,7 +192,7 @@
             color: var(--charcoal);
         }
 
-        /* Project Detail Modal */
+        
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -323,7 +323,7 @@
             background: transparent;
         }
 
-        /* 3D Loading Screen */
+        
         .model-loading {
             display: flex;
             align-items: center;
@@ -392,7 +392,7 @@
             font-style: italic;
         }
 
-        /* 3D Viewer */
+        
         .viewer-modal {
             position: fixed;
             inset: 0;
@@ -457,7 +457,7 @@
             position: relative;
         }
 
-        /* Mobile Menu */
+        
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -633,7 +633,7 @@
         </div>
     </div>
 
-    <!-- Project Detail Modal -->
+    
     <div class="modal-overlay" id="projectModal" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
@@ -659,7 +659,7 @@
         </div>
     </div>
 
-    <!-- 3D Viewer Modal -->
+    
     <div class="viewer-modal" id="viewerModal">
         <div class="viewer-header">
             <h2 class="viewer-title" id="viewer-title">3D Model</h2>
@@ -727,7 +727,7 @@
             }
         }
 
-        // Video Modal with description
+        
         function openVideoModal(title, videoSrc, description, category) {
             const modal = document.createElement('div');
             modal.className = 'modal-overlay active';
@@ -795,7 +795,7 @@
                 init3DViewer();
             }
             
-            // Show loading indicator with progress
+            
             const container = document.getElementById('model-container');
             container.innerHTML = `
                 <div class="model-loading">
@@ -814,7 +814,7 @@
             `;
             
             setTimeout(() => {
-                // Re-create renderer after clearing
+                
                 if (renderer) {
                     container.innerHTML = '';
                     container.appendChild(renderer.domElement);
@@ -847,7 +847,7 @@
             renderer.shadowMap.enabled = true;
             container.appendChild(renderer.domElement);
             
-            // Lighting
+            
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
             
@@ -860,14 +860,14 @@
             fillLight.position.set(-10, 0, -10);
             scene.add(fillLight);
             
-            // Controls
+            
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
             controls.autoRotate = true;
             controls.autoRotateSpeed = 0.8;
             
-            // Handle resize
+            
             window.addEventListener('resize', onWindowResize);
             
             animate();
@@ -876,7 +876,7 @@
         function loadSTLModel(filename) {
             if (model) scene.remove(model);
             
-            // Map project names to actual STL filenames
+            
             const stlMap = {
                 'cohousing-space': 'cohousing-space',
                 'co-housing': 'cohousing-space',
@@ -916,7 +916,7 @@
                     scene.add(model);
                 },
                 (progress) => {
-                    // Progress callback - update loading screen
+                    
                     if (progress.lengthComputable) {
                         const percent = Math.round((progress.loaded / progress.total) * 100);
                         const progressFill = document.getElementById('model-progress-fill');
@@ -984,7 +984,7 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
         }
 
-        // Close modals on escape key
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();

@@ -29,7 +29,7 @@
             min-height: 100vh;
         }
 
-        /* Navigation */
+        
         .nav {
             position: fixed;
             top: 0;
@@ -74,7 +74,7 @@
             color: var(--gold);
         }
 
-        /* Mobile Menu */
+        
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -106,7 +106,7 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* Header Section */
+        
         .page-header {
             padding: 140px 48px 40px;
             text-align: center;
@@ -136,7 +136,7 @@
             margin: 0 auto 32px;
         }
 
-        /* Controls Bar */
+        
         .controls-bar {
             display: flex;
             justify-content: center;
@@ -146,7 +146,7 @@
             padding: 0 24px;
         }
 
-        /* Beautiful Dropdown */
+        
         .chapter-dropdown {
             position: relative;
             min-width: 220px;
@@ -220,7 +220,7 @@
             color: white;
         }
 
-        /* PDF Container */
+        
         .pdf-container {
             padding: 40px 48px 140px;
             max-width: 1100px;
@@ -279,7 +279,7 @@
             margin-bottom: 20px;
         }
 
-        /* Navigation Bar */
+        
         .pdf-nav {
             position: fixed;
             bottom: 0;
@@ -448,12 +448,12 @@
                 totalPages = pdfDoc.numPages;
                 document.getElementById('total-pages').textContent = totalPages;
                 
-                // Create canvas
+                
                 canvas = document.createElement('canvas');
                 canvas.id = 'pdf-canvas';
                 ctx = canvas.getContext('2d');
                 
-                // Add progress bar
+                
                 display.innerHTML = `
                     <div id="pdf-progress-container" style="position:absolute;top:0;left:0;right:0;height:4px;background:rgba(0,0,0,0.1);z-index:10;">
                         <div id="pdf-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.3s;"></div>
@@ -484,7 +484,7 @@
             if (!pdfDoc) return;
             
             try {
-                // Update progress bar
+                
                 const progressBar = document.getElementById('pdf-progress-bar');
                 if (progressBar) progressBar.style.width = '30%';
                 
@@ -496,27 +496,27 @@
                 const containerWidth = container.clientWidth - 40;
                 const containerHeight = window.innerHeight * 0.8;
                 
-                // Mobile optimization - use lower quality for better performance
+                
                 const isMobile = window.innerWidth < 768;
                 const viewport = page.getViewport({ scale: 1 });
                 
-                // Calculate scale to fit
+                
                 let scale = Math.min(
                     containerWidth / viewport.width,
                     containerHeight / viewport.height
                 );
                 
-                // Adjust quality based on device
+                
                 const qualityScale = isMobile ? 1.2 : 1.5;
                 scale *= qualityScale;
                 
                 const scaledViewport = page.getViewport({ scale: scale });
                 
-                // Set canvas size
+                
                 canvas.width = scaledViewport.width;
                 canvas.height = scaledViewport.height;
                 
-                // Scale down with CSS for display
+                
                 canvas.style.width = (scaledViewport.width / qualityScale) + 'px';
                 canvas.style.height = (scaledViewport.height / qualityScale) + 'px';
                 

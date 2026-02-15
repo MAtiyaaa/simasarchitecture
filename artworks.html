@@ -27,7 +27,7 @@
             color: var(--text-primary);
         }
 
-        /* Navigation */
+        
         .nav {
             position: fixed;
             top: 0;
@@ -72,7 +72,7 @@
             color: var(--gold);
         }
 
-        /* Mobile Menu */
+        
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -104,7 +104,7 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* Hero */
+        
         .page-header {
             padding: 140px 48px 60px;
             text-align: center;
@@ -138,7 +138,7 @@
             margin: 0 auto;
         }
 
-        /* Featured Artwork */
+        
         .featured-section {
             padding: 80px 48px;
             max-width: 1200px;
@@ -237,7 +237,7 @@
             color: var(--text-primary);
         }
 
-        /* Series Section */
+        
         .series-section {
             padding: 100px 48px;
             background: var(--cream-dark);
@@ -260,7 +260,7 @@
             font-size: 16px;
         }
 
-        /* Artwork Items */
+        
         .artwork-item {
             max-width: 1200px;
             margin: 0 auto 100px;
@@ -282,7 +282,7 @@
             margin-bottom: 0;
         }
 
-        /* Slider */
+        
         .slider-container {
             position: relative;
             border-radius: 20px;
@@ -345,7 +345,7 @@
             letter-spacing: 0.1em;
         }
 
-        /* Artwork Info */
+        
         .artwork-info h3 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 48px;
@@ -407,7 +407,7 @@
             line-height: 1.7;
         }
 
-        /* Legal */
+        
         .legal-section {
             padding: 60px 48px;
             text-align: center;
@@ -479,7 +479,7 @@
         <p class="page-subtitle">Digital art exploring themes of culture, history, and human experience through photography and illustration</p>
     </header>
 
-    <!-- Featured Artwork -->
+    
     <section class="featured-section">
         <div class="featured-header">
             <span class="featured-label">Latest Work</span>
@@ -520,14 +520,14 @@
         </div>
     </section>
 
-    <!-- Before & After Series -->
+    
     <section class="series-section">
         <div class="series-header">
             <h2 class="series-title">Transformation Series</h2>
             <p class="series-subtitle">Before & After — Reimagining photographs through artistic intervention</p>
         </div>
 
-        <!-- Gaza -->
+        
         <div class="artwork-item">
             <div class="slider-container">
                 <div class="image-wrapper">
@@ -571,7 +571,7 @@
             </div>
         </div>
 
-        <!-- Venice -->
+        
         <div class="artwork-item">
             <div class="slider-container">
                 <div class="image-wrapper">
@@ -615,7 +615,7 @@
             </div>
         </div>
 
-        <!-- Intifada -->
+        
         <div class="artwork-item">
             <div class="slider-container">
                 <div class="image-wrapper">
@@ -660,14 +660,14 @@
         </div>
     </section>
 
-    <!-- Digital Art Collection -->
+    
     <section class="series-section">
         <div class="series-header">
             <h2 class="series-title">Digital Art Collection</h2>
             <p class="series-subtitle">Original illustrations, animations, and digital compositions</p>
         </div>
 
-        <!-- Gustav Moodboard -->
+        
         <div class="artwork-item">
             <div class="artwork-visual">
                 <img src="img/art/Gustav%20Moodboard.jpg" alt="Gustav Moodboard" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
@@ -691,7 +691,7 @@
             </div>
         </div>
 
-        <!-- Hand Animation (Video) -->
+        
         <div class="artwork-item">
             <div class="artwork-visual" style="position:relative;overflow:hidden;border-radius:12px;">
                 <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
@@ -720,7 +720,7 @@
             </div>
         </div>
 
-        <!-- Portrait of a Lady -->
+        
         <div class="artwork-item">
             <div class="artwork-visual">
                 <img src="img/art/Portrait%20of%20Lady.jpg" alt="Portrait of a Lady" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
@@ -744,7 +744,7 @@
             </div>
         </div>
 
-        <!-- Untitled II -->
+        
         <div class="artwork-item">
             <div class="artwork-visual">
                 <img src="img/art/Untitled%20II.jpg" alt="Untitled II" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
@@ -768,7 +768,7 @@
             </div>
         </div>
 
-        <!-- Untitled I -->
+        
         <div class="artwork-item">
             <div class="artwork-visual">
                 <img src="img/art/Untitled%20I.jpg" alt="Untitled I" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
@@ -792,7 +792,7 @@
             </div>
         </div>
 
-        <!-- Protecting the Red Rock -->
+        
         <div class="artwork-item">
             <div class="artwork-visual">
                 <img src="img/art/Protecting%20the%20Red%20Rock.jpg" alt="Protecting the Red Rock" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
@@ -817,7 +817,7 @@
         </div>
     </section>
 
-    <!-- Legal -->
+    
     <section class="legal-section">
         <div class="legal-text">
             <p>This is the work of Sima Assaf. Distributing my work for any commercial reason is strictly prohibited. Distributing online must include credit, either by linking my Instagram (<a href="https://www.instagram.com/simasarchitecture/" target="_blank">@simasarchitecture</a>), or this website.</p>
@@ -836,15 +836,15 @@
             
             if (!slider || !beforeImg || !afterImg) return;
             
-            // Default to showing artwork (value 100)
-            // When slider is at 100: show artwork (after), hide reference (before)
-            // When slider is at 0: show reference (before), hide artwork (after)
+            
+            
+            
             beforeImg.style.opacity = 1 - (slider.value / 100);
             afterImg.style.opacity = slider.value / 100;
             
             slider.addEventListener('input', (e) => {
                 const value = e.target.value;
-                // Inverted: as slider goes to 100, artwork becomes visible
+                
                 beforeImg.style.opacity = 1 - (value / 100);
                 afterImg.style.opacity = value / 100;
             });

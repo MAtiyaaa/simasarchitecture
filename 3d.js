@@ -120,10 +120,10 @@ function init3DViewer() {
                 this.loadingAnimation.style.display = 'flex';
                 this.loadingAnimation.style.opacity = '1';
                 this.loadingAnimation.innerHTML = `
-                    <div class="model-spinner" aria-hidden="true"></div>
-                    <div class="model-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                        <div class="model-progress-bar"><span></span></div>
-                        <div class="model-progress-text">0% - estimating...</div>
+                    <div class=__STRING_0__ aria-hidden=__STRING_1__></div>
+                    <div class=__STRING_2__ role=__STRING_3__ aria-valuemin=__STRING_4__ aria-valuemax=__STRING_5__ aria-valuenow=__STRING_6__>
+                        <div class=__STRING_7__><span></span></div>
+                        <div class=__STRING_8__>0% - estimating...</div>
                     </div>
                 `;
                 this.progressBarEl = this.loadingAnimation.querySelector('.model-progress-bar span');
@@ -136,7 +136,7 @@ function init3DViewer() {
                 this.modelInfo.innerHTML = `
                     <h4>${name}</h4>
                     <p>${info}</p>
-                    <p class="tip">Tip: Drag to rotate, scroll to zoom, right-click to pan</p>
+                    <p class=__STRING_9__>Tip: Drag to rotate, scroll to zoom, right-click to pan</p>
                 `;
             }
             this.modelInfo.classList.add('hidden');
@@ -170,9 +170,9 @@ function init3DViewer() {
                     console.warn(`Could not load STL file: ${error.message}.`);
                     if (this.loadingAnimation) {
                         this.loadingAnimation.innerHTML = `
-                            <div class="error-icon">!</div>
+                            <div class=__STRING_10__>!</div>
                             <p>Failed to load model: ${error.message}</p>
-                            <button class="retry-btn" onclick="window.modelViewer.retryLoading('${modelPath}')">Try Again</button>
+                            <button class=__STRING_11__ onclick=__STRING_12__>Try Again</button>
                         `;
                     }
                     this.isLoading = false;
@@ -181,7 +181,7 @@ function init3DViewer() {
         retryLoading(modelPath) {
             if (this.loadingAnimation) {
                 this.loadingAnimation.innerHTML = `
-                    <div class="model-spinner"></div>
+                    <div class=__STRING_13__></div>
                     <p>Loading 3D Model...</p>
                 `;
             }
@@ -267,7 +267,7 @@ function init3DViewer() {
                                     this.progressBarEl.style.width = `${percent.toFixed(2)}%`;
                                 }
                                 if (this.progressTextEl) {
-                                    this.progressTextEl.textContent = `${percent.toFixed(1)}% - ${etaSec > 0 ? etaText + ' remaining' : 'Finalizing...'}`;
+                                    this.progressTextEl.textContent = `${percent.toFixed(1)}% - ${etaSec > 0 ? etaText + __STRING_159__ : __STRING_160__}`;
                                 }
                                 const progressWrapper = this.loadingAnimation.querySelector('.model-progress');
                                 if (progressWrapper) {
@@ -317,10 +317,10 @@ function init3DViewer() {
             const rotateBtn = document.getElementById('rotate-toggle');
             if (rotateBtn) {
                 if (this.autoRotate) {
-                    rotateBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    rotateBtn.innerHTML = '<i class=__STRING_14__></i>';
                     rotateBtn.setAttribute('title', 'Pause Rotation');
                 } else {
-                    rotateBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    rotateBtn.innerHTML = '<i class=__STRING_15__></i>';
                     rotateBtn.setAttribute('title', 'Start Rotation');
                 }
             }
@@ -735,7 +735,7 @@ function initSkillBars() {
             const skillIcon = card.querySelector('.skill-icon');
             const skillName = card.querySelector('.skill-name');
             if (skillIcon) {
-                skillIcon.innerHTML = `<img src="${data.icon}" alt="${data.name}" />`;
+                skillIcon.innerHTML = `<img src=__STRING_40__ alt=__STRING_41__ />`;
             }
             if (skillName) {
                 skillName.textContent = data.name;
@@ -765,7 +765,7 @@ function initSkillBars() {
             card.className = 'skill-card';
             const icon = document.createElement('div');
             icon.className = 'skill-icon';
-            icon.innerHTML = `<img src="${skill.icon}" alt="${skill.name}" />`;
+            icon.innerHTML = `<img src=__STRING_42__ alt=__STRING_43__ />`;
             const name = document.createElement('div');
             name.className = 'skill-name';
             name.textContent = skill.name;
@@ -834,7 +834,7 @@ function initSkillBars() {
                 overflow: hidden;
             }
             .skill-shimmer::after {
-                content: '';
+                content: __STRING_267__;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -896,7 +896,7 @@ function handleSkillIcons() {
             const skill = skillIcons[index] || skillIcons[0];
             img.onerror = function() {
                 const iconElement = this.parentElement;
-                iconElement.innerHTML = `<i class="${skill.fallbackIcon}"></i>`;
+                iconElement.innerHTML = `<i class=__STRING_68__></i>`;
                 console.log(`Failed to load image for ${skill.name}, using fallback icon`);
             };
         });
@@ -964,72 +964,72 @@ function add3DControlsHelp() {
         const modal = document.createElement('div');
         modal.className = 'controls-help-modal';
         modal.innerHTML = `
-            <div class="controls-help-content">
-                <button class="controls-help-close"><i class="fas fa-times"></i></button>
-                <div class="controls-help-title">
-                    <i class="fas fa-gamepad"></i>
+            <div class=__STRING_69__>
+                <button class=__STRING_70__><i class=__STRING_71__></i></button>
+                <div class=__STRING_72__>
+                    <i class=__STRING_73__></i>
                     3D Model Controls
                 </div>
-                <div class="controls-section">
-                    <h3><i class="fas fa-keyboard"></i> Keyboard Controls</h3>
-                    <div class="controls-grid">
-                        <div class="control-item">
-                            <div class="control-key">W</div>
-                            <div class="control-desc">Move forward</div>
+                <div class=__STRING_74__>
+                    <h3><i class=__STRING_75__></i> Keyboard Controls</h3>
+                    <div class=__STRING_76__>
+                        <div class=__STRING_77__>
+                            <div class=__STRING_78__>W</div>
+                            <div class=__STRING_79__>Move forward</div>
                         </div>
-                        <div class="control-item">
-                            <div class="control-key">S</div>
-                            <div class="control-desc">Move backward</div>
+                        <div class=__STRING_80__>
+                            <div class=__STRING_81__>S</div>
+                            <div class=__STRING_82__>Move backward</div>
                         </div>
-                        <div class="control-item">
-                            <div class="control-key">A</div>
-                            <div class="control-desc">Move left</div>
+                        <div class=__STRING_83__>
+                            <div class=__STRING_84__>A</div>
+                            <div class=__STRING_85__>Move left</div>
                         </div>
-                        <div class="control-item">
-                            <div class="control-key">D</div>
-                            <div class="control-desc">Move right</div>
+                        <div class=__STRING_86__>
+                            <div class=__STRING_87__>D</div>
+                            <div class=__STRING_88__>Move right</div>
                         </div>
-                        <div class="control-item">
-                            <div class="control-key">Q</div>
-                            <div class="control-desc">Rotate left</div>
+                        <div class=__STRING_89__>
+                            <div class=__STRING_90__>Q</div>
+                            <div class=__STRING_91__>Rotate left</div>
                         </div>
-                        <div class="control-item">
-                            <div class="control-key">E</div>
-                            <div class="control-desc">Rotate right</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="controls-section">
-                    <h3><i class="fas fa-mouse"></i> Mouse Controls</h3>
-                    <div class="controls-grid">
-                        <div class="control-item">
-                            <div class="control-key"><i class="fas fa-mouse"></i></div>
-                            <div class="control-desc">Drag to rotate view</div>
-                        </div>
-                        <div class="control-item">
-                            <div class="control-key"><i class="fas fa-scroll"></i></div>
-                            <div class="control-desc">Zoom in/out</div>
-                        </div>
-                        <div class="control-item">
-                            <div class="control-key">⇧+<i class="fas fa-scroll"></i></div>
-                            <div class="control-desc">Fast zoom</div>
-                        </div>
-                        <div class="control-item">
-                            <div class="control-key">Right-click</div>
-                            <div class="control-desc">Pan camera</div>
+                        <div class=__STRING_92__>
+                            <div class=__STRING_93__>E</div>
+                            <div class=__STRING_94__>Rotate right</div>
                         </div>
                     </div>
                 </div>
-                <div class="controls-section">
-                    <h3><i class="fas fa-mobile-alt"></i> Touch Controls</h3>
-                    <div class="controls-grid">
-                        <div class="control-item">
-                            <div class="control-key"><i class="fas fa-hand-pointer"></i></div>
-                            <div class="control-desc">Drag to rotate view</div>
+                <div class=__STRING_95__>
+                    <h3><i class=__STRING_96__></i> Mouse Controls</h3>
+                    <div class=__STRING_97__>
+                        <div class=__STRING_98__>
+                            <div class=__STRING_99__><i class=__STRING_100__></i></div>
+                            <div class=__STRING_101__>Drag to rotate view</div>
                         </div>
-                        <div class="control-item">
-                            <div class="control-key"><i class="fas fa-expand"></i></div>
-                            <div class="control-desc">Pinch to zoom</div>
+                        <div class=__STRING_102__>
+                            <div class=__STRING_103__><i class=__STRING_104__></i></div>
+                            <div class=__STRING_105__>Zoom in/out</div>
+                        </div>
+                        <div class=__STRING_106__>
+                            <div class=__STRING_107__>⇧+<i class=__STRING_108__></i></div>
+                            <div class=__STRING_109__>Fast zoom</div>
+                        </div>
+                        <div class=__STRING_110__>
+                            <div class=__STRING_111__>Right-click</div>
+                            <div class=__STRING_112__>Pan camera</div>
+                        </div>
+                    </div>
+                </div>
+                <div class=__STRING_113__>
+                    <h3><i class=__STRING_114__></i> Touch Controls</h3>
+                    <div class=__STRING_115__>
+                        <div class=__STRING_116__>
+                            <div class=__STRING_117__><i class=__STRING_118__></i></div>
+                            <div class=__STRING_119__>Drag to rotate view</div>
+                        </div>
+                        <div class=__STRING_120__>
+                            <div class=__STRING_121__><i class=__STRING_122__></i></div>
+                            <div class=__STRING_123__>Pinch to zoom</div>
                         </div>
                     </div>
                 </div>
@@ -1052,7 +1052,7 @@ function add3DControlsHelp() {
         if (!modelViewerContainer) return;
         const helpBtn = document.createElement('button');
         helpBtn.className = 'model-help-btn';
-        helpBtn.innerHTML = '<i class="fas fa-question"></i>';
+        helpBtn.innerHTML = '<i class=__STRING_124__></i>';
         helpBtn.setAttribute('title', 'Control Help');
         modelViewerContainer.appendChild(helpBtn);
         return helpBtn;

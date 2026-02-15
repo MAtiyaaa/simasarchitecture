@@ -134,11 +134,11 @@ function initPdfViewer() {
                 console.error('PDF Loading Error:', error);
                 if (this.loadingAnimation) {
                     this.loadingAnimation.innerHTML = `
-                        <div class="error-icon">!</div>
+                        <div class=__STRING_0__>!</div>
                         <p>Failed to load PDF: ${error.message}</p>
-                        <p class="error-hint">
-                            Ensure 'pdf/portfolio.pdf' exists and is served via a web server.
-                            <br><a href="${this.pdfPath}" target="_blank" class="retry-link">Try opening the PDF directly</a>
+                        <p class=__STRING_1__>
+                            Ensure __STRING_81__ exists and is served via a web server.
+                            <br><a href=__STRING_2__ target=__STRING_3__ class=__STRING_4__>Try opening the PDF directly</a>
                         </p>
                     `;
                 }
@@ -200,11 +200,11 @@ function initPdfViewer() {
             } catch (error) {
                 console.error('Error rendering CV page:', error);
                 this.viewerContainer.innerHTML = `
-                    <div class="pdf-error">
-                        <div class="error-icon">!</div>
+                    <div class=__STRING_5__>
+                        <div class=__STRING_6__>!</div>
                         <p>Error rendering CV: ${error.message}</p>
-                        <button class="retry-btn" onclick="location.reload()">Retry</button>
-                        <a href="${this.pdfPath}" target="_blank" class="open-pdf-btn">Open CV in default viewer</a>
+                        <button class=__STRING_7__ onclick=__STRING_8__>Retry</button>
+                        <a href=__STRING_9__ target=__STRING_10__ class=__STRING_11__>Open CV in default viewer</a>
                     </div>
                 `;
             }
@@ -358,7 +358,7 @@ function initPdfViewer() {
             const btn = document.getElementById('download-pdf');
             if (btn) {
                 const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i><span>Downloaded</span>';
+                btn.innerHTML = '<i class=__STRING_12__></i><span>Downloaded</span>';
                 btn.classList.add('download-success');
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
@@ -375,8 +375,8 @@ function initPdfViewer() {
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.innerHTML = `
-                <div class="notification-content">
-                    <i class="fas fa-check-circle notification-icon"></i>
+                <div class=__STRING_13__>
+                    <i class=__STRING_14__></i>
                     <span>${message}</span>
                 </div>
             `;
@@ -550,10 +550,10 @@ function initCvViewer() {
                 console.error('CV Loading Error:', error);
                 if (this.loadingAnimation) {
                     this.loadingAnimation.innerHTML = `
-                        <div class="error-icon">!</div>
+                        <div class=__STRING_15__>!</div>
                         <p>Failed to load CV: ${error.message}</p>
-                        <p class="error-hint">
-                            <a href="${this.pdfPath}" target="_blank" class="retry-link">Try opening the CV directly</a>
+                        <p class=__STRING_16__>
+                            <a href=__STRING_17__ target=__STRING_18__ class=__STRING_19__>Try opening the CV directly</a>
                         </p>
                     `;
                 }
@@ -616,11 +616,11 @@ function initCvViewer() {
             } catch (error) {
                 console.error('Error rendering CV page:', error);
                 this.viewerContainer.innerHTML = `
-                    <div class="pdf-error">
-                        <div class="error-icon">!</div>
+                    <div class=__STRING_20__>
+                        <div class=__STRING_21__>!</div>
                         <p>Error rendering CV: ${error.message}</p>
-                        <button class="retry-btn" onclick="location.reload()">Retry</button>
-                        <a href="${this.pdfPath}" target="_blank" class="open-pdf-btn">Open CV in default viewer</a>
+                        <button class=__STRING_22__ onclick=__STRING_23__>Retry</button>
+                        <a href=__STRING_24__ target=__STRING_25__ class=__STRING_26__>Open CV in default viewer</a>
                     </div>
                 `;
             }
@@ -685,13 +685,13 @@ function initThemeToggler() {
             toggle.addEventListener('click', () => this.toggleTheme(toggle));
             if (localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-mode');
-                toggle.innerHTML = '<i class="fas fa-sun"></i>';
+                toggle.innerHTML = '<i class=__STRING_27__></i>';
             }
             if (!localStorage.getItem('theme')) {
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 if (prefersDark) {
                     document.body.classList.add('dark-mode');
-                    toggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    toggle.innerHTML = '<i class=__STRING_28__></i>';
                     localStorage.setItem('theme', 'dark');
                 }
             }
@@ -707,7 +707,7 @@ function initThemeToggler() {
             }
             document.body.classList.toggle('dark-mode');
             if (document.body.classList.contains('dark-mode')) {
-                toggle.innerHTML = '<i class="fas fa-sun"></i>';
+                toggle.innerHTML = '<i class=__STRING_29__></i>';
                 localStorage.setItem('theme', 'dark');
                 document.body.classList.add('theme-changing');
                 const icon = toggle.querySelector('i');
@@ -718,7 +718,7 @@ function initThemeToggler() {
                     toggle.classList.remove('theme-toggle-active');
                 }, 500);
             } else {
-                toggle.innerHTML = '<i class="fas fa-moon"></i>';
+                toggle.innerHTML = '<i class=__STRING_30__></i>';
                 localStorage.setItem('theme', 'light');
                 document.body.classList.add('theme-changing');
                 const icon = toggle.querySelector('i');
@@ -966,10 +966,10 @@ function showMobileHints() {
         const hint = document.createElement('div');
         hint.className = 'mobile-hint';
         hint.innerHTML = `
-            <div class="hint-content">
-                <i class="fas fa-hand-pointer hint-icon"></i>
+            <div class=__STRING_31__>
+                <i class=__STRING_32__></i>
                 <p>Swipe between sections & pages</p>
-                <button class="hint-dismiss">Got it</button>
+                <button class=__STRING_33__>Got it</button>
             </div>
         `;
         document.body.appendChild(hint);
@@ -1044,13 +1044,13 @@ function initImageLightbox() {
         const compare = document.createElement('div');
         compare.className = 'lightbox-compare';
         compare.innerHTML = `
-            <div class="lightbox-compare-wrapper">
-                <img class="lb-image lb-after" alt="After">
-                <img class="lb-image lb-before" alt="Before">
+            <div class=__STRING_34__>
+                <img class=__STRING_35__ alt=__STRING_36__>
+                <img class=__STRING_37__ alt=__STRING_38__>
             </div>
-            <div class="lightbox-slider-bar">
-                <input type="range" class="lightbox-slider" min="0" max="100" value="100" aria-label="Compare before and after">
-                <div class="lightbox-slider-labels"><span>Before</span><span>After</span></div>
+            <div class=__STRING_39__>
+                <input type=__STRING_40__ class=__STRING_41__ min=__STRING_42__ max=__STRING_43__ value=__STRING_44__ aria-label=__STRING_45__>
+                <div class=__STRING_46__><span>Before</span><span>After</span></div>
             </div>
         `;
         const lbBefore = compare.querySelector('.lb-before');
@@ -1059,7 +1059,7 @@ function initImageLightbox() {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'lightbox-close';
     closeBtn.setAttribute('aria-label', 'Close image');
-    closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
+    closeBtn.innerHTML = '<span aria-hidden=__STRING_47__>&times;</span>';
         overlay.appendChild(img);
         overlay.appendChild(compare);
     overlay.appendChild(closeBtn);
@@ -1207,7 +1207,7 @@ extraStyles.textContent = `
         background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
     }
         .skill-shimmer::after {
-        content: '';
+        content: __STRING_409__;
         position: absolute;
         top: 0;
         left: 0;
