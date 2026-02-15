@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thesis | Sima Assaf</title>
+    <link rel="icon" href="pdf/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Page images loaded as JPGs -->
+    <style>
+        :root {
+            --gold: #c9a46b;
+            --gold-light: #e8d5b5;
+            --gold-dark: #9a7b4a;
+            --charcoal: #1a1a1a;
+            --charcoal-light: #2d2d2d;
+            --cream: #faf8f5;
+            --cream-dark: #f0ece5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--cream);
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            z-index: 99;
+        }
+
+        .mobile-nav.active { display: block; }
+        .mobile-nav a {
+            display: block;
+            padding: 12px 0;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 140px 48px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--charcoal) 0%, var(--charcoal-light) 100%);
+            color: white;
+        }
+
+        .page-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 56px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        /* Subtabs */
+        .subtabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .subtab {
+            padding: 16px 32px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .subtab:hover {
+            color: white;
+        }
+
+        .subtab.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            min-height: 600px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Chiseled Section */
+        .chiseled-header {
+            padding: 40px 48px;
+            text-align: center;
+            background: var(--cream-dark);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .chiseled-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .year-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(201, 164, 107, 0.15);
+            border: 1px solid rgba(201, 164, 107, 0.3);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            color: var(--gold-dark);
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: var(--gold);
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin-left: 16px;
+        }
+
+        .download-btn:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201, 164, 107, 0.3);
+        }
+
+        /* PDF Viewer */
+        .pdf-container {
+            padding: 40px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-display {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+            overflow: hidden;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pdf-loading {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(201, 164, 107, 0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .pdf-canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .pdf-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            padding: 24px 0;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: white;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--gold);
+            color: white;
+            border-color: var(--gold);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* Project Section - Coming Soon */
+        .project-soon {
+            padding: 100px 48px;
+            text-align: center;
+            background: var(--cream);
+        }
+
+        .soon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(201, 164, 107, 0.15);
+            border: 1px solid rgba(201, 164, 107, 0.3);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 32px;
+        }
+
+        .soon-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .soon-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        .countdown-item {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            padding: 20px 28px;
+            min-width: 90px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .countdown-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 500;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .countdown-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        .progress-section {
+            max-width: 400px;
+            margin: 0 auto 32px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .target-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .target-date i {
+            color: var(--gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav { padding: 16px 24px; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            
+            .page-header { padding: 120px 24px 0; }
+            .page-title { font-size: 36px; }
+            
+            .subtabs { overflow-x: auto; }
+            .subtab { padding: 14px 20px; font-size: 12px; white-space: nowrap; }
+            
+            .chiseled-header { padding: 30px 24px; }
+            .download-btn { margin-left: 0; margin-top: 12px; }
+            
+            .pdf-container { padding: 24px; }
+            .page-display { min-height: 400px; }
+            
+            .project-soon { padding: 60px 24px; }
+            .soon-title { font-size: 32px; }
+            .countdown { gap: 10px; }
+            .countdown-item { padding: 16px 20px; min-width: 70px; }
+            .countdown-value { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">SIMA ASSAF</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="thesis.html" class="active">Thesis</a></li>
+            <li><a href="artworks.html">Artworks</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="projects.html">Projects</a>
+        <a href="thesis.html">Thesis</a>
+        <a href="artworks.html">Artworks</a>
+        <a href="about.html">About</a>
+    </div>
+
+    <header class="page-header">
+        <div class="page-label">Graduation Project</div>
+        <h1 class="page-title">Architecture Thesis</h1>
+        <div class="subtabs">
+            <button class="subtab active" onclick="showTab('chiseled')">Chiseled</button>
+            <button class="subtab" onclick="showTab('project')">Project</button>
+        </div>
+    </header>
+
+    <!-- Chiseled Tab Content -->
+    <div id="chiseled" class="content-section active">
+        <div class="chiseled-header">
+            <p class="chiseled-subtitle">Chiseled is an architectural intervention in Petra that is carved from the landscape like a deliberate cut in stone, guiding movement, framing monuments, and honoring Nabataean craft through precise, low-impact form.</p>
+            <div>
+                <span class="year-badge">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>2025</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="pdf-container">
+            <div class="page-display" id="page-display">
+                <div class="pdf-loading">
+                    <div class="spinner"></div>
+                    <p>Loading Chiseled...</p>
+                </div>
+                <img id="page-image" class="pdf-canvas" style="display:none;" alt="Page">
+            </div>
+        </div>
+
+        <div class="pdf-nav">
+            <button class="nav-btn" id="prev-btn" onclick="prevPage()" disabled>
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="page-info">
+                <span id="current-page">1</span> / <span id="total-pages">121</span>
+            </div>
+            <button class="nav-btn" id="next-btn" onclick="nextPage()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Project Tab Content -->
+    <div id="project" class="content-section">
+        <div class="project-soon">
+            <div class="soon-badge">
+                <i class="fas fa-clock"></i>
+                <span>Coming Soon</span>
+            </div>
+            
+            <h2 class="soon-title">Project</h2>
+            <p class="soon-text">
+                A new architectural exploration is currently in development. 
+                Check back soon to see the culmination of months of research and design work.
+            </p>
+
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-value" id="days">--</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="hours">--</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="minutes">--</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="seconds">--</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="target-date">
+                <i class="fas fa-calendar-check"></i>
+                <span>Launch Date: May 1st, 2026</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.subtab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Mobile menu
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+
+        // Page flipper for thesis images
+        const totalPages = 121;
+        let currentPage = 1;
+        const pageImage = document.getElementById('page-image');
+        const pageDisplay = document.getElementById('page-display');
+
+        function loadPage(pageNum) {
+            // Show loading state
+            pageDisplay.querySelector('.pdf-loading').style.display = 'block';
+            pageImage.style.display = 'none';
+            
+            // Load the image
+            const img = new Image();
+            img.onload = function() {
+                pageImage.src = img.src;
+                pageImage.style.display = 'block';
+                pageDisplay.querySelector('.pdf-loading').style.display = 'none';
+                document.getElementById('current-page').textContent = pageNum;
+                updateButtons();
+            };
+            img.onerror = function() {
+                pageDisplay.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-muted);"><i class="fas fa-exclamation-circle" style="font-size:48px;margin-bottom:16px;display:block;color:var(--gold);"></i><p>Could not load page.</p></div>';
+            };
+            img.src = `thesis_pages/page-${String(pageNum).padStart(3, '0')}.jpg`;
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadPage(currentPage);
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadPage(currentPage);
+            }
+        }
+
+        function updateButtons() {
+            document.getElementById('prev-btn').disabled = currentPage <= 1;
+            document.getElementById('next-btn').disabled = currentPage >= totalPages;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevPage();
+            if (e.key === 'ArrowRight') nextPage();
+        });
+
+        // Load first page on startup
+        loadPage(1);
+
+        // Countdown for Project tab
+        const targetDate = new Date('2026-05-01T00:00:00');
+        const startDate = new Date('2026-02-12T00:00:00');
+        const totalDuration = targetDate - startDate;
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('progress-fill').style.width = '100%';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            const elapsed = now - startDate;
+            const progress = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        // Initialize countdown
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>

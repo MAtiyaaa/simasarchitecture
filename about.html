@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Sima Assaf</title>
+    <link rel="icon" href="pdf/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #c9a46b;
+            --gold-light: #e8d5b5;
+            --gold-dark: #9a7b4a;
+            --charcoal: #1a1a1a;
+            --cream: #faf8f5;
+            --cream-dark: #f0ece5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--cream);
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            z-index: 99;
+        }
+
+        .mobile-nav.active { display: block; }
+        .mobile-nav a {
+            display: block;
+            padding: 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 140px 48px 80px;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+            text-align: center;
+        }
+
+        .hero-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 56px;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 48px;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 80px;
+            margin-bottom: 100px;
+            align-items: start;
+        }
+
+        .profile-image {
+            position: relative;
+        }
+
+        .profile-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: -16px;
+            bottom: -16px;
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        .profile-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        .profile-role {
+            font-size: 18px;
+            color: var(--gold);
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+
+        /* CV Buttons */
+        .cv-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: var(--charcoal);
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--gold);
+            color: var(--charcoal);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 164, 107, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--charcoal);
+            border: 2px solid var(--charcoal);
+        }
+
+        .btn-outline:hover {
+            background: var(--charcoal);
+            color: white;
+        }
+
+        /* Stats Grid */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 300;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 100px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 32px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            box-shadow: 0 8px 20px rgba(201, 164, 107, 0.3);
+        }
+
+        .stat-icon img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .stat-icon i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .stat-content h3 {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .stat-content p {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-detail {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .achievement {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 12px;
+            background: rgba(201, 164, 107, 0.15);
+            color: var(--gold-dark);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        /* Dean's List Styling - ELEGANT */
+        .stat-card-education {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f0e8 100%);
+            border: 1px solid rgba(201, 164, 107, 0.3);
+            position: relative;
+        }
+        .deans-list-container {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(201, 164, 107, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--gold);
+        }
+        .deans-list-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .deans-list-header i {
+            color: var(--gold);
+            font-size: 20px;
+        }
+        .deans-list-header span {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gold-dark);
+            letter-spacing: 0.05em;
+        }
+        .deans-list-terms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .term-badge {
+            background: white;
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid rgba(201, 164, 107, 0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        /* Skills Section */
+        .skills-section {
+            padding: 80px 48px;
+            background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 100%);
+            border-radius: 30px;
+            margin-bottom: 80px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .skill-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        .skill-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 8px 20px rgba(201, 164, 107, 0.3);
+            overflow: hidden;
+        }
+        .skill-icon img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .skill-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 48px;
+            background: var(--charcoal);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        @media (max-width: 968px) {
+            .mobile-menu-btn { display: block; }
+            .nav-links { display: none; }
+            .nav { padding: 16px 24px; }
+            .hero { padding: 100px 24px 60px; }
+            .hero-title { font-size: 40px; }
+            .content { padding: 60px 24px; }
+            .profile-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+            .profile-image {
+                max-width: 280px;
+                margin: 0 auto;
+            }
+            .profile-image::before { display: none; }
+            .cv-buttons { justify-content: center; flex-wrap: wrap; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: repeat(2, 1fr); }
+            .skills-section { padding: 60px 24px; border-radius: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">SIMA ASSAF</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="thesis.html">Thesis</a></li>
+            <li><a href="artworks.html">Artworks</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="projects.html">Projects</a>
+        <a href="thesis.html">Thesis</a>
+        <a href="artworks.html">Artworks</a>
+        <a href="about.html">About</a>
+    </div>
+
+    <header class="hero">
+        <div class="hero-label">Get To Know Me</div>
+        <h1 class="hero-title">About Sima</h1>
+        <p class="hero-subtitle">Architecture student passionate about creating innovative and sustainable spaces</p>
+    </header>
+
+    <div class="content">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-image">
+                <img src="pdf/sima.jpg" alt="Sima Assaf">
+            </div>
+            <div class="profile-content">
+                <h2>Sima Assaf</h2>
+                <div class="profile-role">Architecture Student at American University in Dubai</div>
+                <p class="profile-bio">I'm an architectural designer with a passion for creating innovative and sustainable spaces. With a strong foundation in architectural drafting and 3D modeling, I strive to blend functionality with aesthetic appeal in every project.</p>
+                <p class="profile-bio">My work is driven by a commitment to excellence, attention to detail, and a deep understanding of client needs. From conceptual design to final execution, I aim to deliver spaces that inspire and endure.</p>
+                <div class="cv-buttons">
+                    <a href="pdf/cv.pdf" target="_blank" class="btn">
+                        <i class="fas fa-eye"></i> View CV
+                    </a>
+                    <a href="pdf/cv.pdf" download class="btn btn-outline">
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="section-header">
+            <h2 class="section-title">Background</h2>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card stat-card-education">
+                <div class="stat-icon">
+                    <img src="pdf/aud-logo.png" alt="AUD">
+                </div>
+                <div class="stat-content">
+                    <h3>Education</h3>
+                    <p>American University in Dubai</p>
+                    <div class="stat-detail">3.60 GPA</div>
+                    <div class="deans-list-container">
+                        <div class="deans-list-header">
+                            <i class="fas fa-trophy"></i>
+                            <span>Dean's List</span>
+                        </div>
+                        <div class="deans-list-terms">
+                            <span class="term-badge">Spring 2024</span>
+                            <span class="term-badge">Fall 2024</span>
+                            <span class="term-badge">Spring 2025</span>
+                            <span class="term-badge">Fall 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <img src="pdf/jt.png" alt="JT+Partners">
+                </div>
+                <div class="stat-content">
+                    <h3>Experience</h3>
+                    <p>JT+Partners</p>
+                    <div class="stat-detail">Intern | May 2025 – Sept 2025</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <img src="pdf/burj.png" alt="Location">
+                </div>
+                <div class="stat-content">
+                    <h3>Location</h3>
+                    <p>Dubai, United Arab Emirates</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <img src="pdf/lang.png" alt="Languages">
+                </div>
+                <div class="stat-content">
+                    <h3>Languages</h3>
+                    <p>English, Arabic</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Skills Section -->
+        <div class="skills-section">
+            <div class="section-header">
+                <h2 class="section-title">Skills & Tools</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/revit.png" alt="Revit"></div>
+                    <div class="skill-name">Revit</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/3d-printing.png" alt="3D Printing"></div>
+                    <div class="skill-name">3D Printing</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/arcgis.png" alt="ArcGIS"></div>
+                    <div class="skill-name">ArcGIS</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/rhino.png" alt="Rhino"></div>
+                    <div class="skill-name">Rhino</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/sketchup.png" alt="Sketchup"></div>
+                    <div class="skill-name">Sketchup</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/photoshop.png" alt="Photoshop"></div>
+                    <div class="skill-name">Photoshop</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/twinmotion.png" alt="TwinMotion"></div>
+                    <div class="skill-name">TwinMotion</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/grasshopper.png" alt="Grasshopper"></div>
+                    <div class="skill-name">Grasshopper</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/procreate.png" alt="Procreate"></div>
+                    <div class="skill-name">Procreate</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/indesign.png" alt="InDesign"></div>
+                    <div class="skill-name">InDesign</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/autocad.png" alt="AutoCAD"></div>
+                    <div class="skill-name">AutoCAD</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><img src="img/skills/modelmaking.png" alt="Model Making"></div>
+                    <div class="skill-name">Model Making</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Awards & Recognition Section -->
+        <div class="awards-section">
+            <div class="awards-container">
+                <div class="awards-header">
+                    <div class="awards-label">Recognition</div>
+                    <h2 class="awards-title">Awards & Nominations</h2>
+                    <p class="awards-subtitle">Acknowledgment of excellence in architectural design and innovation</p>
+                </div>
+                <div class="awards-grid">
+                    <div class="award-card">
+                        <div class="award-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="award-content">
+                            <h3 class="award-name">RIBA Future Architects</h3>
+                            <div class="award-badge">Nominated ×2</div>
+                            <p class="award-description">Royal Institute of British Architects award recognizing emerging architectural talent and innovative design thinking.</p>
+                        </div>
+                    </div>
+                    <div class="award-card">
+                        <div class="award-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="award-content">
+                            <h3 class="award-name">Sikka Art Festival</h3>
+                            <div class="award-badge">2026 Nominee</div>
+                            <p class="award-description">Dubai's premier art festival celebrating creativity, innovation, and excellence in public space design.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .awards-section {
+            padding: 100px 48px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            margin-top: 80px;
+        }
+        .awards-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .awards-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .awards-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+        .awards-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 300;
+            color: white;
+            margin-bottom: 16px;
+        }
+        .awards-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+        .award-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            gap: 24px;
+            transition: all 0.4s ease;
+        }
+        .award-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(201, 164, 107, 0.3);
+            transform: translateY(-4px);
+        }
+        .award-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            flex-shrink: 0;
+        }
+        .award-content {
+            flex: 1;
+        }
+        .award-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 8px;
+        }
+        .award-badge {
+            display: inline-block;
+            background: rgba(201, 164, 107, 0.15);
+            color: var(--gold);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+        .award-description {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        @media (max-width: 768px) {
+            .awards-section { padding: 60px 24px; }
+            .awards-title { font-size: 32px; }
+            .awards-grid { grid-template-columns: 1fr; }
+            .award-card { flex-direction: column; padding: 30px; }
+        }
+    </style>
+
+    <footer class="footer">
+        <p>&copy; 2025 Sima Assaf. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

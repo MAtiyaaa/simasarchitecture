@@ -3,485 +3,559 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sima Assaf</title>
-    <meta name="description" content="Sima Assaf - Architecture Student at American University in Dubai. View portfolio, CV and contact information.">
+    <title>Sima Assaf | Architecture Portfolio</title>
+    <meta name="description" content="Sima Assaf - Architecture Student at American University in Dubai. Portfolio of innovative architectural designs.">
     <link rel="icon" href="pdf/icon.png" type="image/png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="3d.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <meta name="theme-color" content="#b3743a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #c9a46b;
+            --gold-light: #e8d5b5;
+            --gold-dark: #9a7b4a;
+            --charcoal: #1a1a1a;
+            --charcoal-light: #2d2d2d;
+            --cream: #faf8f5;
+            --cream-dark: #f0ece5;
+            --white: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 24px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+        }
+
+        .nav.scrolled {
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 16px 48px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--cream);
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            z-index: 99;
+        }
+
+        .mobile-nav.active { display: block; }
+
+        .mobile-nav a {
+            display: block;
+            padding: 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+            .nav-links { display: none; }
+            .nav { padding: 16px 24px; }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 48px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201, 164, 107, 0.12) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(48px, 6vw, 72px);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 32px;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: var(--charcoal);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-smooth);
+        }
+
+        .hero-cta:hover {
+            background: var(--gold);
+            color: var(--charcoal);
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image-frame {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero-image-frame::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--gold);
+            border-radius: var(--radius-lg);
+            transform: translate(20px, 20px);
+            z-index: -1;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: flex;
+            gap: 48px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 48px;
+            background: var(--charcoal);
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-social a {
+            color: rgba(255,255,255,0.6);
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--gold);
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 24px 60px; }
+        }
+    </style>
 </head>
 <body>
-    <div class="page-container">
-        <header>
-            <a href="#" class="logo">
-                <span class="logo-text">Sima Assaf</span>
-                <span class="logo-dot"></span>
-            </a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#" id="portfolio-link" class="active">Portfolio</a></li>
-                    <li><a href="#" id="projects-link">Projects</a></li>
-                    <li><a href="#" id="artworks-link">Artworks</a></li>
-                    <li><a href="#" id="about-link">About</a></li>
-                  </ul>
-            </nav>
-            <div class="theme-toggle" title="Toggle dark/light mode">
-                <i class="fas fa-moon"></i>
-            </div>
-        </header>
-        <main>
-            <aside class="sidebar">
-                <div class="profile">
-                    <div class="profile-image">
-                        <img src="pdf/sima.jpg" alt="Sima Assaf" class="profile-img">
-                    </div>
-                    <h2>Sima Assaf</h2>
-                    <p>Architecture Student at American University in Dubai</p>
-                </div>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/simasarchitecture/" class="social-btn instagram" target="_blank" rel="noopener" aria-label="Instagram Profile">
-                        <i class="fab fa-instagram"></i><span>Instagram</span>
-                    </a>
-                    <a href="https://www.linkedin.com/in/simasarchitecture/" class="social-btn linkedin" target="_blank" rel="noopener" aria-label="LinkedIn Profile">
-                        <i class="fab fa-linkedin"></i><span>LinkedIn</span>
-                    </a>
-                    <a href="https://www.behance.net/simaassaf" class="social-btn behance" target="_blank" rel="noopener" aria-label="Behance Portfolio">
-                        <i class="fab fa-behance"></i><span>Behance</span>
-                    </a>
-                    <a href="mailto:simasarchitecture@gmail.com" class="social-btn email" aria-label="Email Contact">
-                        <i class="fas fa-envelope"></i><span>Email</span>
-                    </a>
-                </div>
-            </aside>
-            <div class="content-container">
-                <div class="pdf-container active">
-                    <div class="loading-animation">
-                        <div class="spinner"></div>
-                        <p>Loading Portfolio...</p>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-bar" id="progress-bar"></div>
-                    </div>
-                    <div class="page-transitions prev-page-arrow bottom-aligned">
-                        <button class="page-arrow-btn" id="prev-page-arrow" aria-label="Previous page"><i class="fas fa-chevron-left"></i></button>
-                    </div>
-                    <div class="page-transitions next-page-arrow bottom-aligned">
-                        <button class="page-arrow-btn" id="next-page-arrow" aria-label="Next page"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="swipe-indicator">
-                        <i class="fas fa-hand-point-left"></i>
-                        Swipe to navigate
-                        <i class="fas fa-hand-point-right"></i>
-                    </div>
-                    <div id="pdf-viewer" class="pdf-content"></div>
-                    <div class="portfolio-download-container">
-                        <button class="download-btn compact-elegant" id="download-pdf">
-                            <i class="fas fa-download"></i><span>Download Portfolio</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="model-container">
-                    <div class="model-loading-animation">
-                        <div class="model-spinner" aria-hidden="true"></div>
-                        <p style="font-size:0.75rem;font-family:Consolas,monospace;opacity:.7;margin:0;">Preparing...</p>
-                    </div>
-                    <div class="model-controls">
-                        <button class="back-btn model-back" id="back-to-projects" aria-label="Back to Projects">
-                            <i class="fas fa-arrow-left"></i> Back to Projects
-                        </button>
-                        <div class="model-actions">
-                            <button class="model-btn" id="rotate-toggle" title="Toggle Rotation">
-                                <i class="fas fa-pause"></i>
-                            </button>
-                            <button class="model-btn" id="reset-view" title="Reset View">
-                                <i class="fas fa-home"></i>
-                            </button>
-                            <button class="model-btn" id="wireframe-toggle" title="Toggle Wireframe">
-                                <i class="fas fa-border-all"></i>
-                            </button>
-                            <button class="model-btn" id="info-toggle" title="Toggle Information">
-                                <i class="fas fa-info-circle"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="model-viewer-container">
-                        <div id="model-viewer"></div>
-                        <div class="model-information">
-                            <h4>Architectural Model</h4>
-                            <p>Interactive 3D model of the project. Explore it by rotating, zooming, and panning.</p>
-                            <p class="tip">Tip: Drag to rotate, scroll to zoom, right-click to pan</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="cv-container">
-                    <div class="loading-animation">
-                        <div class="spinner"></div>
-                        <p>Loading CV...</p>
-                    </div>
-                    <div class="cv-controls">
-                        <button class="back-btn" id="back-to-about" aria-label="Back to About"><i class="fas fa-arrow-left"></i> Back to About</button>
-                        <div class="zoom-controls">
-                            <button class="zoom-btn" id="cv-zoom-in" aria-label="Zoom in"><i class="fas fa-search-plus"></i></button>
-                            <button class="zoom-btn" id="cv-zoom-out" aria-label="Zoom out"><i class="fas fa-search-minus"></i></button>
-                        </div>
-                    </div>
-                    <div id="cv-viewer" class="cv-content"></div>
-                </div>
-                <div class="projects-container">
-                    <h2 class="projects-header">Studio Projects</h2>
-                    <div class="projects-grid">
-                        <article class="project-card project-card-3d" data-model="co-housing" data-stl="stl/cohousing-space.stl">
-                            <img src="img/co-housing-thumb.jpg" alt="Co-housing Space">
-                        <div class="project-overlay">
-                          <h3>Co-housing Space</h3>
-                          <p class="project-blurb">
-                            A vibrant coliving space centered around a lush green courtyard,
-                            designed to inspire connection and relaxation.
-                          </p>
-                          <div class="project-buttons">
-                            <button class="view-chapter-btn" data-pdfpage="3">View chapter</button>
-                            <button class="view-3d-btn">View 3D model</button>
-                          </div>
-                        </div>
-                      </article>
-                      <article class="project-card" data-pdfpage="7">
-                        <img src="img/karama-thumb.jpg" alt="Reclaiming Karama">
-                        <div class="project-overlay">
-                          <h3>Reclaiming Karama</h3>
-                          <p class="project-blurb">
-                            Our vision revitalizes Al Karama by restoring its
-                            original architecture through adaptive
-                            reuse-honoring history while meeting modern
-                            needs.
-                          </p>
-                          <button class="view-chapter-btn">View chapter</button>
-                        </div>
-                      </article>
-                      <article class="project-card project-card-3d" data-model="education-academy" data-stl="stl/education-academy.stl">
-                        <img src="img/education-academy-thumb.jpg" alt="Education Academy">
-                        <div class="project-overlay">
-                          <h3>Education Academy</h3>
-                          <p class="project-blurb">
-                            This project guides visitors through
-                            workshops, culminating in a serene garden
-                            with a traditional wind tower for natural
-                            ventilation.
-                          </p>
-                          <div class="project-buttons">
-                            <button class="view-chapter-btn" data-pdfpage="11">View chapter</button>
-                            <button class="view-3d-btn">View 3D model</button>
-                          </div>
-                        </div>
-                      </article>
-                      <article class="project-card project-card-3d" data-model="music-conservatory" data-stl="stl/music-conservatory.stl">
-                        <img src="img/conservatory-thumb.jpg" alt="Music Conservatory">
-                        <div class="project-overlay">
-                          <h3>Music Conservatory</h3>
-                          <p class="project-blurb">
-                            A symphony of design and artistic pursuit, crafting a space
-                            where creativity flourishes.
-                          </p>
-                          <div class="project-buttons">
-                            <button class="view-chapter-btn" data-pdfpage="15">View chapter</button>
-                            <button class="view-3d-btn">View 3D model</button>
-                          </div>
-                        </div>
-                      </article>
-                      <article class="project-card" data-pdfpage="17">
-                        <img src="img/rooted-thumb.jpg" alt="Rooted Living">
-                        <div class="project-overlay">
-                          <h3>Rooted Living</h3>
-                          <p class="project-blurb">
-                            Near Ras Al Khor, this project blends nature and urban life,
-                            focusing on sustainability and the restoration of Dubai Creek.
-                          </p>
-                          <button class="view-chapter-btn">View chapter</button>
-                        </div>
-                        </article>
-                        <article class="project-card project-card-3d" data-model="music-conservatory" data-stl="stl/boutique.stl">
-                          <img src="img/boutique.jpg" alt="Boutique Hotel">
-                          <div class="project-overlay">
-                            <h3>Boutique Hotel</h3>
-                            <p class="project-blurb">
-                                Shaped by Deconstructivism, where fragmented forms and shifting spaces create a dynamic, immersive experience.
-                            </p>
-                            <div class="project-buttons">
-                              <button class="view-3d-btn">View 3D model</button>
-                            </div>
-                          </div>
-                      </article>
-                    </div>
-                  </div>
-                <div class="artworks-container">
-                    <h2 class="artworks-header">Artworks</h2>
-                    <div class="artworks-content">
-                        <div class="artwork-item">
-                            <div class="artwork-visual">
-                                <div class="artwork-slider-container">
-                                    <div class="artwork-image-wrapper">
-                                        <img src="img/art/gaza-original.jpg" alt="Gaza - Before" class="artwork-before">
-                                        <img src="img/art/gaza.jpg" alt="Gaza - After" class="artwork-after">
-                                    </div>
-                                    <div class="slider-control">
-                                        <input type="range" min="0" max="100" value="100" class="slider" id="gaza-slider">
-                                        <div class="slider-labels">
-                                            <span>Before</span>
-                                            <span>After</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="artwork-details">
-                                <h3 class="artwork-title">Gaza</h3>
-                                <div class="artwork-info">
-                                    <p><strong>Date:</strong> 21/05/2025</p>
-                                    <p><strong>Medium:</strong> Procreate</p>
-                                    <p><strong>Age:</strong> 21</p>
-                                    <div class="before-ref">
-                                        <details class="ref-details">
-                                            <summary><strong>'Before' Reference</strong></summary>
-                                            <div class="ref-body">
-                                                Devastation around the Saleh family home is seen through destroyed walls in the Jabaliya refugee camp in the northern Gaza Strip, Feb. 5 2025. (AP Photo/Abdel Kareem Hana)
-                                            </div>
-                                        </details>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="artwork-item">
-                            <div class="artwork-visual">
-                                <div class="artwork-slider-container">
-                                    <div class="artwork-image-wrapper">
-                                        <img src="img/art/venice-original.jpg" alt="Venice - Before" class="artwork-before">
-                                        <img src="img/art/venice.jpg" alt="Venice - After" class="artwork-after">
-                                    </div>
-                                    <div class="slider-control">
-                                        <input type="range" min="0" max="100" value="100" class="slider" id="venice-slider">
-                                        <div class="slider-labels">
-                                            <span>Before</span>
-                                            <span>After</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="artwork-details">
-                                <h3 class="artwork-title">Venice</h3>
-                                <div class="artwork-info">
-                                    <p><strong>Date:</strong> 06/08/2025</p>
-                                    <p><strong>Medium:</strong> Photoshop</p>
-                                    <p><strong>Age:</strong> 22</p>
-                                    <div class="before-ref">
-                                        <details class="ref-details">
-                                            <summary><strong>'Before' Reference</strong></summary>
-                                            <div class="ref-body">
-                                                <a href="https://unsplash.com/photos/a-view-of-a-canal-from-a-bridge-in-venice-x-dIFwi8PRI" target="_blank" rel="noopener">Unsplash+</a>
-                                            </div>
-                                        </details>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="artwork-item">
-                            <div class="artwork-visual">
-                                <div class="artwork-slider-container">
-                                    <div class="artwork-image-wrapper">
-                                        <img src="img/art/25.jpeg" alt="25/08/2025" class="artwork-after">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="artwork-details">
-                                <h3 class="artwork-title">25/08/2025</h3>
-                                <div class="artwork-info">
-                                    <p><strong>Date:</strong> 25/08/2025</p>
-                                    <p><strong>Medium:</strong> Procreate</p>
-                                    <p><strong>Age:</strong> 22</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="artwork-item">
-                            <div class="artwork-visual">
-                                <div class="artwork-slider-container">
-                                    <div class="artwork-image-wrapper">
-                                        <img src="img/art/intifada-before.jpeg" alt="The First Intifada in Gaza — Before" class="artwork-before">
-                                        <img src="img/art/intifada.jpeg" alt="The First Intifada in Gaza — After" class="artwork-after">
-                                    </div>
-                                    <div class="slider-control">
-                                        <input type="range" min="0" max="100" value="100" class="slider" id="intifada-slider">
-                                        <div class="slider-labels">
-                                            <span>Before</span>
-                                            <span>After</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="artwork-details">
-                                <h3 class="artwork-title">The First Intifada in Gaza</h3>
-                                <div class="artwork-info">
-                                    <p><strong>Date:</strong> 20/09/2025</p>
-                                    <p><strong>Medium:</strong> Photoshop</p>
-                                    <p><strong>Age:</strong> 22</p>
-                                    <div class="before-ref">
-                                        <details class="ref-details">
-                                            <summary><strong>'Before' Reference</strong></summary>
-                                            <div class="ref-body">
-                                                <a href="https://en.m.wikipedia.org/wiki/Palestine#/media/File%3AIntifada_in_Gaza_Strip_(FL45956496).jpg" target="_blank" rel="noopener">Wikipedia (Photographed by Efi Sharir)</a>
-                                            </div>
-                                        </details>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artworks-legal">
-                        <p>This is the work of Sima Assaf. Distributing my work for any commercial reason is strictly prohibited. Distributing online must include credit, either by linking my Instagram (<a href="https://www.instagram.com/simasarchitecture/" target="_blank">simasarchitecture</a>), or this website.</p>
-                    </div>
-                </div>
-                <div class="about-container full-scroll">
-                    <h2 class="about-header">About Me</h2>
-                    <div class="about-content">
-                        <div class="about-text">
-                            <p>I'm Sima Assaf, an architectural designer with a passion for creating innovative and sustainable spaces. With a strong foundation in architectural drafting and 3D modeling, I strive to blend functionality with aesthetic appeal in every project.</p>
-                            <p>My work is driven by a commitment to excellence, attention to detail, and a deep understanding of client needs. From conceptual design to final execution, I aim to deliver spaces that inspire and endure.</p>
-                            <div class="cv-buttons">
-                                <button class="view-cv-btn" id="view-cv">
-                                    <i class="fas fa-eye"></i><span>View CV</span>
-                                </button>
-                                <button class="download-cv-btn" id="download-cv">
-                                    <i class="fas fa-download"></i><span>Download CV</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="about-stats">
-                            <div class="stat-item">
-                                <div class="stat-icon"><img src="pdf/aud-logo.png" alt="AUD Logo" class="aud-logo"></div>
-                                <div class="stat-info">
-                                    <h4>Education</h4>
-                                    <p>American University in Dubai</p>
-                                    <p class="small-text">3.55 GPA</p>
-                                    <p class="achievement-title">Deans List - Spring 2024</p>
-                                    <p class="achievement-title">Deans List - Fall 2024</p>
-                                    <p class="achievement-title">Deans List - Spring 2025</p>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon"><img src="pdf/jt.png" alt="JT Partners Logo" style="width: 28px; height: 28px;"></div>
-                                <div class="stat-info">
-                                    <h4>Experience</h4>
-                                    <p>JT+Partners</p>
-                                    <p class="position-title">Intern</p>
-                                    <p class="small-text">May 2025 – Sept 2025</p>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon"><img src="pdf/burj.png" alt="Location Icon" style="width: 30px; height: 30px;"></div>
-                                <div class="stat-info">
-                                    <h4>Location</h4>
-                                    <p>Dubai, United Arab Emirates</p>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon"><img src="pdf/lang.png" alt="Language Icon" style="width: 24px; height: 24px;"></div>
-                                <div class="stat-info">
-                                    <h4>Languages</h4>
-                                    <p>English, Arabic</p>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon"><i class="fas fa-brain"></i></div>
-                                <div class="stat-info">
-                                    <h4>Design Philosophy</h4>
-                                    <p>Human-Centered Architecture</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h3 class="skills-header">Skills</h3>
-                    <div class="about-grid">
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-building"></i></div>
-                            <div class="skill-name">Revit</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-print"></i></div>
-                            <div class="skill-name">3D Printing</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-map"></i></div>
-                            <div class="skill-name">ArcGIS</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-shapes"></i></div>
-                            <div class="skill-name">Rhino</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-cube"></i></div>
-                            <div class="skill-name">Sketchup</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-image"></i></div>
-                            <div class="skill-name">Photoshop</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-vr-cardboard"></i></div>
-                            <div class="skill-name">TwinMotion</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-video"></i></div>
-                            <div class="skill-name">Grasshopper</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon"><i class="fas fa-paint-brush"></i></div>
-                            <div class="skill-name">Procreate</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-        <footer>
-            <div class="footer-content">
-                <div class="footer-branding">
-                    <div class="footer-logo">
-                        <span class="logo-text">Sima Assaf</span>
-                        <span class="logo-dot"></span>
-                    </div>
-                    <p class="footer-tagline">Creating and innovating</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#" id="footer-portfolio">Portfolio</a>
-                    <a href="#" id="footer-projects">Projects</a>
-                    <a href="#" id="footer-artworks">Artworks</a>
-                    <a href="#" id="footer-about">About</a>
-                    <a href="mailto:simasarchitecture@gmail.com">Contact</a>
-                </div>
-                <div class="footer-social">
-                    <a href="https://www.instagram.com/simasarchitecture/" class="footer-social-icon" target="_blank" rel="noopener" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/simasarchitecture/" class="footer-social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://www.behance.net/simaassaf" class="footer-social-icon" target="_blank" rel="noopener" aria-label="Behance">
-                        <i class="fab fa-behance"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2025 Sima Assaf. All rights reserved.</p>
-                <div class="footer-designed">
-                    <span>Architecture Portfolio</span>
-                </div>
-            </div>
-        </footer>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">SIMA ASSAF</a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="thesis.html">Thesis</a></li>
+            <li><a href="artworks.html">Artworks</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="projects.html">Projects</a>
+        <a href="thesis.html">Thesis</a>
+        <a href="artworks.html">Artworks</a>
+        <a href="about.html">About</a>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-label">Architecture Portfolio</div>
+                <h1 class="hero-title">
+                    Creating <em>Spaces</em> That Inspire
+                </h1>
+                <p class="hero-description">
+                    Architecture student at American University in Dubai, passionate about 
+                    sustainable design and human-centered spaces that blend aesthetics with 
+                    functionality.
+                </p>
+                <a href="portfolio.html" class="hero-cta">
+                    <span>View Portfolio</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <div class="stats-bar">
+                    <div>
+                        <div class="stat-value">3.60</div>
+                        <div class="stat-label">GPA</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">6+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">AUD</div>
+                        <div class="stat-label">University</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-image-frame">
+                    <img src="img/karama-thumb.jpg" alt="Sima Assaf Architecture">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Work Section -->
+    <section class="latest-work">
+        <div class="latest-container">
+            <div class="latest-header">
+                <div class="latest-label">Latest Work</div>
+                <h2 class="latest-title">Recent Projects</h2>
+            </div>
+            <div class="latest-grid">
+                <a href="projects.html" class="latest-card">
+                    <div class="latest-image">
+                        <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
+                            <source src="img/Paw%20Plaza.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="latest-overlay">
+                        <div class="latest-category">VR / Public Space</div>
+                        <h3 class="latest-name">Paw Plaza</h3>
+                        <div class="latest-badge">
+                            <i class="fas fa-award"></i> Sikka Art Festival 2026 Nominee
+                        </div>
+                    </div>
+                </a>
+                <a href="artworks.html" class="latest-card">
+                    <div class="latest-image">
+                        <img src="img/art/Gustav%20Moodboard.jpg" alt="Gustav Moodboard">
+                    </div>
+                    <div class="latest-overlay">
+                        <div class="latest-category">Digital Art</div>
+                        <h3 class="latest-name">Gustav Moodboard</h3>
+                        <div class="latest-date">January 2026</div>
+                    </div>
+                </a>
+                <a href="thesis.html" class="latest-card">
+                    <div class="latest-image" style="background:linear-gradient(135deg,var(--charcoal) 0%,var(--charcoal-light) 100%);">
+                        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--gold);font-size:48px;">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                    </div>
+                    <div class="latest-overlay">
+                        <div class="latest-category">Written Work</div>
+                        <h3 class="latest-name">Chiseled</h3>
+                        <div class="latest-date">2025</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .latest-work {
+            padding: 100px 48px;
+            background: var(--cream-dark);
+        }
+        .latest-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .latest-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .latest-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .latest-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            color: var(--text-primary);
+        }
+        .latest-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .latest-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .latest-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        .latest-image {
+            width: 100%;
+            height: 100%;
+        }
+        .latest-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .latest-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            color: white;
+        }
+        .latest-category {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .latest-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        .latest-badge {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+        }
+        .latest-badge i {
+            color: var(--gold);
+            margin-right: 4px;
+        }
+        .latest-date {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+        @media (max-width: 768px) {
+            .latest-work { padding: 60px 24px; }
+            .latest-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+
+    <footer class="footer">
+        <p>&copy; 2025 Sima Assaf. All rights reserved.</p>
+        <div class="footer-social">
+            <a href="https://www.instagram.com/simasarchitecture/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/simasarchitecture/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.behance.net/simaassaf" target="_blank"><i class="fab fa-behance"></i></a>
+            <a href="mailto:simasarchitecture@gmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
+    </footer>
+
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            nav.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="script.js"></script>
-    <script src="3d.js"></script>
 </body>
 </html>

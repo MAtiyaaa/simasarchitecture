@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Sima Assaf</title>
+    <link rel="icon" href="pdf/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <style>
+        :root {
+            --gold: #c9a46b;
+            --charcoal: #1a1a1a;
+            --charcoal-light: #2d2d2d;
+            --cream: #faf8f5;
+            --cream-dark: #f0ece5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+        }
+
+        /* Header */
+        .page-header {
+            padding: 140px 48px 60px;
+            text-align: center;
+            background: var(--cream-dark);
+        }
+
+        .page-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+        }
+
+        /* Projects Grid */
+        .projects-container {
+            padding: 60px 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .project-card {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            background: var(--charcoal);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease, opacity 0.3s;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.1);
+            opacity: 0.6;
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 32px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-category {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .project-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .project-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .project-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--charcoal);
+        }
+
+        /* Project Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--cream);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: var(--charcoal);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--gold);
+        }
+
+        .modal-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+        }
+
+        .modal-image {
+            position: relative;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-info {
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-category {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .modal-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--charcoal);
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--gold);
+            color: var(--charcoal);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: transparent;
+        }
+
+        /* 3D Loading Screen */
+        .model-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: var(--charcoal);
+        }
+        .model-loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 48px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(201,164,107,0.2);
+            border-radius: var(--radius-lg);
+            min-width: 320px;
+        }
+        .model-spinner {
+            width: 56px;
+            height: 56px;
+            border: 3px solid rgba(201,164,107,0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .model-loading-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+        }
+        .model-progress-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .model-progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .model-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 12px rgba(201,164,107,0.5);
+        }
+        .model-progress-percentage {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--gold);
+            font-family: 'Inter', monospace;
+        }
+        .model-loading-status {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            font-style: italic;
+        }
+
+        /* 3D Viewer */
+        .viewer-modal {
+            position: fixed;
+            inset: 0;
+            background: var(--charcoal);
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+        }
+
+        .viewer-modal.active {
+            display: flex;
+        }
+
+        .viewer-header {
+            padding: 20px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .viewer-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            color: white;
+        }
+
+        .viewer-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .viewer-btn {
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .viewer-btn:hover, .viewer-btn.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--charcoal);
+        }
+
+        .viewer-btn .btn-text {
+            display: inline;
+        }
+
+        #model-container {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--cream);
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            z-index: 99;
+        }
+
+        .mobile-nav.active { display: block; }
+
+        .mobile-nav a {
+            display: block;
+            padding: 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 968px) {
+            .mobile-menu-btn { display: block; }
+            .modal-overlay { padding: 16px; align-items: flex-start; }
+            .modal { max-height: calc(100vh - 32px); border-radius: 16px; }
+            .modal-content { grid-template-columns: 1fr; min-height: auto; }
+            .modal-image { height: 200px; }
+            .modal-info { padding: 24px; }
+            .modal-title { font-size: 24px; margin-bottom: 16px; }
+            .modal-description { font-size: 14px; margin-bottom: 20px; }
+            .modal-actions { flex-wrap: wrap; gap: 8px; }
+            .modal-actions .btn { padding: 10px 16px; font-size: 12px; flex: 1; min-width: 120px; justify-content: center; }
+            .modal-close { top: 12px; right: 12px; width: 40px; height: 40px; }
+            .projects-container { padding: 40px 24px; }
+            .nav { padding: 16px 24px; }
+            .nav-links { display: none; }
+            .viewer-header { flex-direction: column; gap: 16px; padding: 16px; }
+            .viewer-title { font-size: 18px; }
+            .viewer-controls { width: 100%; justify-content: center; }
+            .viewer-btn { padding: 8px 12px; font-size: 11px; }
+            .viewer-btn .btn-text { display: none; }
+            .viewer-btn i { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">SIMA ASSAF</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+            <li><a href="thesis.html">Thesis</a></li>
+            <li><a href="artworks.html">Artworks</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="projects.html">Projects</a>
+        <a href="thesis.html">Thesis</a>
+        <a href="artworks.html">Artworks</a>
+        <a href="about.html">About</a>
+    </div>
+
+    <header class="page-header">
+        <div class="page-label">Selected Work</div>
+        <h1 class="page-title">Studio Projects</h1>
+    </header>
+
+    <div class="projects-container">
+        <div class="projects-grid">
+            <article class="project-card" onclick="openProject('co-housing', 'Co-housing Space', 'Residential', 'A vibrant coliving space centered around a lush green courtyard, designed to inspire connection and relaxation.', 'img/co-housing-thumb.jpg', 'cohousing-space', 3)">
+                <img src="img/co-housing-thumb.jpg" alt="Co-housing Space">
+                <div class="project-overlay">
+                    <div class="project-category">Residential</div>
+                    <h3 class="project-name">Co-housing Space</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); window.location.href='portfolio.html?page=3'">View Chapter</button>
+                        <button class="project-btn" onclick="event.stopPropagation(); open3DViewer('Co-housing Space', 'cohousing-space')">3D Model</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" onclick="openProject('karama', 'Reclaiming Karama', 'Urban Design', 'Our vision revitalizes Al Karama by restoring its original architecture through adaptive reuse-honoring history while meeting modern needs.', 'img/karama-thumb.jpg', null, 7)">
+                <img src="img/karama-thumb.jpg" alt="Reclaiming Karama">
+                <div class="project-overlay">
+                    <div class="project-category">Urban Design</div>
+                    <h3 class="project-name">Reclaiming Karama</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); window.location.href='portfolio.html?page=7'">View Chapter</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" onclick="openProject('education', 'Education Academy', 'Educational', 'This project guides visitors through workshops, culminating in a serene garden with a traditional wind tower for natural ventilation.', 'img/education-academy-thumb.jpg', 'education-academy', 11)">
+                <img src="img/education-academy-thumb.jpg" alt="Education Academy">
+                <div class="project-overlay">
+                    <div class="project-category">Educational</div>
+                    <h3 class="project-name">Education Academy</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); window.location.href='portfolio.html?page=11'">View Chapter</button>
+                        <button class="project-btn" onclick="event.stopPropagation(); open3DViewer('Education Academy', 'education-academy')">3D Model</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" onclick="openProject('conservatory', 'Music Conservatory', 'Cultural', 'A symphony of design and artistic pursuit, crafting a space where creativity flourishes.', 'img/conservatory-thumb.jpg', 'music-conservatory', 15)">
+                <img src="img/conservatory-thumb.jpg" alt="Music Conservatory">
+                <div class="project-overlay">
+                    <div class="project-category">Cultural</div>
+                    <h3 class="project-name">Music Conservatory</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); window.location.href='portfolio.html?page=15'">View Chapter</button>
+                        <button class="project-btn" onclick="event.stopPropagation(); open3DViewer('Music Conservatory', 'music-conservatory')">3D Model</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" onclick="openProject('rooted', 'Rooted Living', 'Sustainability', 'Near Ras Al Khor, this project blends nature and urban life, focusing on sustainability and the restoration of Dubai Creek.', 'img/rooted-thumb.jpg', null, 17)">
+                <img src="img/rooted-thumb.jpg" alt="Rooted Living">
+                <div class="project-overlay">
+                    <div class="project-category">Sustainability</div>
+                    <h3 class="project-name">Rooted Living</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); window.location.href='portfolio.html?page=17'">View Chapter</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" onclick="openProject('boutique', 'Boutique Hotel', 'Hospitality', 'Shaped by Deconstructivism, where fragmented forms and shifting spaces create a dynamic, immersive experience.', 'img/boutique.jpg', 'boutique', null)">
+                <img src="img/boutique.jpg" alt="Boutique Hotel">
+                <div class="project-overlay">
+                    <div class="project-category">Hospitality</div>
+                    <h3 class="project-name">Boutique Hotel</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); open3DViewer('Boutique Hotel', 'boutique')">3D Model</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" onclick="openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">
+                <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
+                    <source src="img/Paw%20Plaza.mp4" type="video/mp4">
+                </video>
+                <div class="project-overlay">
+                    <div class="project-category">VR / Public Space</div>
+                    <h3 class="project-name">Paw Plaza</h3>
+                    <div class="project-awards" style="margin-bottom:8px;">
+                        <span style="background:rgba(201,164,107,0.2);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:11px;"><i class="fas fa-award"></i> Sikka Art Festival 2026 Nominee</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">Watch Video</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <!-- Project Detail Modal -->
+    <div class="modal-overlay" id="projectModal" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-content">
+                <div class="modal-image">
+                    <img id="modal-img" src="" alt="">
+                </div>
+                <div class="modal-info">
+                    <div class="modal-category" id="modal-category"></div>
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <p class="modal-description" id="modal-description"></p>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" id="view-chapter-btn" onclick="goToChapterFromModal()">
+                            <i class="fas fa-book-open"></i> View Chapter
+                        </button>
+                        <button class="btn" id="view-3d-btn" onclick="open3DViewerFromModal()">
+                            <i class="fas fa-cube"></i> 3D Model
+                        </button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Viewer Modal -->
+    <div class="viewer-modal" id="viewerModal">
+        <div class="viewer-header">
+            <h2 class="viewer-title" id="viewer-title">3D Model</h2>
+            <div class="viewer-controls">
+                <button class="viewer-btn" onclick="toggleRotation()" id="rotate-btn">
+                    <i class="fas fa-pause"></i> <span class="btn-text">Rotation</span>
+                </button>
+                <button class="viewer-btn" onclick="resetView()">
+                    <i class="fas fa-home"></i> <span class="btn-text">Reset</span>
+                </button>
+                <button class="viewer-btn" onclick="toggleWireframe()">
+                    <i class="fas fa-border-all"></i> <span class="btn-text">Wireframe</span>
+                </button>
+                <button class="viewer-btn" onclick="close3DViewer()">
+                    <i class="fas fa-times"></i> <span class="btn-text">Close</span>
+                </button>
+            </div>
+        </div>
+        <div id="model-container"></div>
+    </div>
+
+    <script>
+        let currentModelFile = null;
+        let currentChapterPage = null;
+        let scene, camera, renderer, controls, model, isRotating = true, isWireframe = false;
+
+        function openProject(id, title, category, description, image, modelFile, chapterPage) {
+            document.getElementById('modal-img').src = image;
+            document.getElementById('modal-category').textContent = category;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-description').textContent = description;
+            
+            currentModelFile = modelFile;
+            currentChapterPage = chapterPage;
+            
+            const view3dBtn = document.getElementById('view-3d-btn');
+            const viewChapterBtn = document.getElementById('view-chapter-btn');
+            
+            if (modelFile) {
+                view3dBtn.style.display = 'inline-flex';
+            } else {
+                view3dBtn.style.display = 'none';
+            }
+            
+            if (chapterPage) {
+                viewChapterBtn.style.display = 'inline-flex';
+            } else {
+                viewChapterBtn.style.display = 'none';
+            }
+            
+            document.getElementById('projectModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function goToChapterFromModal() {
+            if (currentChapterPage) {
+                window.location.href = 'portfolio.html?page=' + currentChapterPage;
+            }
+        }
+
+        function closeModal(event) {
+            if (!event || event.target === document.getElementById('projectModal')) {
+                document.getElementById('projectModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Video Modal with description
+        function openVideoModal(title, videoSrc, description, category) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay active';
+            modal.id = 'videoModal';
+            modal.innerHTML = `
+                <div class="modal" style="max-width:1100px;" onclick="event.stopPropagation()">
+                    <button class="modal-close" onclick="closeVideoModal()"><i class="fas fa-times"></i></button>
+                    <div style="padding:40px;">
+                        <div class="modal-category" style="font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">${category || 'VR / Public Space'}</div>
+                        <h2 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;margin-bottom:16px;color:var(--text-primary);">${title}</h2>
+                        <div style="position:relative;margin-bottom:24px;">
+                            <video id="pawPlazaVideo" controls autoplay playsinline style="width:100%;border-radius:12px;max-height:65vh;background:var(--charcoal);">
+                                <source src="${videoSrc}" type="video/mp4">
+                            </video>
+                            <button onclick="toggleFullscreen()" style="position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,0.6);color:white;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;transition:background 0.3s;">
+                                <i class="fas fa-expand"></i> Fullscreen
+                            </button>
+                        </div>
+                        <p style="color:var(--text-secondary);line-height:1.8;font-size:15px;">${description || 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. Nominated for Sikka Art Festival 2026.'}</p>
+                        <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+                            <span style="background:rgba(201,164,107,0.1);color:var(--gold-dark);padding:8px 16px;border-radius:20px;font-size:12px;"><i class="fas fa-vr-cardboard"></i> Gravity Sketch</span>
+                            <span style="background:rgba(201,164,107,0.1);color:var(--gold-dark);padding:8px 16px;border-radius:20px;font-size:12px;"><i class="fas fa-cube"></i> Twinmotion</span>
+                            <span style="background:rgba(201,164,107,0.2);color:var(--gold-dark);padding:8px 16px;border-radius:20px;font-size:12px;"><i class="fas fa-award"></i> Sikka 2026 Nominee</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            modal.onclick = function() { closeVideoModal(); };
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function toggleFullscreen() {
+            const video = document.getElementById('pawPlazaVideo');
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            if (modal) {
+                modal.remove();
+                document.body.style.overflow = '';
+            }
+        }
+
+        function open3DViewerFromModal() {
+            const title = document.getElementById('modal-title').textContent;
+            closeModal();
+            setTimeout(() => open3DViewer(title, currentModelFile), 300);
+        }
+
+        function open3DViewer(title, modelFile) {
+            currentModelFile = modelFile;
+            document.getElementById('viewer-title').textContent = title + ' - 3D Model';
+            document.getElementById('viewerModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (!scene) {
+                init3DViewer();
+            }
+            
+            // Show loading indicator with progress
+            const container = document.getElementById('model-container');
+            container.innerHTML = `
+                <div class="model-loading">
+                    <div class="model-loading-content">
+                        <div class="model-spinner"></div>
+                        <div class="model-loading-text">Loading 3D Model</div>
+                        <div class="model-progress-container">
+                            <div class="model-progress-bar-bg">
+                                <div class="model-progress-bar-fill" id="model-progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="model-progress-percentage" id="model-progress-text">0%</div>
+                        </div>
+                        <div class="model-loading-status" id="model-loading-status">Preparing...</div>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                // Re-create renderer after clearing
+                if (renderer) {
+                    container.innerHTML = '';
+                    container.appendChild(renderer.domElement);
+                }
+                
+                if (modelFile) {
+                    loadSTLModel(modelFile);
+                } else {
+                    createPlaceholderModel();
+                }
+            }, 100);
+        }
+
+        function close3DViewer() {
+            document.getElementById('viewerModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function init3DViewer() {
+            const container = document.getElementById('model-container');
+            
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a1a);
+            
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 0, 50);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xc9a46b, 0.8);
+            directionalLight.position.set(10, 10, 10);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+            fillLight.position.set(-10, 0, -10);
+            scene.add(fillLight);
+            
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.8;
+            
+            // Handle resize
+            window.addEventListener('resize', onWindowResize);
+            
+            animate();
+        }
+
+        function loadSTLModel(filename) {
+            if (model) scene.remove(model);
+            
+            // Map project names to actual STL filenames
+            const stlMap = {
+                'cohousing-space': 'cohousing-space',
+                'co-housing': 'cohousing-space',
+                'karama': 'abstract-block',
+                'conservatory': 'music-conservatory',
+                'education': 'education-academy',
+                'office': 'boutique',
+                'music': 'music-conservatory'
+            };
+            
+            const actualFilename = stlMap[filename] || filename;
+            
+            const loader = new THREE.STLLoader();
+            loader.load(
+                `stl/${actualFilename}.stl`,
+                (geometry) => {
+                    console.log('STL loaded successfully:', actualFilename);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0xc9a46b,
+                        specular: 0x111111,
+                        shininess: 200
+                    });
+                    
+                    model = new THREE.Mesh(geometry, material);
+                    model.castShadow = true;
+                    model.receiveShadow = true;
+                    
+                    geometry.computeBoundingBox();
+                    const center = geometry.boundingBox.getCenter(new THREE.Vector3());
+                    const size = geometry.boundingBox.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 30 / maxDim;
+                    
+                    model.scale.set(scale, scale, scale);
+                    model.position.sub(center.multiplyScalar(scale));
+                    
+                    scene.add(model);
+                },
+                (progress) => {
+                    // Progress callback - update loading screen
+                    if (progress.lengthComputable) {
+                        const percent = Math.round((progress.loaded / progress.total) * 100);
+                        const progressFill = document.getElementById('model-progress-fill');
+                        const progressText = document.getElementById('model-progress-text');
+                        const progressStatus = document.getElementById('model-loading-status');
+                        
+                        if (progressFill) progressFill.style.width = percent + '%';
+                        if (progressText) progressText.textContent = percent + '%';
+                        if (progressStatus) {
+                            if (percent < 100) {
+                                progressStatus.textContent = 'Downloading...';
+                            } else {
+                                progressStatus.textContent = 'Rendering...';
+                            }
+                        }
+                    }
+                },
+                (error) => {
+                    console.error('Error loading STL:', error);
+                    createPlaceholderModel();
+                }
+            );
+        }
+
+        function createPlaceholderModel() {
+            if (model) scene.remove(model);
+            
+            const geometry = new THREE.BoxGeometry(15, 15, 15);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xc9a46b,
+                wireframe: true
+            });
+            model = new THREE.Mesh(geometry, material);
+            scene.add(model);
+        }
+
+        function toggleRotation() {
+            isRotating = !isRotating;
+            controls.autoRotate = isRotating;
+            event.target.innerHTML = isRotating ? '<i class="fas fa-pause"></i> Rotation' : '<i class="fas fa-play"></i> Rotation';
+        }
+
+        function resetView() {
+            camera.position.set(0, 0, 50);
+            controls.reset();
+        }
+
+        function toggleWireframe() {
+            if (!model) return;
+            isWireframe = !isWireframe;
+            model.material.wireframe = isWireframe;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            if (!camera || !renderer) return;
+            const container = document.getElementById('model-container');
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        // Close modals on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                close3DViewer();
+            }
+        });
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
