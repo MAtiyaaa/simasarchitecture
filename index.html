@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="enhance.css">
     <style>
         :root {
             --gold: #c9a46b;
@@ -339,8 +340,12 @@
             <li><a href="artworks.html">Artworks</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <div class="hamburger-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </button>
     </nav>
 
@@ -357,26 +362,26 @@
         <div class="hero-bg"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <div class="hero-label">Architecture Portfolio</div>
-                <h1 class="hero-title">
+                <div class="hero-label reveal stagger-1">Architecture Portfolio</div>
+                <h1 class="hero-title reveal stagger-2">
                     Creating <em>Spaces</em> That Inspire
                 </h1>
-                <p class="hero-description">
+                <p class="hero-description reveal stagger-3">
                     Architecture student at American University in Dubai, passionate about 
                     sustainable design and human-centered spaces that blend aesthetics with 
                     functionality.
                 </p>
-                <a href="portfolio.html" class="hero-cta">
+                <a href="portfolio.html" class="hero-cta reveal stagger-4">
                     <span>View Portfolio</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                <div class="stats-bar">
+                <div class="stats-bar reveal stagger-5">
                     <div>
-                        <div class="stat-value">3.60</div>
+                        <div class="stat-value" data-count="3.60">0</div>
                         <div class="stat-label">GPA</div>
                     </div>
                     <div>
-                        <div class="stat-value">6+</div>
+                        <div class="stat-value" data-count="6" data-suffix="+">0</div>
                         <div class="stat-label">Projects</div>
                     </div>
                     <div>
@@ -385,7 +390,7 @@
                     </div>
                 </div>
             </div>
-            <div class="hero-image">
+            <div class="hero-image reveal-right stagger-3">
                 <div class="hero-image-frame">
                     <img src="img/karama-thumb.jpg" alt="Sima Assaf Architecture">
                 </div>
@@ -396,12 +401,12 @@
     
     <section class="latest-work">
         <div class="latest-container">
-            <div class="latest-header">
+            <div class="latest-header reveal">
                 <div class="latest-label">Latest Work</div>
                 <h2 class="latest-title">Recent Projects</h2>
             </div>
             <div class="latest-grid">
-                <a href="projects.html" class="latest-card">
+                <a href="projects.html" class="latest-card reveal-scale stagger-1">
                     <div class="latest-image">
                         <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
                             <source src="img/Paw%20Plaza.mp4" type="video/mp4">
@@ -415,7 +420,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="artworks.html" class="latest-card">
+                <a href="artworks.html" class="latest-card reveal-scale stagger-2">
                     <div class="latest-image">
                         <img src="img/art/Gustav%20Moodboard.jpg" alt="Gustav Moodboard">
                     </div>
@@ -425,7 +430,7 @@
                         <div class="latest-date">January 2026</div>
                     </div>
                 </a>
-                <a href="thesis.html" class="latest-card">
+                <a href="thesis.html" class="latest-card reveal-scale stagger-3">
                     <div class="latest-image" style="background:linear-gradient(135deg,var(--charcoal) 0%,var(--charcoal-light) 100%);">
                         <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--gold);font-size:48px;">
                             <i class="fas fa-book-open"></i>
@@ -547,15 +552,6 @@
         </div>
     </footer>
 
-    <script>
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.nav');
-            nav.classList.toggle('scrolled', window.scrollY > 100);
-        });
-
-        function toggleMobileMenu() {
-            document.getElementById('mobileNav').classList.toggle('active');
-        }
-    </script>
+    <script src="enhance.js"></script>
 </body>
 </html>

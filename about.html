@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="enhance.css">
     <style>
         :root {
             --gold: #c9a46b;
@@ -475,8 +476,12 @@
             <li><a href="artworks.html">Artworks</a></li>
             <li><a href="about.html" class="active">About</a></li>
         </ul>
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <div class="hamburger-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </button>
     </nav>
 
@@ -498,10 +503,10 @@
     <div class="content">
         
         <div class="profile-section">
-            <div class="profile-image">
+            <div class="profile-image reveal-left">
                 <img src="pdf/sima.jpg" alt="Sima Assaf">
             </div>
-            <div class="profile-content">
+            <div class="profile-content reveal-right">
                 <h2>Sima Assaf</h2>
                 <div class="profile-role">Architecture Student at American University in Dubai</div>
                 <p class="profile-bio">I'm an architectural designer with a passion for creating innovative and sustainable spaces. With a strong foundation in architectural drafting and 3D modeling, I strive to blend functionality with aesthetic appeal in every project.</p>
@@ -518,12 +523,12 @@
         </div>
 
         
-        <div class="section-header">
+        <div class="section-header reveal">
             <h2 class="section-title">Background</h2>
         </div>
         
         <div class="stats-grid">
-            <div class="stat-card stat-card-education">
+            <div class="stat-card stat-card-education reveal stagger-1">
                 <div class="stat-icon">
                     <img src="pdf/aud-logo.png" alt="AUD">
                 </div>
@@ -546,7 +551,7 @@
                 </div>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card reveal stagger-2">
                 <div class="stat-icon">
                     <img src="pdf/jt.png" alt="JT+Partners">
                 </div>
@@ -557,7 +562,7 @@
                 </div>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card reveal stagger-3">
                 <div class="stat-icon">
                     <img src="pdf/burj.png" alt="Location">
                 </div>
@@ -567,7 +572,7 @@
                 </div>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card reveal stagger-4">
                 <div class="stat-icon">
                     <img src="pdf/lang.png" alt="Languages">
                 </div>
@@ -581,55 +586,55 @@
 
         
         <div class="skills-section">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <h2 class="section-title">Skills & Tools</h2>
             </div>
             <div class="skills-grid">
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-1">
                     <div class="skill-icon"><img src="img/skills/revit.png" alt="Revit"></div>
                     <div class="skill-name">Revit</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-2">
                     <div class="skill-icon"><img src="img/skills/3d-printing.png" alt="3D Printing"></div>
                     <div class="skill-name">3D Printing</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-3">
                     <div class="skill-icon"><img src="img/skills/arcgis.png" alt="ArcGIS"></div>
                     <div class="skill-name">ArcGIS</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-4">
                     <div class="skill-icon"><img src="img/skills/rhino.png" alt="Rhino"></div>
                     <div class="skill-name">Rhino</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-5">
                     <div class="skill-icon"><img src="img/skills/sketchup.png" alt="Sketchup"></div>
                     <div class="skill-name">Sketchup</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-6">
                     <div class="skill-icon"><img src="img/skills/photoshop.png" alt="Photoshop"></div>
                     <div class="skill-name">Photoshop</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-7">
                     <div class="skill-icon"><img src="img/skills/twinmotion.png" alt="TwinMotion"></div>
                     <div class="skill-name">TwinMotion</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-8">
                     <div class="skill-icon"><img src="img/skills/grasshopper.png" alt="Grasshopper"></div>
                     <div class="skill-name">Grasshopper</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-9">
                     <div class="skill-icon"><img src="img/skills/procreate.png" alt="Procreate"></div>
                     <div class="skill-name">Procreate</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-10">
                     <div class="skill-icon"><img src="img/skills/indesign.png" alt="InDesign"></div>
                     <div class="skill-name">InDesign</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-11">
                     <div class="skill-icon"><img src="img/skills/autocad.png" alt="AutoCAD"></div>
                     <div class="skill-name">AutoCAD</div>
                 </div>
-                <div class="skill-item">
+                <div class="skill-item reveal stagger-12">
                     <div class="skill-icon"><img src="img/skills/modelmaking.png" alt="Model Making"></div>
                     <div class="skill-name">Model Making</div>
                 </div>
@@ -645,7 +650,7 @@
                     <p class="awards-subtitle">Acknowledgment of excellence in architectural design and innovation</p>
                 </div>
                 <div class="awards-grid">
-                    <div class="award-card">
+                    <div class="award-card reveal stagger-1">
                         <div class="award-icon">
                             <i class="fas fa-trophy"></i>
                         </div>
@@ -655,7 +660,7 @@
                             <p class="award-description">Royal Institute of British Architects award recognizing emerging architectural talent and innovative design thinking.</p>
                         </div>
                     </div>
-                    <div class="award-card">
+                    <div class="award-card reveal stagger-2">
                         <div class="award-icon">
                             <i class="fas fa-award"></i>
                         </div>
@@ -774,10 +779,6 @@
         <p>&copy; 2025 Sima Assaf. All rights reserved.</p>
     </footer>
 
-    <script>
-        function toggleMobileMenu() {
-            document.getElementById('mobileNav').classList.toggle('active');
-        }
-    </script>
+    <script src="enhance.js"></script>
 </body>
 </html>

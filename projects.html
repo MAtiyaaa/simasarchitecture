@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="enhance.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
@@ -525,8 +526,12 @@
             <li><a href="artworks.html">Artworks</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <div class="hamburger-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </button>
     </nav>
 
@@ -546,7 +551,7 @@
 
     <div class="projects-container">
         <div class="projects-grid">
-            <article class="project-card" onclick="openProject('co-housing', 'Co-housing Space', 'Residential', 'A vibrant coliving space centered around a lush green courtyard, designed to inspire connection and relaxation.', 'img/co-housing-thumb.jpg', 'cohousing-space', 3)">
+            <article class="project-card reveal-scale stagger-1" onclick="openProject('co-housing', 'Co-housing Space', 'Residential', 'A vibrant coliving space centered around a lush green courtyard, designed to inspire connection and relaxation.', 'img/co-housing-thumb.jpg', 'cohousing-space', 3)">
                 <img src="img/co-housing-thumb.jpg" alt="Co-housing Space">
                 <div class="project-overlay">
                     <div class="project-category">Residential</div>
@@ -558,7 +563,7 @@
                 </div>
             </article>
 
-            <article class="project-card" onclick="openProject('karama', 'Reclaiming Karama', 'Urban Design', 'Our vision revitalizes Al Karama by restoring its original architecture through adaptive reuse-honoring history while meeting modern needs.', 'img/karama-thumb.jpg', null, 7)">
+            <article class="project-card reveal-scale stagger-2" onclick="openProject('karama', 'Reclaiming Karama', 'Urban Design', 'Our vision revitalizes Al Karama by restoring its original architecture through adaptive reuse-honoring history while meeting modern needs.', 'img/karama-thumb.jpg', null, 7)">
                 <img src="img/karama-thumb.jpg" alt="Reclaiming Karama">
                 <div class="project-overlay">
                     <div class="project-category">Urban Design</div>
@@ -569,7 +574,7 @@
                 </div>
             </article>
 
-            <article class="project-card" onclick="openProject('education', 'Education Academy', 'Educational', 'This project guides visitors through workshops, culminating in a serene garden with a traditional wind tower for natural ventilation.', 'img/education-academy-thumb.jpg', 'education-academy', 11)">
+            <article class="project-card reveal-scale stagger-3" onclick="openProject('education', 'Education Academy', 'Educational', 'This project guides visitors through workshops, culminating in a serene garden with a traditional wind tower for natural ventilation.', 'img/education-academy-thumb.jpg', 'education-academy', 11)">
                 <img src="img/education-academy-thumb.jpg" alt="Education Academy">
                 <div class="project-overlay">
                     <div class="project-category">Educational</div>
@@ -581,7 +586,7 @@
                 </div>
             </article>
 
-            <article class="project-card" onclick="openProject('conservatory', 'Music Conservatory', 'Cultural', 'A symphony of design and artistic pursuit, crafting a space where creativity flourishes.', 'img/conservatory-thumb.jpg', 'music-conservatory', 15)">
+            <article class="project-card reveal-scale stagger-4" onclick="openProject('conservatory', 'Music Conservatory', 'Cultural', 'A symphony of design and artistic pursuit, crafting a space where creativity flourishes.', 'img/conservatory-thumb.jpg', 'music-conservatory', 15)">
                 <img src="img/conservatory-thumb.jpg" alt="Music Conservatory">
                 <div class="project-overlay">
                     <div class="project-category">Cultural</div>
@@ -593,7 +598,7 @@
                 </div>
             </article>
 
-            <article class="project-card" onclick="openProject('rooted', 'Rooted Living', 'Sustainability', 'Near Ras Al Khor, this project blends nature and urban life, focusing on sustainability and the restoration of Dubai Creek.', 'img/rooted-thumb.jpg', null, 17)">
+            <article class="project-card reveal-scale stagger-5" onclick="openProject('rooted', 'Rooted Living', 'Sustainability', 'Near Ras Al Khor, this project blends nature and urban life, focusing on sustainability and the restoration of Dubai Creek.', 'img/rooted-thumb.jpg', null, 17)">
                 <img src="img/rooted-thumb.jpg" alt="Rooted Living">
                 <div class="project-overlay">
                     <div class="project-category">Sustainability</div>
@@ -604,7 +609,7 @@
                 </div>
             </article>
 
-            <article class="project-card" onclick="openProject('boutique', 'Boutique Hotel', 'Hospitality', 'Shaped by Deconstructivism, where fragmented forms and shifting spaces create a dynamic, immersive experience.', 'img/boutique.jpg', 'boutique', null)">
+            <article class="project-card reveal-scale stagger-6" onclick="openProject('boutique', 'Boutique Hotel', 'Hospitality', 'Shaped by Deconstructivism, where fragmented forms and shifting spaces create a dynamic, immersive experience.', 'img/boutique.jpg', 'boutique', null)">
                 <img src="img/boutique.jpg" alt="Boutique Hotel">
                 <div class="project-overlay">
                     <div class="project-category">Hospitality</div>
@@ -615,7 +620,7 @@
                 </div>
             </article>
 
-            <article class="project-card" onclick="openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">
+            <article class="project-card reveal-scale stagger-7" onclick="openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">
                 <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
                     <source src="img/Paw%20Plaza.mp4" type="video/mp4">
                 </video>
@@ -632,6 +637,10 @@
             </article>
         </div>
     </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Sima Assaf. All rights reserved.</p>
+    </footer>
 
     
     <div class="modal-overlay" id="projectModal" onclick="closeModal(event)">
@@ -992,9 +1001,8 @@
             }
         });
 
-        function toggleMobileMenu() {
-            document.getElementById('mobileNav').classList.toggle('active');
-        }
+
     </script>
+    <script src="enhance.js"></script>
 </body>
 </html>

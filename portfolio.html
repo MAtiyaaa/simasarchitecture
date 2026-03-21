@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="enhance.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         :root {
@@ -359,8 +360,12 @@
             <li><a href="artworks.html">Artworks</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <div class="hamburger-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </button>
     </nav>
 
@@ -378,7 +383,7 @@
         <h1 class="page-title">Selected Works</h1>
         <p class="page-subtitle">A collection of architectural projects showcasing design innovation and technical expertise</p>
         
-        <div class="controls-bar">
+        <div class="controls-bar reveal stagger-1">
             <div class="chapter-dropdown">
                 <select class="chapter-select" id="chapterSelect" onchange="goToChapter(this.value)">
                     <option value="">Jump to Chapter...</option>
@@ -397,7 +402,7 @@
     </header>
 
     <div class="pdf-container">
-        <div class="page-display" id="page-display">
+        <div class="page-display reveal-scale" id="page-display">
             <div class="pdf-loading">
                 <div class="spinner"></div>
                 <p>Loading portfolio...</p>
@@ -580,7 +585,7 @@
         }
 
         function toggleMobileMenu() {
-            document.getElementById('mobileNav').classList.toggle('active');
+            // handled by enhance.js
         }
 
         document.addEventListener('keydown', (e) => {
@@ -594,5 +599,6 @@
 
         loadPDF();
     </script>
+    <script src="enhance.js"></script>
 </body>
 </html>
