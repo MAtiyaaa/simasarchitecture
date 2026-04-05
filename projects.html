@@ -34,7 +34,6 @@
             color: var(--text-primary);
         }
 
-        
         .nav {
             position: fixed;
             top: 0;
@@ -51,12 +50,21 @@
         }
 
         .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-family: 'Cormorant Garamond', serif;
             font-size: 22px;
             font-weight: 400;
             color: var(--text-primary);
             text-decoration: none;
             letter-spacing: 0.15em;
+        }
+
+        .nav-logo img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
         }
 
         .nav-links {
@@ -79,7 +87,6 @@
             color: var(--gold);
         }
 
-        
         .page-header {
             padding: 140px 48px 60px;
             text-align: center;
@@ -101,7 +108,6 @@
             font-weight: 300;
         }
 
-        
         .projects-container {
             padding: 60px 48px;
             max-width: 1400px;
@@ -110,8 +116,8 @@
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 32px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
 
         .project-card {
@@ -123,14 +129,16 @@
             background: var(--charcoal);
         }
 
-        .project-card img {
+        .project-card img,
+        .project-card video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.6s ease, opacity 0.3s;
         }
 
-        .project-card:hover img {
+        .project-card:hover img,
+        .project-card:hover video {
             transform: scale(1.1);
             opacity: 0.6;
         }
@@ -142,13 +150,12 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 32px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            transition: background 0.4s ease;
         }
 
         .project-card:hover .project-overlay {
-            opacity: 1;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.2) 100%);
         }
 
         .project-category {
@@ -171,18 +178,33 @@
         .project-actions {
             display: flex;
             gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .project-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(201,164,107,0.2);
+            color: var(--gold);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
         }
 
         .project-btn {
             padding: 10px 20px;
-            background: transparent;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
             font-size: 12px;
             font-weight: 500;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            border-radius: 4px;
+            border-radius: 24px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -191,9 +213,9 @@
             background: var(--gold);
             border-color: var(--gold);
             color: var(--charcoal);
+            transform: translateY(-2px);
         }
 
-        
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -237,6 +259,192 @@
 
         .modal-close:hover {
             background: var(--gold);
+        }
+
+        .video-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-modal-overlay.active {
+            opacity: 1;
+        }
+
+        .video-modal {
+            background: var(--charcoal);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .video-modal-overlay.active .video-modal {
+            transform: translateY(0);
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-close:hover {
+            background: var(--gold);
+            transform: rotate(90deg);
+        }
+
+        .video-modal-player {
+            position: relative;
+            background: #000;
+            aspect-ratio: 16/9;
+        }
+
+        .video-modal-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-modal-info {
+            padding: 28px 32px;
+            background: linear-gradient(135deg, var(--charcoal) 0%, var(--charcoal-light) 100%);
+        }
+
+        .video-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+
+        .video-modal-category {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+
+        .video-modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 400;
+            color: white;
+            margin: 0;
+        }
+
+        .video-modal-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(201,164,107,0.2) 0%, rgba(201,164,107,0.1) 100%);
+            border: 1px solid rgba(201,164,107,0.3);
+            color: var(--gold);
+            padding: 10px 16px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .video-modal-badge i {
+            font-size: 14px;
+        }
+
+        .video-modal-desc {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0 0 20px 0;
+        }
+
+        .video-modal-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .video-modal-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .video-modal-tag i {
+            color: var(--gold);
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .video-modal-overlay {
+                padding: 0;
+            }
+            
+            .video-modal {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+            
+            .video-modal-info {
+                padding: 20px;
+            }
+            
+            .video-modal-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .video-modal-title {
+                font-size: 24px;
+            }
+            
+            .video-modal-desc {
+                font-size: 13px;
+            }
+            
+            .video-modal-tags {
+                gap: 8px;
+            }
+            
+            .video-modal-tag {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
         }
 
         .modal-content {
@@ -324,7 +532,6 @@
             background: transparent;
         }
 
-        
         .model-loading {
             display: flex;
             align-items: center;
@@ -393,7 +600,6 @@
             font-style: italic;
         }
 
-        
         .viewer-modal {
             position: fixed;
             inset: 0;
@@ -458,7 +664,6 @@
             position: relative;
         }
 
-        
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -504,6 +709,13 @@
             .modal-actions .btn { padding: 10px 16px; font-size: 12px; flex: 1; min-width: 120px; justify-content: center; }
             .modal-close { top: 12px; right: 12px; width: 40px; height: 40px; }
             .projects-container { padding: 40px 24px; }
+            .projects-grid { 
+                grid-template-columns: 1fr; 
+                gap: 20px; 
+            }
+            .project-card {
+                grid-column: span 1;
+            }
             .nav { padding: 16px 24px; }
             .nav-links { display: none; }
             .viewer-header { flex-direction: column; gap: 16px; padding: 16px; }
@@ -512,6 +724,21 @@
             .viewer-btn { padding: 8px 12px; font-size: 11px; }
             .viewer-btn .btn-text { display: none; }
             .viewer-btn i { font-size: 16px; }
+
+            .project-overlay {
+                opacity: 1;
+                background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            }
+            
+            .project-name { font-size: 22px; margin-bottom: 12px; }
+            .project-actions { gap: 8px; }
+            .project-btn { padding: 8px 16px; font-size: 11px; }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1100px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -551,8 +778,33 @@
 
     <div class="projects-container">
         <div class="projects-grid">
-            <article class="project-card reveal-scale stagger-1" onclick="openProject('co-housing', 'Co-housing Space', 'Residential', 'A vibrant coliving space centered around a lush green courtyard, designed to inspire connection and relaxation.', 'img/co-housing-thumb.jpg', 'cohousing-space', 3)">
-                <img src="img/co-housing-thumb.jpg" alt="Co-housing Space">
+            
+            <article class="project-card reveal-scale stagger-1" onclick="openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">
+                <video autoplay muted loop playsinline>
+                    <source src="img/Paw%20Plaza.mp4" type="video/mp4">
+                </video>
+                <div class="project-overlay">
+                    <div class="project-category">VR / Public Space</div>
+                    <h3 class="project-name">Paw Plaza</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">View Video</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card reveal-scale stagger-2" onclick="openProject('karama', 'Reclaiming Karama', 'Urban Design', 'Our vision revitalizes Al Karama by restoring its original architecture through adaptive reuse-honoring history while meeting modern needs.', 'img/karama-thumb.jpg', null, 7)">
+                <img src="img/karama-thumb.jpg" alt="Reclaiming Karama" loading="lazy">
+                <div class="project-overlay">
+                    <div class="project-category">Urban Design</div>
+                    <h3 class="project-name">Reclaiming Karama</h3>
+                    <div class="project-actions">
+                        <button class="project-btn" onclick="event.stopPropagation(); window.location.href='portfolio.html?page=7'">View Chapter</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card reveal-scale stagger-3" onclick="openProject('co-housing', 'Co-housing Space', 'Residential', 'A vibrant coliving space centered around a lush green courtyard, designed to inspire connection and relaxation.', 'img/co-housing-thumb.jpg', 'cohousing-space', 3)">
+                <img src="img/co-housing-thumb.jpg" alt="Co-housing Space" loading="lazy">
                 <div class="project-overlay">
                     <div class="project-category">Residential</div>
                     <h3 class="project-name">Co-housing Space</h3>
@@ -563,19 +815,8 @@
                 </div>
             </article>
 
-            <article class="project-card reveal-scale stagger-2" onclick="openProject('karama', 'Reclaiming Karama', 'Urban Design', 'Our vision revitalizes Al Karama by restoring its original architecture through adaptive reuse-honoring history while meeting modern needs.', 'img/karama-thumb.jpg', null, 7)">
-                <img src="img/karama-thumb.jpg" alt="Reclaiming Karama">
-                <div class="project-overlay">
-                    <div class="project-category">Urban Design</div>
-                    <h3 class="project-name">Reclaiming Karama</h3>
-                    <div class="project-actions">
-                        <button class="project-btn" onclick="event.stopPropagation(); window.location.href='portfolio.html?page=7'">View Chapter</button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="project-card reveal-scale stagger-3" onclick="openProject('education', 'Education Academy', 'Educational', 'This project guides visitors through workshops, culminating in a serene garden with a traditional wind tower for natural ventilation.', 'img/education-academy-thumb.jpg', 'education-academy', 11)">
-                <img src="img/education-academy-thumb.jpg" alt="Education Academy">
+            <article class="project-card reveal-scale stagger-4" onclick="openProject('education', 'Education Academy', 'Educational', 'This project guides visitors through workshops, culminating in a serene garden with a traditional wind tower for natural ventilation.', 'img/education-academy-thumb.jpg', 'education-academy', 11)">
+                <img src="img/education-academy-thumb.jpg" alt="Education Academy" loading="lazy">
                 <div class="project-overlay">
                     <div class="project-category">Educational</div>
                     <h3 class="project-name">Education Academy</h3>
@@ -586,8 +827,8 @@
                 </div>
             </article>
 
-            <article class="project-card reveal-scale stagger-4" onclick="openProject('conservatory', 'Music Conservatory', 'Cultural', 'A symphony of design and artistic pursuit, crafting a space where creativity flourishes.', 'img/conservatory-thumb.jpg', 'music-conservatory', 15)">
-                <img src="img/conservatory-thumb.jpg" alt="Music Conservatory">
+            <article class="project-card reveal-scale stagger-5" onclick="openProject('conservatory', 'Music Conservatory', 'Cultural', 'A symphony of design and artistic pursuit, crafting a space where creativity flourishes.', 'img/conservatory-thumb.jpg', 'music-conservatory', 15)">
+                <img src="img/conservatory-thumb.jpg" alt="Music Conservatory" loading="lazy">
                 <div class="project-overlay">
                     <div class="project-category">Cultural</div>
                     <h3 class="project-name">Music Conservatory</h3>
@@ -598,8 +839,8 @@
                 </div>
             </article>
 
-            <article class="project-card reveal-scale stagger-5" onclick="openProject('rooted', 'Rooted Living', 'Sustainability', 'Near Ras Al Khor, this project blends nature and urban life, focusing on sustainability and the restoration of Dubai Creek.', 'img/rooted-thumb.jpg', null, 17)">
-                <img src="img/rooted-thumb.jpg" alt="Rooted Living">
+            <article class="project-card reveal-scale stagger-6" onclick="openProject('rooted', 'Rooted Living', 'Sustainability', 'Near Ras Al Khor, this project blends nature and urban life, focusing on sustainability and the restoration of Dubai Creek.', 'img/rooted-thumb.jpg', null, 17)">
+                <img src="img/rooted-thumb.jpg" alt="Rooted Living" loading="lazy">
                 <div class="project-overlay">
                     <div class="project-category">Sustainability</div>
                     <h3 class="project-name">Rooted Living</h3>
@@ -609,29 +850,13 @@
                 </div>
             </article>
 
-            <article class="project-card reveal-scale stagger-6" onclick="openProject('boutique', 'Boutique Hotel', 'Hospitality', 'Shaped by Deconstructivism, where fragmented forms and shifting spaces create a dynamic, immersive experience.', 'img/boutique.jpg', 'boutique', null)">
-                <img src="img/boutique.jpg" alt="Boutique Hotel">
+            <article class="project-card reveal-scale stagger-7" onclick="openProject('boutique', 'Boutique Hotel', 'Hospitality', 'Shaped by Deconstructivism, where fragmented forms and shifting spaces create a dynamic, immersive experience.', 'img/boutique.jpg', 'boutique', null)">
+                <img src="img/boutique.jpg" alt="Boutique Hotel" loading="lazy">
                 <div class="project-overlay">
                     <div class="project-category">Hospitality</div>
                     <h3 class="project-name">Boutique Hotel</h3>
                     <div class="project-actions">
                         <button class="project-btn" onclick="event.stopPropagation(); open3DViewer('Boutique Hotel', 'boutique')">3D Model</button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="project-card reveal-scale stagger-7" onclick="openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">
-                <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
-                    <source src="img/Paw%20Plaza.mp4" type="video/mp4">
-                </video>
-                <div class="project-overlay">
-                    <div class="project-category">VR / Public Space</div>
-                    <h3 class="project-name">Paw Plaza</h3>
-                    <div class="project-awards" style="margin-bottom:8px;">
-                        <span style="background:rgba(201,164,107,0.2);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:11px;"><i class="fas fa-award"></i> Sikka Art Festival 2026 Nominee</span>
-                    </div>
-                    <div class="project-actions">
-                        <button class="project-btn" onclick="event.stopPropagation(); openVideoModal('Paw Plaza', 'img/Paw%20Plaza.mp4', 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. This project explores the intersection of virtual reality and architectural visualization, creating an immersive public space that blends digital design with real-world urban planning principles. Nominated for Sikka Art Festival 2026.', 'VR / Public Space')">Watch Video</button>
                     </div>
                 </div>
             </article>
@@ -642,7 +867,6 @@
         <p>&copy; 2025 Sima Assaf. All rights reserved.</p>
     </footer>
 
-    
     <div class="modal-overlay" id="projectModal" onclick="closeModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
@@ -668,7 +892,6 @@
         </div>
     </div>
 
-    
     <div class="viewer-modal" id="viewerModal">
         <div class="viewer-header">
             <h2 class="viewer-title" id="viewer-title">3D Model</h2>
@@ -736,30 +959,40 @@
             }
         }
 
-        
         function openVideoModal(title, videoSrc, description, category) {
             const modal = document.createElement('div');
-            modal.className = 'modal-overlay active';
+            modal.className = 'video-modal-overlay';
             modal.id = 'videoModal';
             modal.innerHTML = `
-                <div class="modal" style="max-width:1100px;" onclick="event.stopPropagation()">
-                    <button class="modal-close" onclick="closeVideoModal()"><i class="fas fa-times"></i></button>
-                    <div style="padding:40px;">
-                        <div class="modal-category" style="font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">${category || 'VR / Public Space'}</div>
-                        <h2 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;margin-bottom:16px;color:var(--text-primary);">${title}</h2>
-                        <div style="position:relative;margin-bottom:24px;">
-                            <video id="pawPlazaVideo" controls autoplay playsinline style="width:100%;border-radius:12px;max-height:65vh;background:var(--charcoal);">
-                                <source src="${videoSrc}" type="video/mp4">
-                            </video>
-                            <button onclick="toggleFullscreen()" style="position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,0.6);color:white;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;transition:background 0.3s;">
-                                <i class="fas fa-expand"></i> Fullscreen
-                            </button>
+                <div class="video-modal" onclick="event.stopPropagation()">
+                    <button class="video-modal-close" onclick="closeVideoModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    
+                    <div class="video-modal-player">
+                        <video id="pawPlazaVideo" controls autoplay playsinline>
+                            <source src="${videoSrc}" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <div class="video-modal-info">
+                        <div class="video-modal-header">
+                            <div>
+                                <div class="video-modal-category">${category || 'VR / Public Space'}</div>
+                                <h2 class="video-modal-title">${title}</h2>
+                            </div>
+                            <div class="video-modal-badge">
+                                <i class="fas fa-award"></i>
+                                <span>Sikka Art Festival 2026</span>
+                            </div>
                         </div>
-                        <p style="color:var(--text-secondary);line-height:1.8;font-size:15px;">${description || 'A vibrant public plaza designed in VR using Gravity Sketch and visualized in Twinmotion. Nominated for Sikka Art Festival 2026.'}</p>
-                        <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
-                            <span style="background:rgba(201,164,107,0.1);color:var(--gold-dark);padding:8px 16px;border-radius:20px;font-size:12px;"><i class="fas fa-vr-cardboard"></i> Gravity Sketch</span>
-                            <span style="background:rgba(201,164,107,0.1);color:var(--gold-dark);padding:8px 16px;border-radius:20px;font-size:12px;"><i class="fas fa-cube"></i> Twinmotion</span>
-                            <span style="background:rgba(201,164,107,0.2);color:var(--gold-dark);padding:8px 16px;border-radius:20px;font-size:12px;"><i class="fas fa-award"></i> Sikka 2026 Nominee</span>
+                        
+                        <p class="video-modal-desc">${description || ''}</p>
+                        
+                        <div class="video-modal-tags">
+                            <span class="video-modal-tag"><i class="fas fa-vr-cardboard"></i> Gravity Sketch</span>
+                            <span class="video-modal-tag"><i class="fas fa-cube"></i> Twinmotion</span>
+                            <span class="video-modal-tag"><i class="fas fa-city"></i> Public Space</span>
                         </div>
                     </div>
                 </div>
@@ -767,6 +1000,10 @@
             modal.onclick = function() { closeVideoModal(); };
             document.body.appendChild(modal);
             document.body.style.overflow = 'hidden';
+
+            requestAnimationFrame(() => {
+                modal.classList.add('active');
+            });
         }
 
         function toggleFullscreen() {
@@ -803,8 +1040,7 @@
             if (!scene) {
                 init3DViewer();
             }
-            
-            
+
             const container = document.getElementById('model-container');
             container.innerHTML = `
                 <div class="model-loading">
@@ -855,8 +1091,7 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.shadowMap.enabled = true;
             container.appendChild(renderer.domElement);
-            
-            
+
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
             
@@ -868,15 +1103,13 @@
             const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
             fillLight.position.set(-10, 0, -10);
             scene.add(fillLight);
-            
-            
+
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
             controls.autoRotate = true;
             controls.autoRotateSpeed = 0.8;
-            
-            
+
             window.addEventListener('resize', onWindowResize);
             
             animate();
@@ -884,8 +1117,7 @@
 
         function loadSTLModel(filename) {
             if (model) scene.remove(model);
-            
-            
+
             const stlMap = {
                 'cohousing-space': 'cohousing-space',
                 'co-housing': 'cohousing-space',
@@ -993,14 +1225,12 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
         }
 
-        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
                 close3DViewer();
             }
         });
-
 
     </script>
     <script src="enhance.js"></script>

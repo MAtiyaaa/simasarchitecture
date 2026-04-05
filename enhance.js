@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -10,10 +9,11 @@
         initNavbarScroll();
         initBackToTop();
         initAnimatedCounters();
-        initParallax();
+        initImageLazyLoad();
         injectEnhancedFooter();
         injectMobileOverlay();
     }
+
     function initScrollReveal() {
         const revealElements = document.querySelectorAll(
             '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade'
@@ -32,17 +32,16 @@
             },
             {
                 threshold: 0.1,
-                rootMargin: '0px 0px -60px 0px',
+                rootMargin: '0px 0px -40px 0px',
             }
         );
 
         revealElements.forEach((el) => observer.observe(el));
     }
+
     function injectMobileOverlay() {
-        // Check if overlay already exists
         if (document.querySelector('.mobile-nav-overlay')) return;
 
-        // Determine which page is active
         const currentPath = window.location.pathname.split('/').pop() || 'index.html';
 
         const pages = [
@@ -67,36 +66,34 @@
             overlay.appendChild(a);
         });
 
-        // Add social links
         const socialDiv = document.createElement('div');
         socialDiv.className = 'mobile-nav-social';
         socialDiv.innerHTML = `
-            <a href="https://www.instagram.com/simasarchitecture/" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/simasarchitecture/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://www.behance.net/simaassaf" target="_blank"><i class="fab fa-behance"></i></a>
+            <a href="https://www.instagram.com/simasarchitecture/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/simasarchitecture/" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.behance.net/simaassaf" target="_blank" rel="noopener"><i class="fab fa-behance"></i></a>
             <a href="mailto:simasarchitecture@gmail.com"><i class="fas fa-envelope"></i></a>
         `;
         overlay.appendChild(socialDiv);
 
         document.body.appendChild(overlay);
 
-        // Replace hamburger button content
         const menuBtn = document.querySelector('.mobile-menu-btn');
         if (menuBtn) {
-            // Remove old onclick
             menuBtn.removeAttribute('onclick');
-            menuBtn.innerHTML = `
-                <div class="hamburger-lines">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            `;
+            if (!menuBtn.querySelector('.hamburger-lines')) {
+                menuBtn.innerHTML = `
+                    <div class="hamburger-lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+            }
         }
     }
 
     function initMobileNavOverlay() {
-        // Use event delegation since button is already in DOM
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.mobile-menu-btn');
             if (btn) {
@@ -106,7 +103,13 @@
             }
         });
 
-        // Close on Escape
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('.mobile-nav-overlay a:not(.mobile-nav-social a)');
+            if (link) {
+                closeMobileNav();
+            }
+        });
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeMobileNav();
@@ -140,24 +143,26 @@
         document.body.style.overflow = '';
     }
 
-    // Make toggleMobileMenu available globally (replaces old function)
     window.toggleMobileMenu = toggleMobileNav;
 
     function initNavbarScroll() {
         const nav = document.querySelector('.nav');
         if (!nav) return;
 
-        let lastScroll = 0;
+        let ticking = false;
 
         window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            nav.classList.toggle('scrolled', scrollY > 80);
-            lastScroll = scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    nav.classList.toggle('scrolled', window.scrollY > 80);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         }, { passive: true });
     }
 
     function initBackToTop() {
-        // Create button
         const btn = document.createElement('button');
         btn.className = 'back-to-top';
         btn.setAttribute('aria-label', 'Back to top');
@@ -170,26 +175,32 @@
         document.body.appendChild(btn);
 
         const circle = btn.querySelector('circle');
-        const circumference = 2 * Math.PI * 22; // ~138
+        const circumference = 2 * Math.PI * 22;
         circle.style.strokeDasharray = circumference;
         circle.style.strokeDashoffset = circumference;
 
+        let ticking = false;
+
         window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollTop = window.scrollY;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-            // Show/hide
-            btn.classList.toggle('visible', scrollTop > 400);
-
-            // Update progress ring
-            circle.style.strokeDashoffset = circumference - (progress * circumference);
+                    btn.classList.toggle('visible', scrollTop > 400);
+                    circle.style.strokeDashoffset = circumference - (progress * circumference);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         }, { passive: true });
 
         btn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
+
     function initAnimatedCounters() {
         const counters = document.querySelectorAll('.stat-value[data-count]');
         if (!counters.length) return;
@@ -214,13 +225,13 @@
         const suffix = el.getAttribute('data-suffix') || '';
         const isDecimal = target.includes('.');
         const targetNum = parseFloat(target);
-        const duration = 1800;
+        const duration = 1600;
         const startTime = performance.now();
 
         function update(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            // Ease out cubic
+            
             const eased = 1 - Math.pow(1 - progress, 3);
             const current = targetNum * eased;
 
@@ -239,25 +250,24 @@
 
         requestAnimationFrame(update);
     }
-    function initParallax() {
-        const heroBg = document.querySelector('.hero-bg, .hero-bg-parallax');
-        if (!heroBg) return;
 
-        // Only on desktop
-        if (window.innerWidth < 1024) return;
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const before = heroBg.querySelector('::before') || heroBg;
-            heroBg.style.transform = `translateY(${scrollY * 0.15}px)`;
-        }, { passive: true });
+    function initImageLazyLoad() {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        
+        images.forEach(img => {
+            if (img.complete) return;
+            
+            img.classList.add('img-loading');
+            
+            img.addEventListener('load', () => {
+                img.classList.remove('img-loading');
+            }, { once: true });
+        });
     }
+
     function injectEnhancedFooter() {
-        // Find existing footer and replace it
         const oldFooter = document.querySelector('footer.footer');
         if (!oldFooter) return;
-
-        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
 
         const pages = [
             { href: 'index.html', label: 'Home' },
@@ -289,13 +299,13 @@
                 <div class="footer-social-col">
                     <h4>Connect</h4>
                     <div class="footer-social-links">
-                        <a href="https://www.instagram.com/simasarchitecture/" target="_blank" class="footer-social-link" aria-label="Instagram">
+                        <a href="https://www.instagram.com/simasarchitecture/" target="_blank" rel="noopener" class="footer-social-link" aria-label="Instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://www.linkedin.com/in/simasarchitecture/" target="_blank" class="footer-social-link" aria-label="LinkedIn">
+                        <a href="https://www.linkedin.com/in/simasarchitecture/" target="_blank" rel="noopener" class="footer-social-link" aria-label="LinkedIn">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="https://www.behance.net/simaassaf" target="_blank" class="footer-social-link" aria-label="Behance">
+                        <a href="https://www.behance.net/simaassaf" target="_blank" rel="noopener" class="footer-social-link" aria-label="Behance">
                             <i class="fab fa-behance"></i>
                         </a>
                         <a href="mailto:simasarchitecture@gmail.com" class="footer-social-link" aria-label="Email">
@@ -305,7 +315,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Sima Assaf. All rights reserved.</p>
+                <p>&copy; ${new Date().getFullYear()} Sima Assaf. All rights reserved.</p>
                 <a href="mailto:simasarchitecture@gmail.com">simasarchitecture@gmail.com</a>
             </div>
         `;

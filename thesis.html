@@ -33,7 +33,6 @@
             min-height: 100vh;
         }
 
-        
         .nav {
             position: fixed;
             top: 0;
@@ -50,12 +49,21 @@
         }
 
         .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-family: 'Cormorant Garamond', serif;
             font-size: 22px;
             font-weight: 400;
             color: var(--text-primary);
             text-decoration: none;
             letter-spacing: 0.15em;
+        }
+
+        .nav-logo img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
         }
 
         .nav-links {
@@ -109,7 +117,6 @@
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        
         .page-header {
             padding: 140px 48px 0;
             text-align: center;
@@ -133,7 +140,6 @@
             margin-bottom: 40px;
         }
 
-        
         .subtabs {
             display: flex;
             justify-content: center;
@@ -167,7 +173,6 @@
             border-bottom-color: var(--gold);
         }
 
-        
         .content-section {
             display: none;
             min-height: 600px;
@@ -177,7 +182,6 @@
             display: block;
         }
 
-        
         .chiseled-header {
             padding: 40px 48px;
             text-align: center;
@@ -189,6 +193,18 @@
             font-size: 16px;
             color: var(--text-secondary);
             margin-bottom: 24px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
         .year-badge {
@@ -207,107 +223,44 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 14px 28px;
-            background: var(--gold);
+            padding: 12px 24px;
+            background: var(--charcoal);
             color: white;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             border-radius: 50px;
             transition: all 0.3s ease;
-            margin-left: 16px;
         }
 
         .download-btn:hover {
-            background: var(--gold-dark);
+            background: var(--gold);
+            color: var(--charcoal);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(201, 164, 107, 0.3);
         }
 
-        
-        .pdf-container {
-            padding: 40px 48px;
+        .book-container {
+            padding: 40px 24px 60px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .page-display {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        .yumpu-wrapper {
+            position: relative;
+            border-radius: 20px;
             overflow: hidden;
-            min-height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+            background: var(--charcoal);
         }
 
-        .pdf-loading {
-            text-align: center;
-            padding: 60px;
-        }
-
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid rgba(201, 164, 107, 0.2);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .pdf-canvas {
-            max-width: 100%;
-            height: auto;
+        .yumpu-wrapper iframe {
             display: block;
+            width: 100%;
+            height: 75vh;
+            min-height: 500px;
+            border: none;
         }
 
-        .pdf-nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 24px;
-            padding: 24px 0;
-        }
-
-        .nav-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.1);
-            background: white;
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover:not(:disabled) {
-            background: var(--gold);
-            color: white;
-            border-color: var(--gold);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .page-info {
-            font-size: 14px;
-            color: var(--text-secondary);
-            min-width: 80px;
-            text-align: center;
-        }
-
-        
         .project-soon {
             padding: 100px 48px;
             text-align: center;
@@ -409,7 +362,14 @@
             color: var(--gold);
         }
 
-        
+        .footer {
+            padding: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+
         @media (max-width: 768px) {
             .nav { padding: 16px 24px; }
             .nav-links { display: none; }
@@ -422,14 +382,18 @@
             .subtab { padding: 14px 20px; font-size: 12px; white-space: nowrap; }
             
             .chiseled-header { padding: 30px 24px; }
-            .download-btn { margin-left: 0; margin-top: 12px; }
+            .chiseled-subtitle { font-size: 14px; }
             
-            .pdf-container { padding: 24px; }
-            .page-display { min-height: 400px; }
+            .book-container { padding: 20px 16px 40px; }
+            
+            .yumpu-wrapper iframe {
+                height: 60vh;
+                min-height: 400px;
+            }
             
             .project-soon { padding: 60px 24px; }
             .soon-title { font-size: 32px; }
-            .countdown { gap: 10px; }
+            .countdown { gap: 10px; flex-wrap: wrap; }
             .countdown-item { padding: 16px 20px; min-width: 70px; }
             .countdown-value { font-size: 28px; }
         }
@@ -446,7 +410,7 @@
             <li><a href="artworks.html">Artworks</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
-        <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
             <div class="hamburger-lines">
                 <span></span>
                 <span></span>
@@ -473,11 +437,10 @@
         </div>
     </header>
 
-    
     <div id="chiseled" class="content-section active">
         <div class="chiseled-header">
             <p class="chiseled-subtitle">Chiseled by Sima Assaf is a research driven book that documents Nabataean ingenuity, tracing their architecture, water systems, and ways of navigating Petra through evidence, analysis, and site-based study.</p>
-            <div>
+            <div class="header-actions">
                 <span class="year-badge">
                     <i class="fas fa-calendar-alt"></i>
                     <span>2025</span>
@@ -485,30 +448,13 @@
             </div>
         </div>
 
-        <div class="pdf-container">
-            <div class="page-display" id="page-display">
-                <div class="pdf-loading">
-                    <div class="spinner"></div>
-                    <p>Loading Chiseled...</p>
-                </div>
-                <img id="page-image" class="pdf-canvas" style="display:none;" alt="Page">
+        <div class="book-container">
+            <div class="yumpu-wrapper">
+                <iframe src="https://www.yumpu.com/en/embed/view/YZ7f1tDaJrBw8b2h" frameborder="0" allowfullscreen="true" sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
             </div>
-        </div>
-
-        <div class="pdf-nav">
-            <button class="nav-btn" id="prev-btn" onclick="prevPage()" disabled>
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <div class="page-info">
-                <span id="current-page">1</span> / <span id="total-pages">121</span>
-            </div>
-            <button class="nav-btn" id="next-btn" onclick="nextPage()">
-                <i class="fas fa-chevron-right"></i>
-            </button>
         </div>
     </div>
 
-    
     <div id="project" class="content-section">
         <div class="project-soon">
             <div class="soon-badge">
@@ -559,7 +505,10 @@
     </footer>
 
     <script>
-        
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+
         function showTab(tabName) {
             document.querySelectorAll('.subtab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
@@ -568,66 +517,6 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        
-        function toggleMobileMenu() {
-            // handled by enhance.js
-        }
-
-        
-        const totalPages = 121;
-        let currentPage = 1;
-        const pageImage = document.getElementById('page-image');
-        const pageDisplay = document.getElementById('page-display');
-
-        function loadPage(pageNum) {
-            
-            pageDisplay.querySelector('.pdf-loading').style.display = 'block';
-            pageImage.style.display = 'none';
-            
-            
-            const img = new Image();
-            img.onload = function() {
-                pageImage.src = img.src;
-                pageImage.style.display = 'block';
-                pageDisplay.querySelector('.pdf-loading').style.display = 'none';
-                document.getElementById('current-page').textContent = pageNum;
-                updateButtons();
-            };
-            img.onerror = function() {
-                pageDisplay.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-muted);"><i class="fas fa-exclamation-circle" style="font-size:48px;margin-bottom:16px;display:block;color:var(--gold);"></i><p>Could not load page.</p></div>';
-            };
-            img.src = `thesis_pages/page-${String(pageNum).padStart(3, '0')}.jpg`;
-        }
-
-        function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                loadPage(currentPage);
-            }
-        }
-
-        function nextPage() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                loadPage(currentPage);
-            }
-        }
-
-        function updateButtons() {
-            document.getElementById('prev-btn').disabled = currentPage <= 1;
-            document.getElementById('next-btn').disabled = currentPage >= totalPages;
-        }
-
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') prevPage();
-            if (e.key === 'ArrowRight') nextPage();
-        });
-
-        
-        loadPage(1);
-
-        
         const targetDate = new Date('2026-05-01T00:00:00');
         const startDate = new Date('2026-02-12T00:00:00');
         const totalDuration = targetDate - startDate;
@@ -660,7 +549,6 @@
             document.getElementById('progress-fill').style.width = progress + '%';
         }
 
-        
         updateCountdown();
         setInterval(updateCountdown, 1000);
     </script>

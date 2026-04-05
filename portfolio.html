@@ -30,7 +30,6 @@
             min-height: 100vh;
         }
 
-        
         .nav {
             position: fixed;
             top: 0;
@@ -47,12 +46,21 @@
         }
 
         .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-family: 'Cormorant Garamond', serif;
             font-size: 22px;
             font-weight: 400;
             color: var(--text-primary);
             text-decoration: none;
             letter-spacing: 0.15em;
+        }
+
+        .nav-logo img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
         }
 
         .nav-links {
@@ -75,7 +83,6 @@
             color: var(--gold);
         }
 
-        
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -107,7 +114,6 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        
         .page-header {
             padding: 140px 48px 40px;
             text-align: center;
@@ -137,7 +143,6 @@
             margin: 0 auto 32px;
         }
 
-        
         .controls-bar {
             display: flex;
             justify-content: center;
@@ -147,7 +152,6 @@
             padding: 0 24px;
         }
 
-        
         .chapter-dropdown {
             position: relative;
             min-width: 220px;
@@ -221,7 +225,6 @@
             color: white;
         }
 
-        
         .pdf-container {
             padding: 40px 48px 140px;
             max-width: 1100px;
@@ -280,19 +283,15 @@
             margin-bottom: 20px;
         }
 
-        
         .pdf-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            background: var(--charcoal);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 32px;
-            z-index: 100;
+            gap: 24px;
+            padding: 24px;
+            background: var(--charcoal);
+            border-radius: 0 0 20px 20px;
+            margin-top: -1px;
         }
 
         .nav-btn {
@@ -333,6 +332,24 @@
             font-size: 24px;
             font-weight: 600;
         }
+        
+        .page-slider {
+            width: 150px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .page-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+        }
 
         @media (max-width: 768px) {
             .mobile-menu-btn { display: block; }
@@ -342,10 +359,11 @@
             .page-title { font-size: 36px; }
             .controls-bar { flex-direction: column; gap: 16px; }
             .chapter-dropdown { width: 100%; max-width: 300px; }
-            .pdf-container { padding: 24px 16px 120px; }
-            .page-display { min-height: 400px; border-radius: 16px; }
-            .pdf-nav { padding: 16px; gap: 24px; }
+            .pdf-container { padding: 24px 16px 40px; }
+            .page-display { min-height: 400px; border-radius: 16px 16px 0 0; }
+            .pdf-nav { padding: 16px; gap: 16px; flex-wrap: wrap; border-radius: 0 0 16px 16px; }
             .nav-btn { width: 44px; height: 44px; }
+            .page-slider { width: 120px; }
         }
     </style>
 </head>
@@ -408,19 +426,24 @@
                 <p>Loading portfolio...</p>
             </div>
         </div>
+        
+        <div class="pdf-nav">
+            <button class="nav-btn" id="prev-btn" onclick="prevPage()" disabled>
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="page-info">
+                <span id="current-page">-</span> / <span id="total-pages">-</span>
+            </div>
+            <input type="range" class="page-slider" id="page-slider" min="1" value="1" oninput="goToPageSlider(this.value)">
+            <button class="nav-btn" id="next-btn" onclick="nextPage()" disabled>
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
     </div>
 
-    <div class="pdf-nav">
-        <button class="nav-btn" id="prev-btn" onclick="prevPage()" disabled>
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="page-info">
-            <span id="current-page">-</span> / <span id="total-pages">-</span>
-        </div>
-        <button class="nav-btn" id="next-btn" onclick="nextPage()" disabled>
-            <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
+    <footer class="footer">
+        <p>&copy; 2025 Sima Assaf. All rights reserved.</p>
+    </footer>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -452,13 +475,11 @@
                 
                 totalPages = pdfDoc.numPages;
                 document.getElementById('total-pages').textContent = totalPages;
-                
-                
+
                 canvas = document.createElement('canvas');
                 canvas.id = 'pdf-canvas';
                 ctx = canvas.getContext('2d');
-                
-                
+
                 display.innerHTML = `
                     <div id="pdf-progress-container" style="position:absolute;top:0;left:0;right:0;height:4px;background:rgba(0,0,0,0.1);z-index:10;">
                         <div id="pdf-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.3s;"></div>
@@ -500,28 +521,23 @@
                 const container = document.getElementById('page-display');
                 const containerWidth = container.clientWidth - 40;
                 const containerHeight = window.innerHeight * 0.8;
-                
-                
+
                 const isMobile = window.innerWidth < 768;
                 const viewport = page.getViewport({ scale: 1 });
-                
-                
+
                 let scale = Math.min(
                     containerWidth / viewport.width,
                     containerHeight / viewport.height
                 );
-                
-                
+
                 const qualityScale = isMobile ? 1.2 : 1.5;
                 scale *= qualityScale;
                 
                 const scaledViewport = page.getViewport({ scale: scale });
-                
-                
+
                 canvas.width = scaledViewport.width;
                 canvas.height = scaledViewport.height;
-                
-                
+
                 canvas.style.width = (scaledViewport.width / qualityScale) + 'px';
                 canvas.style.height = (scaledViewport.height / qualityScale) + 'px';
                 
@@ -572,10 +588,24 @@
             updateButtons();
             updateURL();
         }
+        
+        function goToPageSlider(pageNum) {
+            if (!pdfDoc) return;
+            currentPage = parseInt(pageNum);
+            renderPage(currentPage);
+            updateButtons();
+            updateURL();
+        }
 
         function updateButtons() {
             document.getElementById('prev-btn').disabled = currentPage <= 1;
             document.getElementById('next-btn').disabled = currentPage >= totalPages;
+            
+            const slider = document.getElementById('page-slider');
+            if (slider && totalPages) {
+                slider.max = totalPages;
+                slider.value = currentPage;
+            }
         }
 
         function updateURL() {
@@ -585,7 +615,7 @@
         }
 
         function toggleMobileMenu() {
-            // handled by enhance.js
+            
         }
 
         document.addEventListener('keydown', (e) => {
