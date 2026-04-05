@@ -245,7 +245,8 @@
 
         #pdf-canvas {
             max-width: 100%;
-            max-height: 85vh;
+            height: auto;
+            display: block;
             box-shadow: 0 4px 30px rgba(0,0,0,0.1);
         }
 
@@ -519,33 +520,37 @@
                 if (progressBar) progressBar.style.width = '60%';
                 
                 const container = document.getElementById('page-display');
-                const containerWidth = container.clientWidth - 40;
+                const containerWidth = container.clientWidth;
                 const containerHeight = window.innerHeight * 0.8;
 
-                const isMobile = window.innerWidth < 768;
                 const viewport = page.getViewport({ scale: 1 });
 
-                let scale = Math.min(
+                const displayScale = Math.min(
                     containerWidth / viewport.width,
                     containerHeight / viewport.height
                 );
 
-                const qualityScale = isMobile ? 1.2 : 1.5;
-                scale *= qualityScale;
+                const displayWidth = viewport.width * displayScale;
+                const displayHeight = viewport.height * displayScale;
+
+                const dpr = window.devicePixelRatio || 1;
+                const qualityScale = Math.max(dpr, 2);
+
+                canvas.width = displayWidth * qualityScale;
+                canvas.height = displayHeight * qualityScale;
+
+                canvas.style.width = displayWidth + 'px';
+                canvas.style.height = displayHeight + 'px';
+                canvas.style.maxWidth = '100%';
+                canvas.style.objectFit = 'contain';
                 
-                const scaledViewport = page.getViewport({ scale: scale });
-
-                canvas.width = scaledViewport.width;
-                canvas.height = scaledViewport.height;
-
-                canvas.style.width = (scaledViewport.width / qualityScale) + 'px';
-                canvas.style.height = (scaledViewport.height / qualityScale) + 'px';
+                const renderViewport = page.getViewport({ scale: displayScale * qualityScale });
                 
                 if (progressBar) progressBar.style.width = '80%';
                 
                 await page.render({
                     canvasContext: ctx,
-                    viewport: scaledViewport
+                    viewport: renderViewport
                 }).promise;
                 
                 if (progressBar) progressBar.style.width = '100%';
