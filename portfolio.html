@@ -506,9 +506,11 @@
                 `;
             }
         }
+        let isRendering = false;
 
         async function renderPage(pageNum) {
-            if (!pdfDoc) return;
+            if (!pdfDoc || isRendering) return;
+            isRendering = true;
             
             try {
                 
@@ -539,10 +541,12 @@
                 canvas.width = displayWidth * qualityScale;
                 canvas.height = displayHeight * qualityScale;
 
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
                 canvas.style.width = displayWidth + 'px';
                 canvas.style.height = displayHeight + 'px';
                 canvas.style.maxWidth = '100%';
-                canvas.style.objectFit = 'contain';
                 
                 const renderViewport = page.getViewport({ scale: displayScale * qualityScale });
                 
@@ -565,6 +569,8 @@
                 
             } catch (error) {
                 console.error('Error rendering page:', error);
+            } finally {
+                isRendering = false;
             }
         }
 
@@ -628,8 +634,12 @@
             if (e.key === 'ArrowRight') nextPage();
         });
 
+        let resizeTimeout;
         window.addEventListener('resize', () => {
-            if (pdfDoc) renderPage(currentPage);
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (pdfDoc) renderPage(currentPage);
+            }, 300);
         });
 
         loadPDF();
