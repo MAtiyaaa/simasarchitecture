@@ -15,6 +15,7 @@
     <style>
         :root {
             --gold: #c9a46b;
+            --gold-light: #ddb97d;
             --charcoal: #1a1a1a;
             --charcoal-light: #2d2d2d;
             --cream: #faf8f5;
@@ -24,6 +25,8 @@
             --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
             --radius-lg: 24px;
             --radius-md: 16px;
+            --error-red: #ff4444;
+            --error-red-light: #ff6666;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -533,10 +536,12 @@
         }
 
         .model-loading {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%;
             background: var(--charcoal);
         }
         .model-loading-content {
@@ -1036,44 +1041,46 @@
             document.getElementById('viewer-title').textContent = title + ' - 3D Model';
             document.getElementById('viewerModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-            
+
+            const container = document.getElementById('model-container');
+
+            // Remove any stale loading overlay left from a previous open
+            const staleOverlay = container.querySelector('.model-loading');
+            if (staleOverlay) staleOverlay.remove();
+
+            // Show loading overlay on top of the canvas (position:absolute via CSS)
+            const overlay = document.createElement('div');
+            overlay.className = 'model-loading';
+            overlay.id = 'model-loading-overlay';
+            overlay.innerHTML = `
+                <div class="model-loading-content">
+                    <div class="model-spinner"></div>
+                    <div class="model-loading-text">Loading 3D Model</div>
+                    <div class="model-progress-container">
+                        <div class="model-progress-bar-bg">
+                            <div class="model-progress-bar-fill" id="model-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="model-progress-percentage" id="model-progress-text">0%</div>
+                    </div>
+                    <div class="model-loading-status" id="model-loading-status">Preparing...</div>
+                </div>
+            `;
+            container.appendChild(overlay);
+
             if (!scene) {
                 init3DViewer();
             }
 
-            const container = document.getElementById('model-container');
-            container.innerHTML = `
-                <div class="model-loading">
-                    <div class="model-loading-content">
-                        <div class="model-spinner"></div>
-                        <div class="model-loading-text">Loading 3D Model</div>
-                        <div class="model-progress-container">
-                            <div class="model-progress-bar-bg">
-                                <div class="model-progress-bar-fill" id="model-progress-fill" style="width: 0%"></div>
-                            </div>
-                            <div class="model-progress-percentage" id="model-progress-text">0%</div>
-                        </div>
-                        <div class="model-loading-status" id="model-loading-status">Preparing...</div>
-                    </div>
-                </div>
-            `;
-            
-            setTimeout(() => {
-                
-                if (renderer) {
-                    container.innerHTML = '';
-                    container.appendChild(renderer.domElement);
-                }
-                
-                if (modelFile) {
-                    loadSTLModel(modelFile);
-                } else {
-                    createPlaceholderModel();
-                }
-            }, 100);
+            if (modelFile) {
+                loadSTLModel(modelFile);
+            } else {
+                createPlaceholderModel();
+            }
         }
 
         function close3DViewer() {
+            const overlay = document.getElementById('model-loading-overlay');
+            if (overlay) overlay.remove();
             document.getElementById('viewerModal').classList.remove('active');
             document.body.style.overflow = '';
         }
@@ -1155,6 +1162,10 @@
                     model.position.sub(center.multiplyScalar(scale));
                     
                     scene.add(model);
+
+                    // Hide the loading overlay now that the model is in the scene
+                    const overlay = document.getElementById('model-loading-overlay');
+                    if (overlay) overlay.remove();
                 },
                 (progress) => {
                     
@@ -1177,7 +1188,11 @@
                 },
                 (error) => {
                     console.error('Error loading STL:', error);
-                    createPlaceholderModel();
+                    const statusEl = document.getElementById('model-loading-status');
+                    if (statusEl) statusEl.textContent = 'Load failed — showing placeholder';
+                    const progressFill = document.getElementById('model-progress-fill');
+                    if (progressFill) progressFill.style.background = 'linear-gradient(90deg, var(--error-red), var(--error-red-light))';
+                    setTimeout(() => createPlaceholderModel(), 1500);
                 }
             );
         }
@@ -1192,6 +1207,9 @@
             });
             model = new THREE.Mesh(geometry, material);
             scene.add(model);
+
+            const overlay = document.getElementById('model-loading-overlay');
+            if (overlay) overlay.remove();
         }
 
         function toggleRotation() {
